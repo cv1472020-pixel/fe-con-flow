@@ -833,14 +833,31 @@
 
       function youtubeId(src) {
         if (!src) return "";
-        const match = src.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/);
+        const value = String(src).trim();
+        const match = value.match(/(?:v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([\w-]{11})/);
         if (match) return match[1];
-        return /^[\w-]{11}$/.test(src) ? src : "";
+        return /^[\w-]{11}$/.test(value) ? value : "";
+      }
+
+      function driveId(src) {
+        if (!src) return "";
+        const value = String(src).trim();
+        const match = value.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?.*?id=)([\w-]+)/);
+        if (match) return match[1];
+        const queryMatch = value.match(/[?&]id=([\w-]+)/);
+        return queryMatch ? queryMatch[1] : "";
+      }
+
+      function videoKind(video) {
+        const src = String(video.src || "").trim();
+        if (video.type === "youtube" || /youtu\.be|youtube\.com/i.test(src) || youtubeId(src)) return "youtube";
+        if (/drive\.google\.com/i.test(src) || video.type === "drive") return "drive";
+        return "file";
       }
 
       function thumbFor(video) {
         if (video.poster) return video.poster;
-        const id = video.type === "youtube" ? youtubeId(video.src) : "";
+        const id = videoKind(video) === "youtube" ? youtubeId(video.src) : "";
         return id ? "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg" : "";
       }
 
@@ -858,15 +875,18 @@
           return;
         }
 
-        if (video.type === "youtube") {
-          const id = youtubeId(video.src);
+        const kind = videoKind(video);
+        const src = String(video.src || "").trim();
+
+        if (kind === "youtube") {
+          const id = youtubeId(src);
           if (!id) {
-            player.append(emptyState("Video próximamente"));
+            player.append(emptyState("Revisa el enlace de YouTube en Google Sheets"));
             return;
           }
           if (autoplay) {
             const frame = document.createElement("iframe");
-            frame.src = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0";
+            frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
             frame.title = video.title;
             frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
             frame.allowFullscreen = true;
@@ -883,14 +903,33 @@
             poster.addEventListener("click", () => renderPlayer(true));
             player.append(poster);
           }
-        } else if (video.src) {
+          return;
+        }
+
+        if (kind === "drive") {
+          const id = driveId(src);
+          if (!id) {
+            player.append(emptyState("Revisa el enlace de Google Drive en Google Sheets"));
+            return;
+          }
+          const frame = document.createElement("iframe");
+          frame.src = "https://drive.google.com/file/d/" + encodeURIComponent(id) + "/preview";
+          frame.title = video.title;
+          frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+          frame.allowFullscreen = true;
+          player.append(frame);
+          return;
+        }
+
+        if (src) {
           const el = document.createElement("video");
           el.controls = true;
           el.playsInline = true;
           el.preload = "metadata";
           if (video.poster) el.poster = video.poster;
-          el.src = video.src;
+          el.src = src;
           el.autoplay = autoplay;
+          el.onerror = () => player.replaceChildren(emptyState("No se encuentra el archivo de video. Revisa la URL en Google Sheets."));
           player.append(el);
         } else {
           player.append(emptyState("Video próximamente"));
@@ -983,8 +1022,8 @@
             videoLibrary = Array.isArray(items) ? items.map((v) => ({
               title: String(v.title || "Video sin título"),
               description: String(v.description || ""),
-              type: v.type === "youtube" ? "youtube" : "file",
-              src: String(v.src || ""),
+              type: String(v.type || "").trim().toLowerCase(),
+              src: String(v.src || v.url || v.enlace || "").trim(),
               poster: String(v.poster || "")
             })) : [];
             try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
