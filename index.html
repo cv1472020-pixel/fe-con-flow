@@ -621,6 +621,19 @@
       border: 2px solid var(--ink); border-radius: 14px;
       background: var(--white); color: var(--ink); font: inherit;
     }
+    .book-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .book-tab {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 10px; border: 2px solid var(--ink); border-radius: 14px;
+      background: var(--white); color: var(--ink); font: inherit; font-weight: 900;
+      box-shadow: 3px 3px 0 var(--ink); cursor: pointer;
+    }
+    .book-tab span {
+      min-width: 24px; padding: 1px 7px; border: 2px solid var(--ink);
+      border-radius: 999px; background: var(--cream); font-size: .8rem; text-align: center;
+    }
+    .book-tab[aria-selected="true"] { background: var(--yellow); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+    .book-tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
     .book-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
     .book-card {
       display: grid; grid-template-columns: 76px 1fr; align-items: center;
@@ -642,6 +655,53 @@
       border: 2px solid var(--ink); border-radius: 999px;
       background: var(--yellow); box-shadow: 2px 2px 0 var(--ink);
       font-size: .88rem; font-weight: 900; text-decoration: none;
+    }
+    .book-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 9px; }
+    .book-actions a, .book-actions button {
+      display: inline-block; margin: 0; padding: 7px 11px;
+      border: 2px solid var(--ink); border-radius: 999px;
+      background: var(--yellow); box-shadow: 2px 2px 0 var(--ink);
+      color: var(--ink); font: inherit; font-size: .88rem; font-weight: 900;
+      text-decoration: none; cursor: pointer;
+    }
+    .book-actions a { background: var(--white); }
+    .book-reader {
+      position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column;
+      background: var(--cream);
+    }
+    .book-reader[hidden] { display: none; }
+    .book-reader-head {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+      border-bottom: 2px solid var(--ink); background: var(--yellow);
+    }
+    .book-reader-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .book-reader-head button, .book-reader-head a {
+      padding: 7px 12px; border: 2px solid var(--ink); border-radius: 999px;
+      background: var(--white); color: var(--ink); font: inherit; font-size: .88rem;
+      font-weight: 900; text-decoration: none; cursor: pointer; white-space: nowrap;
+    }
+    .book-reader iframe { flex: 1; width: 100%; border: 0; background: var(--white); }
+    .book-reader-note { margin: 0; padding: 8px 14px; font-size: .85rem; border-top: 2px solid var(--ink); background: var(--white); }
+    .book-reader iframe[hidden] { display: none; }
+    .book-reader-status {
+      margin: 0; padding: 8px 14px; font-size: .9rem; font-weight: 700;
+      border-bottom: 2px solid var(--ink); background: var(--white);
+    }
+    .book-reader-status[hidden] { display: none; }
+    .book-reader-pages {
+      flex: 1; min-height: 0; overflow-y: auto; padding: 12px; background: #d9d4c4;
+      -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+    }
+    .book-reader-pages[hidden] { display: none; }
+    .book-page {
+      max-width: 900px; margin: 0 auto 12px; background: var(--white);
+      border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
+    }
+    .book-page canvas { display: block; width: 100%; height: auto; }
+    .book-reader-note button {
+      padding: 4px 10px; border: 2px solid var(--ink); border-radius: 999px;
+      background: var(--yellow); color: var(--ink); font: inherit; font-size: .82rem;
+      font-weight: 900; cursor: pointer;
     }
     .book-empty {
       padding: 24px; border: 2px dashed var(--ink); border-radius: 16px;
@@ -1109,10 +1169,27 @@
     </div>
     <div class="book-panel-body">
       <p class="book-intro">Un espacio para descubrir lecturas que te ayuden a crecer en la fe. Busca un título en la biblioteca.</p>
+      <div class="book-tabs" role="tablist" aria-label="Secciones de la biblioteca">
+        <button type="button" class="book-tab" role="tab" id="book-tab-biblia" data-book-tab="Biblia" aria-selected="true" aria-controls="book-list">📖 Biblia <span id="book-tab-count-biblia">0</span></button>
+        <button type="button" class="book-tab" role="tab" id="book-tab-otros" data-book-tab="Otros libros" aria-selected="false" aria-controls="book-list">📚 Otros libros <span id="book-tab-count-otros">0</span></button>
+      </div>
       <input class="book-search" id="book-search" type="search" placeholder="Buscar por título, autor o tema…" aria-label="Buscar libros">
-      <h4 class="video-list-title">Biblioteca <span id="book-count">0</span></h4>
-      <ul class="book-list" id="book-list"></ul>
+      <h4 class="video-list-title"><span id="book-section-name">Biblia</span> <span id="book-count">0</span></h4>
+      <ul class="book-list" id="book-list" role="tabpanel"></ul>
       <div class="book-empty" id="book-empty" hidden>📖 Todavía no hay libros publicados.<br>Pronto encontrarás nuevas lecturas aquí.</div>
+    </div>
+    <div class="book-reader" id="book-reader" hidden>
+      <div class="book-reader-head">
+        <button type="button" id="book-reader-back">← Volver</button>
+        <strong id="book-reader-title"></strong>
+        <a id="book-reader-open" href="#" target="_blank" rel="noopener noreferrer">Abrir ↗</a>
+      </div>
+      <p class="book-reader-status" id="book-reader-status" role="status" aria-live="polite" hidden></p>
+      <div class="book-reader-pages" id="book-reader-pages" hidden></div>
+      <iframe id="book-reader-frame" title="Lector de libro" allow="fullscreen" hidden></iframe>
+      <p class="book-reader-note">
+        <span id="book-reader-alt-wrap"><button type="button" id="book-reader-alt">Probar otro visor</button> · </span>¿No carga? Usa «Abrir ↗» para verlo en una pestaña nueva.
+      </p>
     </div>
   </aside>
 
@@ -1407,25 +1484,117 @@
     })();
 
     /* ===== Panel de libros =====
-       Para añadir libros, agrega objetos con title, author, description, category y url.
-       url puede ser un enlace a un PDF autorizado o a la página oficial del libro.
-       Deja url vacío para mostrar el libro sin botón de lectura. */
-    const bookLibrary = [
-      {
-        title: "La Biblia",
-        author: "Texto bíblico",
-        description: "Lectura central para conocer las Escrituras y profundizar en la fe.",
-        category: "Biblia",
-        url: ""
-      },
-      {
-        title: "Lecturas para crecer en la fe",
-        author: "Biblioteca Fe con Flow",
-        description: "Espacio reservado para agregar una lectura recomendada.",
-        category: "Crecimiento espiritual",
-        url: ""
-      }
+       Los libros se cargan desde Google Sheets (mismo Apps Script que los videos),
+       pidiendo las hojas "Biblia" y "Otros libros" con el parámetro ?sheet=.
+       Columnas esperadas en cada hoja: title, author, description, category, url
+       (también se aceptan: titulo, autor, descripcion, categoria, enlace).
+       Los videos NO se tocan: el script sin parámetro sigue devolviendo la hoja de videos. */
+    let bookLibrary = [];
+    let booksLoading = true;
+    const BOOK_API_URL = VIDEO_API_URL; // mismo Apps Script
+    const BOOK_SHEETS = [
+      { sheet: "Biblia", category: "Biblia" },
+      { sheet: "Otros libros", category: "Otros libros" }
     ];
+
+    // Convierte el enlace de cada libro en una lista de "visores" que se prueban en orden.
+    // Así, si un PDF no se muestra con un visor, el lector pasa solo (o con un botón) al siguiente.
+    //   · Drive / Docs      → vista previa de Google en un iframe
+    //   · PDF directo       → PDF.js (dibuja las páginas, funciona en celular) y, si el sitio
+    //                         no lo permite, el visor de Google; al final el enlace tal cual
+    //   · Otros enlaces     → iframe directo
+    function resolveBookLink(raw) {
+      let text = String(raw || "").trim();
+      if (!text) return null;
+      if (/^(\/\/|www\.)/i.test(text)) text = "https://" + text.replace(/^\/\//, "");
+      let parsed;
+      try { parsed = new URL(text, location.href); } catch (_) { return null; }
+      if (!/^https?:$/.test(parsed.protocol)) return null; // evita javascript:, data:, etc.
+      const url = parsed.href;
+
+      // PDF guardado en Google Drive (incluye /file/u/0/d/…, open?id=…, uc?id=…)
+      const drive = url.match(/(?:drive|docs)\.google\.com\/file\/(?:u\/\d+\/)?d\/([\w-]+)/) ||
+                    url.match(/drive\.google\.com\/(?:open|uc|thumbnail)\?(?:[^#]*&)?id=([\w-]+)/);
+      if (drive) {
+        const id = drive[1];
+        return {
+          open: "https://drive.google.com/file/d/" + id + "/view",
+          viewers: [
+            { type: "iframe", src: "https://drive.google.com/file/d/" + id + "/preview" },
+            { type: "iframe", src: "https://docs.google.com/viewer?srcid=" + id + "&pid=explorer&efh=false&a=v&chrome=false&embedded=true" }
+          ]
+        };
+      }
+
+      // Documentos, presentaciones y hojas de Google (cada uno tiene su propia vista incrustable)
+      const gdoc = url.match(/docs\.google\.com\/(document|presentation|spreadsheets)\/d\/([\w-]+)/);
+      if (gdoc) {
+        const base = "https://docs.google.com/" + gdoc[1] + "/d/" + gdoc[2];
+        return {
+          open: base + "/preview",
+          viewers: [{ type: "iframe", src: base + (gdoc[1] === "presentation" ? "/embed?start=false&loop=false" : "/preview") }]
+        };
+      }
+
+      // PDF en otro sitio. Se normalizan GitHub y Dropbox para llegar al archivo en sí.
+      let fileUrl = url;
+      const gh = url.match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/(.+)$/);
+      if (gh) fileUrl = "https://raw.githubusercontent.com/" + gh[1] + "/" + gh[2] + "/" + gh[3];
+      if (/^https:\/\/(www\.)?dropbox\.com\//.test(fileUrl)) {
+        const d = new URL(fileUrl);
+        d.searchParams.delete("dl");
+        d.searchParams.set("raw", "1");
+        fileUrl = d.href;
+      }
+      let isPdf = false;
+      try { isPdf = /\.pdf$/i.test(new URL(fileUrl).pathname); } catch (_) {}
+      if (isPdf) {
+        return {
+          open: fileUrl,
+          viewers: [
+            { type: "pdfjs", src: fileUrl },
+            { type: "iframe", src: "https://docs.google.com/gview?embedded=true&url=" + encodeURIComponent(fileUrl) },
+            { type: "iframe", src: fileUrl }
+          ]
+        };
+      }
+
+      return { open: url, viewers: [{ type: "iframe", src: url }] };
+    }
+
+    function loadBookSheet(config, index) {
+      return new Promise((resolve) => {
+        const callbackName = "__bookSheetCallback" + index;
+        const script = document.createElement("script");
+        let finished = false;
+        const finish = (items) => {
+          if (finished) return;
+          finished = true;
+          try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+          script.remove();
+          const rows = Array.isArray(items) ? items : [];
+          resolve(rows
+            // Seguridad: si el script aún no soporta ?sheet=, devolvería videos; los ignoramos.
+            .filter((r) => !/^(youtube|file)$/i.test(String(r.type || "").trim()))
+            .map((r) => ({
+              title: String(r.title || r.titulo || r["título"] || "").trim(),
+              author: String(r.author || r.autor || "").trim(),
+              description: String(r.description || r.descripcion || r["descripción"] || "").trim(),
+              category: String(r.category || r.categoria || r["categoría"] || config.category).trim(),
+              section: config.category,
+              url: String(r.url || r.enlace || r.link || r.src || "").trim()
+            }))
+            .filter((b) => b.title));
+        };
+        window[callbackName] = finish;
+        script.onerror = () => finish([]);
+        script.src = BOOK_API_URL + (BOOK_API_URL.includes("?") ? "&" : "?") +
+          "sheet=" + encodeURIComponent(config.sheet) +
+          "&callback=" + callbackName + "&t=" + Date.now();
+        document.head.appendChild(script);
+        setTimeout(() => finish([]), 10000);
+      });
+    }
 
     (function () {
       const panel = document.getElementById("book-panel");
@@ -1436,6 +1605,9 @@
       const searchEl = document.getElementById("book-search");
       const emptyEl = document.getElementById("book-empty");
       const pageParts = document.querySelectorAll("header, main, footer");
+      const sectionNameEl = document.getElementById("book-section-name");
+      const tabs = document.querySelectorAll("[data-book-tab]");
+      let activeTab = "Biblia";
       let lastOpener = null;
 
       function make(tag, className, text) {
@@ -1447,15 +1619,24 @@
 
       function renderBooks() {
         const query = searchEl.value.trim().toLocaleLowerCase("es");
-        const books = bookLibrary.filter((book) =>
+        const inSection = bookLibrary.filter((book) => book.section === activeTab);
+        const books = inSection.filter((book) =>
           [book.title, book.author, book.description, book.category]
             .join(" ").toLocaleLowerCase("es").includes(query)
         );
+        sectionNameEl.textContent = activeTab;
+        tabs.forEach((tab) => {
+          const name = tab.dataset.bookTab;
+          tab.setAttribute("aria-selected", String(name === activeTab));
+          tab.querySelector("span").textContent = String(bookLibrary.filter((b) => b.section === name).length);
+        });
         listEl.replaceChildren();
         countEl.textContent = String(books.length);
         emptyEl.hidden = books.length > 0;
         if (!books.length && query) {
           emptyEl.textContent = "No encontramos libros con esa búsqueda. Prueba con otro título o tema.";
+        } else if (!books.length && booksLoading) {
+          emptyEl.textContent = "📖 Cargando libros…";
         } else if (!books.length) {
           emptyEl.textContent = "📖 Todavía no hay libros publicados. Pronto encontrarás nuevas lecturas aquí.";
         }
@@ -1468,13 +1649,20 @@
           details.append(make("strong", "", book.title));
           details.append(make("small", "", [book.author, book.category].filter(Boolean).join(" · ")));
           if (book.description) details.append(make("small", "", book.description));
-          if (book.url) {
-            const link = make("a", "", "Leer libro ↗");
-            link.href = book.url;
+          const resolved = resolveBookLink(book.url);
+          if (resolved) {
+            const actions = make("div", "book-actions");
+            const readBtn = make("button", "", "📖 Leer aquí");
+            readBtn.type = "button";
+            readBtn.setAttribute("aria-label", "Leer " + book.title + " dentro del panel");
+            readBtn.addEventListener("click", () => openReader(book, resolved));
+            const link = make("a", "", "Abrir ↗");
+            link.href = resolved.open;
             link.target = "_blank";
             link.rel = "noopener noreferrer";
-            link.setAttribute("aria-label", "Abrir " + book.title);
-            details.append(link);
+            link.setAttribute("aria-label", "Abrir " + book.title + " en una pestaña nueva");
+            actions.append(readBtn, link);
+            details.append(actions);
           } else {
             details.append(make("small", "", "Lectura próximamente"));
           }
@@ -1483,6 +1671,161 @@
           listEl.append(item);
         });
       }
+
+      const readerEl = document.getElementById("book-reader");
+      const readerFrame = document.getElementById("book-reader-frame");
+      const readerTitle = document.getElementById("book-reader-title");
+      const readerOpen = document.getElementById("book-reader-open");
+      const readerBack = document.getElementById("book-reader-back");
+
+      const pagesEl = document.getElementById("book-reader-pages");
+      const statusEl = document.getElementById("book-reader-status");
+      const altBtn = document.getElementById("book-reader-alt");
+      const altWrap = document.getElementById("book-reader-alt-wrap");
+      const PDFJS_BASE = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+      let pdfjsPromise = null;
+      let activePdf = null;
+      let pageObserver = null;
+      let currentResolved = null;
+      let viewerIndex = 0;
+      let renderToken = 0; // sube cada vez que cambia de visor o se cierra: cancela trabajos viejos
+
+      function setStatus(message) {
+        statusEl.textContent = message || "";
+        statusEl.hidden = !message;
+      }
+
+      // PDF.js se descarga solo la primera vez que se abre un PDF directo.
+      function loadPdfJs() {
+        if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+        if (!pdfjsPromise) {
+          pdfjsPromise = new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = PDFJS_BASE + "pdf.min.js";
+            script.onload = () => {
+              if (!window.pdfjsLib) { pdfjsPromise = null; reject(new Error("pdfjs")); return; }
+              window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + "pdf.worker.min.js";
+              resolve(window.pdfjsLib);
+            };
+            script.onerror = () => { pdfjsPromise = null; reject(new Error("pdfjs")); };
+            document.head.appendChild(script);
+          });
+        }
+        return pdfjsPromise;
+      }
+
+      function clearViewer() {
+        renderToken++;
+        if (pageObserver) { pageObserver.disconnect(); pageObserver = null; }
+        if (activePdf) { try { activePdf.destroy(); } catch (_) {} activePdf = null; }
+        pagesEl.replaceChildren();
+        pagesEl.hidden = true;
+        readerFrame.onload = null;
+        readerFrame.hidden = true;
+        setStatus("");
+      }
+
+      // Dibuja una página dentro de su marco; las que quedan lejos se descartan para no gastar memoria.
+      async function drawPage(holder, token) {
+        const gen = (holder._gen = (holder._gen || 0) + 1);
+        const pdf = activePdf;
+        if (!pdf) return;
+        const number = Number(holder.dataset.page);
+        const page = await pdf.getPage(number);
+        if (token !== renderToken || holder._gen !== gen) return;
+        const cssWidth = holder.clientWidth || 320;
+        const base = page.getViewport({ scale: 1 });
+        const ratio = Math.min(window.devicePixelRatio || 1, 2);
+        const viewport = page.getViewport({ scale: (cssWidth / base.width) * ratio });
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.floor(viewport.width);
+        canvas.height = Math.floor(viewport.height);
+        canvas.setAttribute("role", "img");
+        canvas.setAttribute("aria-label", "Página " + number + " de " + pdf.numPages);
+        await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        if (token !== renderToken || holder._gen !== gen) return;
+        holder.style.aspectRatio = canvas.width + " / " + canvas.height;
+        holder.replaceChildren(canvas);
+      }
+
+      function dropPage(holder) {
+        holder._gen = (holder._gen || 0) + 1;
+        if (holder.firstChild) holder.replaceChildren();
+      }
+
+      async function showPdfJs(src, token) {
+        setStatus("Cargando libro…");
+        try {
+          const pdfjsLib = await loadPdfJs();
+          const pdf = await pdfjsLib.getDocument({ url: src }).promise;
+          if (token !== renderToken) { pdf.destroy(); return; }
+          activePdf = pdf;
+          const first = await pdf.getPage(1);
+          if (token !== renderToken) return;
+          const size = first.getViewport({ scale: 1 });
+          const frag = document.createDocumentFragment();
+          for (let n = 1; n <= pdf.numPages; n++) {
+            const holder = make("div", "book-page");
+            holder.dataset.page = String(n);
+            holder.style.aspectRatio = size.width + " / " + size.height;
+            frag.append(holder);
+          }
+          pagesEl.append(frag);
+          pagesEl.hidden = false;
+          setStatus("");
+          pageObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) drawPage(entry.target, token).catch(() => {});
+              else dropPage(entry.target);
+            });
+          }, { root: pagesEl, rootMargin: "1200px 0px" });
+          pagesEl.querySelectorAll(".book-page").forEach((holder) => pageObserver.observe(holder));
+        } catch (_) {
+          if (token === renderToken) nextViewer(false); // este visor falló: probar el siguiente
+        }
+      }
+
+      function showViewer(index) {
+        clearViewer();
+        viewerIndex = index;
+        const token = renderToken;
+        const viewer = currentResolved.viewers[index];
+        altWrap.hidden = currentResolved.viewers.length < 2;
+        if (viewer.type === "pdfjs") {
+          readerFrame.src = "about:blank";
+          showPdfJs(viewer.src, token);
+        } else {
+          setStatus("Cargando libro…");
+          readerFrame.onload = () => { if (token === renderToken) setStatus(""); };
+          readerFrame.hidden = false;
+          readerFrame.src = viewer.src;
+        }
+      }
+
+      function nextViewer(manual) {
+        const next = viewerIndex + 1;
+        if (next < currentResolved.viewers.length) showViewer(next);
+        else if (manual) showViewer(0);
+        else setStatus("No se pudo mostrar el libro aquí. Usa «Abrir ↗» para verlo en una pestaña nueva.");
+      }
+      altBtn.addEventListener("click", () => nextViewer(true));
+
+      function openReader(book, resolved) {
+        readerTitle.textContent = book.title;
+        readerOpen.href = resolved.open;
+        currentResolved = resolved;
+        readerEl.hidden = false;
+        showViewer(0);
+        readerBack.focus({ preventScroll: true });
+      }
+
+      function closeReader() {
+        clearViewer();
+        currentResolved = null;
+        readerEl.hidden = true;
+        readerFrame.src = "about:blank";
+      }
+      readerBack.addEventListener("click", closeReader);
 
       function openPanel(opener) {
         lastOpener = opener || null;
@@ -1496,6 +1839,7 @@
       }
 
       function closePanel() {
+        closeReader();
         panel.classList.remove("open");
         backdrop.classList.remove("open");
         panel.inert = true;
@@ -1510,13 +1854,26 @@
           openPanel(btn);
         });
       });
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          activeTab = tab.dataset.bookTab;
+          renderBooks();
+        });
+      });
       searchEl.addEventListener("input", renderBooks);
       closeBtn.addEventListener("click", closePanel);
       backdrop.addEventListener("click", closePanel);
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && panel.classList.contains("open")) closePanel();
+        if (event.key === "Escape" && panel.classList.contains("open")) {
+          if (!readerEl.hidden) closeReader(); else closePanel();
+        }
       });
       renderBooks();
+      Promise.all(BOOK_SHEETS.map(loadBookSheet)).then((groups) => {
+        bookLibrary = groups.flat();
+        booksLoading = false;
+        renderBooks();
+      });
     })();
   </script>
 </body>
