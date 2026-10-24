@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -635,9 +636,133 @@
     @media (prefers-reduced-motion: reduce) {
       .video-panel, .video-backdrop { transition: none; }
     }
+
+    /* Adaptación automática para PC, tablet y móvil */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { overflow-x: hidden; }
+    img, video, iframe { max-width: 100%; }
+    button, a, input { -webkit-tap-highlight-color: transparent; }
+    button, .pill-button, .video-card, .book-card a {
+      touch-action: manipulation;
+    }
+
+    /* La clase se asigna con JavaScript según el ancho y el tipo de interacción */
+    body.device-mobile .wrap { width: min(100% - 28px, 620px); }
+    body.device-desktop .wrap { width: min(1120px, 92%); }
+
+    @media (max-width: 760px), (pointer: coarse) and (max-width: 1024px) {
+      body { font-size: 16px; }
+      header { padding: 14px 0; }
+      .nav { gap: 10px; align-items: center; }
+      .logo { font-size: 1.12rem; letter-spacing: -.6px; }
+      .nav-links { gap: 8px; }
+      .pill-button { padding: 10px 13px; font-size: .92rem; }
+      .hero { gap: 24px; padding: 30px 0 44px; }
+      h1 { font-size: clamp(2.8rem, 15vw, 4.6rem); letter-spacing: -3px; }
+      .hero p { font-size: 1rem; line-height: 1.55; }
+      .hero-actions { gap: 10px; }
+      .hero-art { min-height: 250px; }
+      .blob { width: min(240px, 68vw); font-size: 5rem; }
+      .floaty { font-size: .85rem; padding: 8px 10px; }
+      section { padding: 34px 0; }
+      .verse-section { padding: 30px 22px; border-radius: 24px; }
+      .quiz { padding: 24px 18px; }
+      footer { padding: 26px 0; }
+
+      .video-backdrop, .book-backdrop { padding: 0; }
+      .video-panel, .book-panel {
+        width: 100%;
+        max-width: none;
+        height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0;
+        border-right: 0;
+        border-left: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .video-panel-head, .book-panel-head {
+        padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px;
+        gap: 12px;
+      }
+      .video-panel-head h2, .book-panel-head h2 {
+        font-size: 1.55rem;
+        letter-spacing: -.6px;
+      }
+      .video-close {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+      }
+      .video-panel-body, .book-panel-body {
+        padding: 14px;
+        overscroll-behavior: contain;
+      }
+      .video-player { border-radius: 14px; }
+      .video-player iframe, .video-player video { width: 100%; }
+      .video-card {
+        grid-template-columns: 94px minmax(0, 1fr);
+        gap: 12px;
+        padding: 10px;
+      }
+      .video-card strong { font-size: .95rem; overflow-wrap: anywhere; }
+      .video-card small { font-size: .8rem; }
+      .book-card { grid-template-columns: 66px minmax(0, 1fr); gap: 12px; }
+      .book-card strong, .book-card small { overflow-wrap: anywhere; }
+      input, textarea, select { font-size: 16px; }
+    }
+
+    @media (min-width: 761px) {
+      .video-panel, .book-panel {
+        width: min(900px, 94vw);
+        max-height: 92vh;
+        margin: auto;
+        border: 2px solid var(--ink);
+        border-radius: 24px;
+        box-shadow: 8px 8px 0 var(--ink);
+      }
+      .video-backdrop, .book-backdrop {
+        align-items: center;
+        justify-content: center;
+        padding: 3vh 3vw;
+      }
+      .video-panel-body {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(250px, .8fr);
+        gap: 22px;
+      }
+      .video-panel-body > :first-child { min-width: 0; }
+      .video-panel-body .video-list,
+      .video-panel-body .video-list-title { min-width: 0; }
+    }
+
+    @media (max-width: 420px) {
+      .wrap { width: calc(100% - 24px); }
+      .logo { font-size: 1rem; }
+      .nav-links { gap: 6px; }
+      .pill-button { padding: 9px 10px; font-size: .86rem; }
+      h2 { letter-spacing: -1px; }
+      .video-card { grid-template-columns: 82px minmax(0, 1fr); }
+    }
+
   </style>
 </head>
 <body>
+
+  <script>
+    (() => {
+      const updateDeviceClass = () => {
+        const mobile = window.matchMedia("(max-width: 760px)").matches ||
+          (window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024);
+        document.body.classList.toggle("device-mobile", mobile);
+        document.body.classList.toggle("device-desktop", !mobile);
+        document.documentElement.dataset.device = mobile ? "mobile" : "desktop";
+      };
+      updateDeviceClass();
+      window.addEventListener("resize", updateDeviceClass, { passive: true });
+      window.addEventListener("orientationchange", updateDeviceClass, { passive: true });
+    })();
+  </script>
+
   <header class="wrap">
     <nav class="nav" aria-label="Navegación principal">
       <a class="logo" href="#">FE <span>CON</span> FLOW ✨</a>
