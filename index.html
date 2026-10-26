@@ -1016,6 +1016,218 @@
       }
     }
 
+
+    /* ===== Animaciones (se desactivan si el dispositivo pide menos movimiento) ===== */
+    @media (prefers-reduced-motion: no-preference) {
+      html { scroll-behavior: smooth; }
+
+      /* Entrada al cargar la página */
+      .nav { animation: dropIn .6s cubic-bezier(.2,.8,.2,1) both; }
+      .hero .sticker { animation: fadeUp .6s .05s both, sway 4s 1s ease-in-out infinite; }
+      .hero h1 { animation: fadeUp .7s .15s both; }
+      .hero > div:first-child > p { animation: fadeUp .7s .3s both; }
+      .hero-actions { animation: fadeUp .7s .45s both; }
+      .hero-art { animation: popIn .8s .3s cubic-bezier(.2,1.2,.3,1) both; }
+      h1 em { display: inline-block; transform-origin: left bottom; animation: wave 3.5s 1.4s ease-in-out infinite; }
+
+      /* Movimiento continuo suave */
+      .floaty { animation: bob 3.6s ease-in-out infinite; }
+      .floaty.two { animation-duration: 4.4s; animation-delay: -1.2s; }
+      .floaty.three { animation-duration: 5s; animation-delay: -2.4s; }
+      .hero-photo { animation: photoFloat 6s ease-in-out infinite; }
+
+      /* Aparecer al hacer scroll (las clases las pone el script de abajo) */
+      .reveal { opacity: 0; translate: 0 36px; transition: opacity .6s ease, translate .6s cubic-bezier(.2,.8,.2,1); }
+      .reveal.in { opacity: 1; translate: 0 0; }
+
+      /* Cambio de versículo y respuesta del quiz */
+      .pop { animation: pop .45s cubic-bezier(.2,1.4,.4,1); }
+
+      .card .emoji { display: inline-block; }
+      .card { transition: translate .2s ease, box-shadow .2s ease; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+      .card:hover { translate: -3px -4px; box-shadow: 9px 10px 0 var(--ink); }
+      .card:hover .emoji { animation: wiggle .6s ease; }
+      .answers button { transition: translate .15s ease, background .15s ease; }
+      .answers button:hover { translate: 0 -3px; }
+    }
+
+    @keyframes fadeUp { from { opacity: 0; translate: 0 28px; } to { opacity: 1; translate: 0 0; } }
+    @keyframes dropIn { from { opacity: 0; translate: 0 -24px; } to { opacity: 1; translate: 0 0; } }
+    @keyframes popIn { from { opacity: 0; scale: .8; } to { opacity: 1; scale: 1; } }
+    @keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+    @keyframes photoFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+    @keyframes sway { 0%, 100% { rotate: 0deg; } 50% { rotate: 2.5deg; } }
+    @keyframes wave { 0%, 100% { rotate: 0deg; } 50% { rotate: -2deg; } }
+    @keyframes wiggle { 0%, 100% { rotate: 0deg; } 25% { rotate: -14deg; } 75% { rotate: 14deg; } }
+    @keyframes pop { from { opacity: 0; scale: .85; } to { opacity: 1; scale: 1; } }
+
+    /* ===== Mascota quetzal (QuezalCode) ===== */
+    .mascot { position: fixed; left: 12px; bottom: 12px; z-index: 40; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; pointer-events: none; }
+    .m-btn { pointer-events: auto; width: 100px; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .m-btn svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .m-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 20px; }
+    .m-bubble { position: relative; max-width: 210px; padding: 10px 12px; background: var(--white); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); font-weight: 700; font-size: .92rem; line-height: 1.35; }
+    .m-bubble[hidden] { display: none; }
+    .m-bubble::after { content: ""; position: absolute; left: 30px; bottom: -11px; width: 16px; height: 16px; background: var(--white); border: 3px solid var(--ink); border-top: 0; border-left: 0; transform: rotate(45deg); }
+    @media (max-width: 600px) { .m-btn { width: 80px; } .m-bubble { max-width: 180px; font-size: .85rem; } }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .m-btn svg { animation: mBob 3s ease-in-out infinite; }
+      .m-btn.jump svg { animation: mJump .6s cubic-bezier(.2,1.4,.4,1); }
+      .q-tail { transform-box: view-box; transform-origin: 60px 104px; animation: qSway 3.2s ease-in-out infinite; }
+      .m-btn.jump .q-tail { animation: qSway .5s ease-in-out 2; }
+      .q-wing { transform-box: view-box; transform-origin: 44px 76px; animation: qFlap 5s 2s ease-in-out infinite; }
+      .m-btn.jump .q-wing { animation: qFlapNow .7s ease-in-out; }
+      .q-crest { transform-box: view-box; transform-origin: 60px 30px; animation: qCrest 2.6s ease-in-out infinite; }
+      .m-eye { transform-box: fill-box; transform-origin: center; animation: mBlink 4.6s infinite; }
+      .q-wire { stroke-dasharray: 4 5; animation: qFlow 1s linear infinite; }
+      .q-node { transform-box: fill-box; transform-origin: center; animation: qNode 1.8s ease-in-out infinite; }
+    }
+    @keyframes mBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes mJump { 0% { transform: translateY(0) scale(1); } 35% { transform: translateY(-22px) scale(1.06, .96); } 70% { transform: translateY(0) scale(.96, 1.05); } 100% { transform: translateY(0) scale(1); } }
+    @keyframes mBlink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+    @keyframes qSway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(6deg); } }
+    @keyframes qFlap { 0%, 60%, 100% { transform: rotate(0); } 66%, 78% { transform: rotate(-20deg); } 72%, 84% { transform: rotate(6deg); } 90% { transform: rotate(0); } }
+    @keyframes qFlapNow { 0%, 100% { transform: rotate(0); } 25%, 75% { transform: rotate(-26deg); } 50% { transform: rotate(8deg); } }
+    @keyframes qCrest { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(4deg); } }
+    @keyframes qFlow { to { stroke-dashoffset: -18; } }
+    @keyframes qNode { 0%, 100% { transform: scale(1); opacity: .65; } 50% { transform: scale(1.5); opacity: 1; } }
+
+    /* ===== Claqueta al abrir los videos ===== */
+    .clap { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(247,243,232,.9); opacity: 0; }
+    .clap[hidden] { display: none; }
+    .clap-box { position: relative; width: min(72vw, 330px); transform: rotate(-3deg); filter: drop-shadow(7px 7px 0 rgba(32,32,24,.35)); }
+    .clap-box svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .clap-pow { position: absolute; right: -14px; top: -34px; font-size: clamp(1.8rem, 9vw, 2.6rem); font-weight: 1000; color: var(--pink); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; opacity: 0; transform: rotate(8deg); }
+    .cl-stick { transform-box: view-box; transform-origin: 16px 50px; transform: rotate(-30deg); }
+    .cl-burst { opacity: 0; transform-box: fill-box; transform-origin: center; }
+    .clap.run { animation: clapOverlay 1.25s ease forwards; }
+    .clap.run .clap-box { animation: clapPop 1.25s both; }
+    .clap.run .cl-stick { animation: clapStick 1.25s both; }
+    .clap.run .clap-pow { animation: clapPow 1.25s both; }
+    .clap.run .cl-burst { animation: clapBurst 1.25s both; }
+    @keyframes clapOverlay { 0% { opacity: 0; } 12%, 80% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes clapPop {
+      0% { transform: scale(.5) rotate(-9deg); }
+      16% { transform: scale(1) rotate(-3deg); }
+      50% { transform: scale(1) rotate(-3deg); }
+      54% { transform: scale(1.06) rotate(-1deg); }
+      60% { transform: scale(.98) rotate(-4deg); }
+      66%, 100% { transform: scale(1) rotate(-3deg); }
+    }
+    @keyframes clapStick {
+      0% { transform: rotate(-6deg); }
+      16% { transform: rotate(-32deg); }
+      28% { transform: rotate(-24deg); }
+      44% { transform: rotate(-30deg); animation-timing-function: cubic-bezier(.6,0,1,.6); }
+      51% { transform: rotate(0deg); }
+      54% { transform: rotate(-5deg); }
+      58%, 100% { transform: rotate(0deg); }
+    }
+    @keyframes clapPow { 0%, 50% { opacity: 0; transform: scale(.3) rotate(8deg); } 55% { opacity: 1; transform: scale(1.25) rotate(8deg); } 64%, 100% { opacity: 1; transform: scale(1) rotate(8deg); } }
+    @keyframes clapBurst { 0%, 50% { opacity: 0; transform: scale(.6); } 54% { opacity: 1; transform: scale(1.1); } 78%, 100% { opacity: 0; transform: scale(1.3); } }
+
+    /* ===== Libro que se abre al entrar a Libros ===== */
+    .bk { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(247,243,232,.9); opacity: 0; }
+    .bk[hidden] { display: none; }
+    .bk-scene { --w: clamp(110px, 26vw, 170px); --h: calc(var(--w) * 1.35); position: relative; transform: rotate(-3deg); filter: drop-shadow(6px 6px 0 rgba(32,32,24,.3)); }
+    .bk-book { position: relative; width: var(--w); height: var(--h); }
+    .bk-back, .bk-page, .bk-cover { position: absolute; inset: 0; transform-origin: left center; }
+    .bk-back, .bk-page { padding: 18px 14px; border: 3px solid var(--ink); border-radius: 3px 10px 10px 3px;
+      background: repeating-linear-gradient(#fffefa 0 13px, #cfc8b2 13px 14px) content-box, #fffefa padding-box; }
+    .bk-back { z-index: 1; }
+    .bk-back::after { content: ""; position: absolute; top: -3px; right: 18px; width: 12px; height: 42px; background: var(--pink); border: 3px solid var(--ink); border-top: 0; }
+    .bk-page.p1 { z-index: 4; } .bk-page.p2 { z-index: 3; } .bk-page.p3 { z-index: 2; }
+    .bk-cover { z-index: 5; }
+    .bk-front, .bk-in { position: absolute; inset: 0; border: 3px solid var(--ink); border-radius: 3px 10px 10px 3px; }
+    .bk-front { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding-left: 14px; text-align: center; background: var(--purple); box-shadow: inset 14px 0 0 #8f78e6; }
+    .bk-front b { font-size: clamp(.8rem, 3.4vw, 1.15rem); letter-spacing: 1px; color: var(--ink); }
+    .bk-front small { font-size: .6rem; font-weight: 700; padding: 2px 8px; background: var(--yellow); border: 2px solid var(--ink); border-radius: 99px; }
+    .bk-emoji { font-size: clamp(1.8rem, 8vw, 2.8rem); line-height: 1; }
+    .bk-in { background: var(--yellow); opacity: 0; }
+    .bk-pow { position: absolute; left: 50%; top: -46px; transform: translateX(-50%) rotate(-4deg); white-space: nowrap; font-size: clamp(1.4rem, 7vw, 2.1rem); font-weight: 1000; color: var(--green); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; opacity: 0; }
+    .bk-spark { position: absolute; font-size: 1.6rem; opacity: 0; }
+    .bk-spark.s1 { left: -34px; top: 10%; } .bk-spark.s2 { right: -34px; top: 30%; } .bk-spark.s3 { left: 40%; bottom: -34px; }
+
+    .bk.run { animation: bkOverlay 1.55s ease forwards; }
+    .bk.run .bk-scene { animation: bkPop 1.55s both; }
+    .bk.run .bk-book { animation: bkShift 1.55s both; }
+    .bk.run .bk-cover { animation: bkCover 1.55s both; }
+    .bk.run .bk-front { animation: bkFaceA 1.55s both; }
+    .bk.run .bk-in { animation: bkFaceB 1.55s both; }
+    .bk.run .bk-page.p1 { animation: bkP1 1.55s both; }
+    .bk.run .bk-page.p2 { animation: bkP2 1.55s both; }
+    .bk.run .bk-page.p3 { animation: bkP3 1.55s both; }
+    .bk.run .bk-pow { animation: bkPow 1.55s both; }
+    .bk.run .bk-spark { animation: bkSpark 1.55s both; }
+    .bk.run .bk-spark.s2 { animation-delay: .06s; } .bk.run .bk-spark.s3 { animation-delay: .12s; }
+
+    @keyframes bkOverlay { 0% { opacity: 0; } 10%, 82% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes bkPop { 0% { transform: rotate(-3deg) scale(.5); } 14%, 100% { transform: rotate(-3deg) scale(1); } }
+    @keyframes bkShift { 0%, 22% { transform: translateX(0); animation-timing-function: ease-in-out; } 46%, 100% { transform: translateX(calc(var(--w) / 2)); } }
+    /* Cada hoja gira con scaleX; en el punto medio (de canto) cambia de capa y de cara */
+    @keyframes bkCover {
+      0%, 22% { transform: scaleX(1); z-index: 5; animation-timing-function: ease-in; }
+      34% { transform: scaleX(0); z-index: 5; }
+      34.01% { transform: scaleX(0); z-index: 11; animation-timing-function: ease-out; }
+      46%, 100% { transform: scaleX(-1); z-index: 11; }
+    }
+    @keyframes bkFaceA { 0%, 34% { opacity: 1; } 34.01%, 100% { opacity: 0; } }
+    @keyframes bkFaceB { 0%, 34% { opacity: 0; } 34.01%, 100% { opacity: 1; } }
+    @keyframes bkP1 {
+      0%, 46% { transform: scaleX(1); z-index: 4; animation-timing-function: ease-in; }
+      53% { transform: scaleX(0); z-index: 4; }
+      53.01% { transform: scaleX(0); z-index: 12; animation-timing-function: ease-out; }
+      60%, 100% { transform: scaleX(-1); z-index: 12; }
+    }
+    @keyframes bkP2 {
+      0%, 54% { transform: scaleX(1); z-index: 3; animation-timing-function: ease-in; }
+      61% { transform: scaleX(0); z-index: 3; }
+      61.01% { transform: scaleX(0); z-index: 13; animation-timing-function: ease-out; }
+      68%, 100% { transform: scaleX(-1); z-index: 13; }
+    }
+    @keyframes bkP3 {
+      0%, 62% { transform: scaleX(1); z-index: 2; animation-timing-function: ease-in; }
+      69% { transform: scaleX(0); z-index: 2; }
+      69.01% { transform: scaleX(0); z-index: 14; animation-timing-function: ease-out; }
+      76%, 100% { transform: scaleX(-1); z-index: 14; }
+    }
+    @keyframes bkPow { 0%, 72% { opacity: 0; transform: translateX(-50%) rotate(-4deg) scale(.3); } 78% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1.2); } 86%, 100% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1); } }
+    @keyframes bkSpark { 0%, 70% { opacity: 0; transform: scale(.3) rotate(0); } 78% { opacity: 1; transform: scale(1.3) rotate(20deg); } 92%, 100% { opacity: 0; transform: scale(.8) rotate(40deg); } }
+
+    /* ===== Chat del quetzal ===== */
+    .chat { position: fixed; z-index: 45; left: 124px; bottom: 12px; width: min(380px, calc(100vw - 140px)); height: min(70vh, 520px); display: flex; flex-direction: column; background: var(--white); border: 3px solid var(--ink); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
+    .chat[hidden] { display: none; }
+    .chat-head { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--green); border-bottom: 3px solid var(--ink); }
+    .chat-head svg { width: 38px; height: 38px; flex: none; }
+    .chat-head div { flex: 1; min-width: 0; line-height: 1.2; }
+    .chat-head strong { display: block; font-size: 1rem; }
+    .chat-head small { font-size: .72rem; }
+    .chat-close { width: 34px; height: 34px; flex: none; border: 3px solid var(--ink); border-radius: 50%; background: var(--white); font-weight: 900; cursor: pointer; }
+    .chat-book { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 2px solid var(--ink); font-size: .8rem; font-weight: 700; }
+    .chat-book select { flex: 1; min-width: 0; padding: 6px 8px; border: 2px solid var(--ink); border-radius: 10px; background: var(--white); font: inherit; font-weight: 400; }
+    .chat-log { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; background: var(--cream); }
+    .chat-msg { max-width: 86%; padding: 9px 12px; border: 2.5px solid var(--ink); border-radius: 16px; line-height: 1.4; font-size: .92rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .chat-msg.user { align-self: flex-end; background: var(--yellow); border-bottom-right-radius: 4px; }
+    .chat-msg.bot { align-self: flex-start; background: var(--white); border-bottom-left-radius: 4px; }
+    .chat-src { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .chat-src span { padding: 1px 8px; border: 2px solid var(--ink); border-radius: 99px; background: var(--blue); font-size: .68rem; font-weight: 700; }
+    .chat-typing i { display: inline-block; width: 8px; height: 8px; margin: 0 2px; border-radius: 50%; background: var(--ink); opacity: .35; }
+    .chat-form { display: flex; gap: 8px; padding: 10px; border-top: 3px solid var(--ink); background: var(--white); }
+    .chat-form input { flex: 1; min-width: 0; padding: 10px 12px; border: 2.5px solid var(--ink); border-radius: 12px; font: inherit; font-size: 16px; }
+    .chat-form button { padding: 0 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--pink); font-weight: 900; cursor: pointer; }
+    .chat-form button:disabled { opacity: .5; cursor: wait; }
+    @media (max-width: 600px) { .chat { left: 8px; right: 8px; bottom: 8px; width: auto; height: min(72vh, 560px); } }
+    @media (prefers-reduced-motion: no-preference) {
+      .chat:not([hidden]) { animation: pop .3s cubic-bezier(.2,1.4,.4,1); transform-origin: bottom left; }
+      .chat-msg { animation: fadeUp .25s both; }
+      .chat-typing i { animation: chatDot 1s infinite; }
+      .chat-typing i:nth-child(2) { animation-delay: .15s; } .chat-typing i:nth-child(3) { animation-delay: .3s; }
+    }
+    @keyframes chatDot { 0%, 100% { opacity: .3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-3px); } }
   </style>
 </head>
 <body>
@@ -1872,6 +2084,406 @@
         bookLibrary = groups.flat();
         booksLoading = false;
         renderBooks();
+      });
+    })();
+  </script>
+  <script>
+    /* Animaciones: aparecer al hacer scroll, cambio de versículo y confeti en el quiz */
+    (function () {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      // 1) Aparecer al hacer scroll
+      var targets = document.querySelectorAll(".section-heading, .card, .verse-section, .quiz");
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            io.unobserve(el);
+            el.classList.add("in");
+            // Al terminar se quita para que no estorbe al efecto hover de las tarjetas
+            setTimeout(function () { el.classList.remove("reveal", "in"); }, 1200);
+          });
+        }, { threshold: 0.15 });
+        targets.forEach(function (el, i) {
+          el.classList.add("reveal");
+          if (el.classList.contains("card")) el.style.transitionDelay = (i % 3) * 0.12 + "s";
+          io.observe(el);
+        });
+      }
+
+      // 2) Efecto "pop" cuando cambia el versículo o el resultado del quiz
+      function popOnChange(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        new MutationObserver(function () {
+          el.classList.remove("pop");
+          void el.offsetWidth;
+          el.classList.add("pop");
+        }).observe(el, { childList: true, characterData: true, subtree: true });
+      }
+      ["verse", "reference", "quiz-result"].forEach(popOnChange);
+
+      // 3) Confeti cuando aciertan el quiz
+      var result = document.getElementById("quiz-result");
+      if (result && result.animate) {
+        new MutationObserver(function () {
+          if (!/^¡Correcto/.test(result.textContent)) return;
+          var box = result.getBoundingClientRect();
+          var icons = ["🎉", "✨", "💛", "🙌", "⭐"];
+          for (var i = 0; i < 18; i++) {
+            var p = document.createElement("span");
+            p.textContent = icons[i % icons.length];
+            p.style.cssText = "position:fixed;pointer-events:none;z-index:9999;font-size:1.5rem;" +
+              "left:" + (box.left + box.width / 2) + "px;top:" + box.top + "px;";
+            document.body.appendChild(p);
+            var dx = (Math.random() - 0.5) * 320;
+            var dy = -80 - Math.random() * 140;
+            p.animate([
+              { transform: "translate(0,0) rotate(0deg)", opacity: 1 },
+              { transform: "translate(" + dx * 0.6 + "px," + dy + "px) rotate(" + dx + "deg)", opacity: 1, offset: 0.4 },
+              { transform: "translate(" + dx + "px," + (dy + 260) + "px) rotate(" + dx * 2 + "deg)", opacity: 0 }
+            ], { duration: 1300 + Math.random() * 600, easing: "ease-out" }).onfinish = (function (n) {
+              return function () { n.remove(); };
+            })(p);
+          }
+        }).observe(result, { childList: true, characterData: true, subtree: true });
+      }
+    })();
+  </script>
+  <div class="mascot" id="mascot">
+    <div class="m-bubble" id="m-bubble" role="status" aria-live="polite" hidden></div>
+    <button type="button" class="m-btn" aria-label="Mascota quetzal de QuezalCode: toca para escuchar un mensaje">
+      <svg viewBox="0 0 120 180" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="qzG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7ddb5b"/><stop offset="1" stop-color="#27a24f"/></linearGradient>
+          <linearGradient id="qzT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22b89a"/><stop offset="1" stop-color="#1565a8"/></linearGradient>
+          <linearGradient id="qzT2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fb35f"/><stop offset="1" stop-color="#1b8fb5"/></linearGradient>
+        </defs>
+        <g fill="none" stroke="#4fb7d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path class="q-wire" d="M31 60 H16"/><circle class="q-node" cx="13" cy="60" r="3"/>
+          <path class="q-wire" d="M30 72 H20 L14 78 H9"/><circle class="q-node" cx="6" cy="78" r="3" style="animation-delay:.4s"/>
+          <path class="q-wire" d="M32 90 H22"/><circle class="q-node" cx="19" cy="90" r="3" style="animation-delay:.8s"/>
+          <path class="q-wire" d="M92 36 H104"/><circle class="q-node" cx="107" cy="36" r="3" style="animation-delay:.6s"/>
+          <path class="q-wire" d="M86 82 H100"/><circle class="q-node" cx="103" cy="82" r="3" style="animation-delay:.2s"/>
+          <path class="q-wire" d="M84 95 H96 L102 101 H109"/><circle class="q-node" cx="112" cy="101" r="3" style="animation-delay:1s"/>
+        </g>
+        <g stroke="#16323a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+          <g class="q-tail">
+            <path d="M56 100 C36 114 64 128 46 148 C80 130 74 114 66 100 Z" fill="url(#qzT2)"/>
+            <path d="M62 100 C84 114 60 130 78 150 C98 128 86 112 70 100 Z" fill="url(#qzT)"/>
+          </g>
+          <path d="M50 108 v8 M68 108 v8" fill="none" stroke="#e8472b" stroke-width="3"/>
+          <ellipse cx="50" cy="118" rx="6" ry="2.5" fill="#e8472b" stroke="none"/>
+          <ellipse cx="68" cy="118" rx="6" ry="2.5" fill="#e8472b" stroke="none"/>
+          <ellipse cx="58" cy="78" rx="27" ry="31" fill="url(#qzG)"/>
+          <path d="M62 62 C84 66 86 100 66 106 C52 104 50 74 62 62 Z" fill="#e2412b" stroke="none"/>
+          <ellipse cx="58" cy="78" rx="27" ry="31" fill="none"/>
+          <g class="q-wing"><path d="M48 70 C28 80 30 102 46 108 C58 100 58 80 48 70 Z" fill="#1f8a45"/></g>
+          <g class="q-crest" fill="#52c24d">
+            <path d="M50 30 C42 20 36 22 34 14 C46 14 54 20 56 28 Z"/>
+            <path d="M58 27 C56 16 60 10 64 4 C68 12 66 22 64 28 Z"/>
+            <path d="M66 28 C70 20 78 18 80 12 C82 22 76 30 70 33 Z"/>
+          </g>
+          <circle cx="62" cy="48" r="23" fill="url(#qzG)"/>
+          <g class="m-eye"><circle cx="72" cy="46" r="7.5" fill="#fffefa"/><g class="m-pupil"><circle cx="73" cy="46" r="3.6" fill="#111" stroke="none"/></g></g>
+          <path d="M83 50 L103 55 L84 62 Z" fill="#e8472b"/>
+          <ellipse cx="76" cy="62" rx="5" ry="3.2" fill="#ff9a6b" stroke="none" opacity=".75"/>
+        </g>
+        <rect x="8" y="152" width="104" height="24" rx="12" fill="#0b1d24" stroke="#5cc4b8" stroke-width="2.5"/>
+        <text x="60" y="169" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13.5" fill="#5cc4b8">QuezalCode</text>
+      </svg>
+    </button>
+  </div>
+  <script>
+    /* Mascota quetzal: saluda, cambia de mensaje al tocarla y sus ojos siguen el cursor */
+    (function () {
+      var m = document.getElementById("mascot");
+      if (!m) return;
+      var btn = m.querySelector(".m-btn");
+      var bubble = document.getElementById("m-bubble");
+      var pupils = m.querySelectorAll(".m-pupil");
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var lines = [
+        "¡Hola! Soy el quetzal de QuezalCode. Tócame y pregúntame sobre los libros 📚",
+        "Dios te ama tal como eres 💛",
+        "Tú puedes con todo, ¡con fe! 💪",
+        "¿Ya viste los videos? 🎬",
+        "Hay libros para crecer en la fe 📚",
+        "¡Prueba el mini quiz! ⚡",
+        "Código, fe y mucho flow 💻✨",
+        "Pregunta lo que quieras, aquí no hay filtro 🙌"
+      ];
+      var last = 0, timer;
+
+      function say(text, ms) {
+        bubble.textContent = text;
+        bubble.hidden = false;
+        if (!reduce) { bubble.classList.remove("pop"); void bubble.offsetWidth; bubble.classList.add("pop"); }
+        clearTimeout(timer);
+        timer = setTimeout(function () { bubble.hidden = true; }, ms || 4500);
+      }
+      function react() {
+        if (reduce) return;
+        btn.classList.remove("jump"); void btn.offsetWidth; btn.classList.add("jump");
+      }
+
+      btn.addEventListener("click", function () {
+        var i;
+        do { i = Math.floor(Math.random() * lines.length); } while (i === last);
+        last = i;
+        say(lines[i]);
+        react();
+      });
+
+      setTimeout(function () { say(lines[0], 5000); react(); }, 1800);
+
+      if (!reduce) {
+        document.addEventListener("pointermove", function (e) {
+          var r = btn.getBoundingClientRect();
+          var dx = e.clientX - (r.left + r.width / 2);
+          var dy = e.clientY - (r.top + r.height * 0.4);
+          var d = Math.hypot(dx, dy) || 1;
+          var k = Math.min(d, 200) / 200 * 3.5;
+          var t = "translate(" + (dx / d * k) + "px," + (dy / d * k) + "px)";
+          pupils.forEach(function (p) { p.style.transform = t; });
+        });
+      }
+    })();
+  </script>
+  <div class="clap" id="clap" aria-hidden="true" hidden>
+    <div class="clap-box">
+      <svg viewBox="0 0 220 190" focusable="false">
+        <defs>
+          <pattern id="clStripe" width="30" height="22" patternUnits="userSpaceOnUse" patternTransform="skewX(-35)">
+            <rect width="15" height="22" fill="#fffefa"/><rect x="15" width="15" height="22" fill="#202018"/>
+          </pattern>
+        </defs>
+        <rect x="10" y="74" width="200" height="106" rx="8" fill="#202018"/>
+        <g stroke="#fffefa" stroke-width="1.6" opacity=".9"><path d="M20 104 H200 M20 132 H200 M20 160 H200 M104 110 V132"/></g>
+        <g font-family="Trebuchet MS, Arial, sans-serif" font-size="10" font-weight="700" fill="#fffefa">
+          <text x="22" y="98">PROD.</text>
+          <text x="22" y="126">ESCENA</text><text x="112" y="126">TOMA</text>
+          <text x="22" y="154">DIR.</text>
+        </g>
+        <g font-family="Georgia, serif" font-size="13" font-weight="700">
+          <text x="64" y="99" fill="#ffd85b">Fe con Flow</text>
+          <text x="72" y="127" fill="#ff8ca8">1</text><text x="150" y="127" fill="#ff8ca8">1</text>
+          <text x="52" y="155" fill="#5cc4b8">QuezalCode</text><text x="160" y="155" fill="#ffd85b">¡Hoy!</text>
+        </g>
+        <rect x="10" y="52" width="200" height="22" rx="4" fill="url(#clStripe)" stroke="#202018" stroke-width="4"/>
+        <g class="cl-stick">
+          <rect x="10" y="28" width="200" height="22" rx="4" fill="url(#clStripe)" stroke="#202018" stroke-width="4"/>
+        </g>
+        <circle cx="16" cy="51" r="4.5" fill="#ffd85b" stroke="#202018" stroke-width="2.5"/>
+        <g class="cl-burst" fill="none" stroke-width="4" stroke-linecap="round">
+          <path d="M216 34 L228 24" stroke="#ff8ca8"/><path d="M219 50 L234 50" stroke="#ffd85b"/><path d="M216 66 L228 76" stroke="#ff8ca8"/>
+          <path d="M110 22 V8" stroke="#ffd85b"/><path d="M70 24 L62 12" stroke="#ff8ca8"/><path d="M150 24 L158 12" stroke="#ff8ca8"/>
+        </g>
+      </svg>
+      <div class="clap-pow">¡CLAC!</div>
+    </div>
+  </div>
+  <script>
+    /* Claqueta: al tocar "Videos" se cierra la claqueta y luego se abre el panel */
+    (function () {
+      var clap = document.getElementById("clap");
+      if (!clap) return;
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var busy = false, bypass = false;
+
+      document.addEventListener("click", function (e) {
+        if (bypass || reduce) return;
+        var btn = e.target.closest && e.target.closest("[data-open-videos]");
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (busy) return;
+        busy = true;
+        clap.hidden = false;
+        clap.classList.remove("run");
+        void clap.offsetWidth;
+        clap.classList.add("run");
+        // Justo después del "clac" se abre el panel de videos
+        setTimeout(function () { bypass = true; btn.click(); bypass = false; }, 900);
+        setTimeout(function () { clap.classList.remove("run"); clap.hidden = true; busy = false; }, 1300);
+      }, true);
+    })();
+  </script>
+  <div class="bk" id="bk" aria-hidden="true" hidden>
+    <div class="bk-scene">
+      <div class="bk-book">
+        <div class="bk-back"></div>
+        <div class="bk-page p3"></div>
+        <div class="bk-page p2"></div>
+        <div class="bk-page p1"></div>
+        <div class="bk-cover">
+          <div class="bk-front"><span class="bk-emoji">📖</span><b>LIBROS</b><small>Fe con Flow</small></div>
+          <div class="bk-in"></div>
+        </div>
+      </div>
+      <div class="bk-pow">¡A LEER!</div>
+      <span class="bk-spark s1">✨</span><span class="bk-spark s2">✨</span><span class="bk-spark s3">⭐</span>
+    </div>
+  </div>
+  <script>
+    /* Libro: al tocar "Libros" se abre un libro pasando páginas y luego se abre el panel */
+    (function () {
+      var bk = document.getElementById("bk");
+      if (!bk) return;
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var busy = false, bypass = false;
+
+      document.addEventListener("click", function (e) {
+        if (bypass || reduce) return;
+        var btn = e.target.closest && e.target.closest("[data-open-books]");
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (busy) return;
+        busy = true;
+        bk.hidden = false;
+        bk.classList.remove("run");
+        void bk.offsetWidth;
+        bk.classList.add("run");
+        // Cuando las páginas terminan de pasar se abre el panel de libros
+        setTimeout(function () { bypass = true; btn.click(); bypass = false; }, 1150);
+        setTimeout(function () { bk.classList.remove("run"); bk.hidden = true; busy = false; }, 1600);
+      }, true);
+    })();
+  </script>
+  <section class="chat" id="chat" role="dialog" aria-label="Chat con el quetzal de QuezalCode" hidden>
+    <div class="chat-head">
+      <svg viewBox="0 0 44 40" aria-hidden="true"><path d="M16 10 Q13 3 9 2 Q16 2 21 9Z M22 9 Q22 2 25 0 Q28 5 26 10Z" fill="#52c24d" stroke="#16323a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="23" r="14" fill="#5fcf56" stroke="#16323a" stroke-width="2.5"/><circle cx="27" cy="20" r="3.6" fill="#fff"/><circle cx="28" cy="20" r="1.7" fill="#111"/><path d="M34 23 L43 25 L34 28Z" fill="#e8472b" stroke="#16323a" stroke-width="2" stroke-linejoin="round"/></svg>
+      <div><strong>Pregúntale al quetzal</strong><small>Responde con los libros de la biblioteca</small></div>
+      <button type="button" class="chat-close" id="chat-close" aria-label="Cerrar el chat">✕</button>
+    </div>
+    <label class="chat-book">📚 Libro
+      <select id="chat-book"><option value="">Todos los libros</option></select>
+    </label>
+    <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+    <form class="chat-form" id="chat-form" autocomplete="off">
+      <input type="text" id="chat-input" maxlength="500" placeholder="Escribe tu pregunta…" aria-label="Tu pregunta" />
+      <button type="submit" id="chat-send" aria-label="Enviar">➤</button>
+    </form>
+  </section>
+  <script>
+    /* Chat: tocar al quetzal abre una ventana para preguntar sobre los libros */
+    (function () {
+      var chat = document.getElementById("chat");
+      var mbtn = document.querySelector(".m-btn");
+      if (!chat || !mbtn) return;
+      var log = document.getElementById("chat-log");
+      var form = document.getElementById("chat-form");
+      var input = document.getElementById("chat-input");
+      var sendBtn = document.getElementById("chat-send");
+      var select = document.getElementById("chat-book");
+      var bubble = document.getElementById("m-bubble");
+      var history = [], busy = false, started = false;
+
+      // Dirección del Apps Script (la misma que usa la página para videos y libros)
+      var API = "";
+      try { API = BOOK_API_URL; } catch (e) { try { API = VIDEO_API_URL; } catch (e2) {} }
+
+      var cid;
+      try {
+        cid = localStorage.getItem("fcf_cid");
+        if (!cid) { cid = Math.random().toString(36).slice(2, 12); localStorage.setItem("fcf_cid", cid); }
+      } catch (e) { cid = Math.random().toString(36).slice(2, 12); }
+
+      function add(role, text, sources) {
+        var m = document.createElement("div");
+        m.className = "chat-msg " + role;
+        m.textContent = text;
+        if (sources && sources.length) {
+          var box = document.createElement("div");
+          box.className = "chat-src";
+          var seen = {};
+          sources.forEach(function (s) {
+            var k = s.book + "|" + s.page;
+            if (seen[k]) return;
+            seen[k] = true;
+            var tag = document.createElement("span");
+            tag.textContent = "📖 " + s.book + " · p. " + s.page;
+            box.appendChild(tag);
+          });
+          m.appendChild(box);
+        }
+        log.appendChild(m);
+        log.scrollTop = log.scrollHeight;
+        return m;
+      }
+
+      function fillBooks() {
+        var list = [];
+        try { list = bookLibrary || []; } catch (e) {}
+        var have = {};
+        Array.prototype.forEach.call(select.options, function (o) { have[o.value] = true; });
+        list.forEach(function (b) {
+          var t = String(b.title || "").trim();
+          if (!t || have[t]) return;
+          have[t] = true;
+          var o = document.createElement("option");
+          o.value = t; o.textContent = t;
+          select.appendChild(o);
+        });
+      }
+
+      function open() {
+        chat.hidden = false;
+        if (bubble) bubble.hidden = true;
+        fillBooks();
+        if (!started) {
+          started = true;
+          add("bot", "¡Hola! Soy el quetzal de QuezalCode 💚 Elige un libro (o todos) y pregúntame lo que quieras. Te respondo con lo que dicen sus páginas.");
+        }
+        setTimeout(function () { input.focus(); }, 50);
+      }
+      function close() { chat.hidden = true; mbtn.focus(); }
+
+      // Capturamos el clic en el quetzal antes que el resto de la mascota
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest || !e.target.closest(".m-btn")) return;
+        e.stopPropagation();
+        mbtn.classList.remove("jump"); void mbtn.offsetWidth; mbtn.classList.add("jump");
+        if (chat.hidden) open(); else close();
+      }, true);
+      document.getElementById("chat-close").addEventListener("click", close);
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !chat.hidden) close(); });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = input.value.trim();
+        if (!q || busy) return;
+        if (!API) { add("bot", "El chat todavía no está conectado. Falta la dirección del Apps Script."); return; }
+        input.value = "";
+        add("user", q);
+        var prev = history.slice(-6);
+        history.push({ role: "user", text: q });
+        busy = true; sendBtn.disabled = true;
+        var typing = add("bot chat-typing", "");
+        typing.innerHTML = "<i></i><i></i><i></i>";
+
+        fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" }, // evita el preflight de CORS
+          body: JSON.stringify({ question: q, book: select.value, history: prev, cid: cid })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            typing.remove();
+            if (d && d.ok) {
+              add("bot", d.answer, d.sources);
+              history.push({ role: "assistant", text: d.answer });
+            } else {
+              add("bot", (d && d.error) || "Algo salió mal. Intenta otra vez.");
+            }
+          })
+          .catch(function () {
+            typing.remove();
+            add("bot", "No pude conectarme. Revisa tu internet e intenta de nuevo.");
+          })
+          .then(function () { busy = false; sendBtn.disabled = false; input.focus(); });
       });
     })();
   </script>
