@@ -305,6 +305,52 @@
       font-weight: 900;
     }
 
+    /* ===== Quiz con premios: florero diario ===== */
+    .quiz-meta { margin: 0 0 6px; font-size: .8rem; font-weight: 900; opacity: .7; }
+    .answers button:disabled { cursor: default; }
+    .answers button:disabled:not(.ok):not(.no):hover { background: var(--cream); }
+    .answers button.ok, .answers button.ok:hover { background: var(--green); }
+    .answers button.no, .answers button.no:hover { background: var(--pink); }
+    #quiz-result { white-space: pre-line; }
+    .quiz-next { margin-top: 12px; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 999px; background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); font-weight: 900; cursor: pointer; }
+    .quiz-next[hidden] { display: none; }
+    .vase-card { margin-top: 18px; padding: 14px 14px 12px; border: 2px solid var(--ink); border-radius: 20px; background: var(--white); box-shadow: 4px 4px 0 var(--ink); text-align: center; }
+    .vase-card.full { background: var(--yellow); }
+    .vase-card svg { display: block; width: min(230px, 80%); height: auto; margin: 0 auto; overflow: visible; }
+    .vase-card .stem { fill: none; stroke: #2f8f4e; stroke-width: 4; stroke-linecap: round; }
+    .vase-card .head { font-size: 34px; text-anchor: middle; dominant-baseline: central; }
+    .vase-card .slot { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 3 5; opacity: .35; }
+    .vase-card .fl .stem, .vase-card .fl .head { opacity: 0; }
+    .vase-card .fl.on .stem, .vase-card .fl.on .head { opacity: 1; }
+    .vase-card .fl.on .slot { opacity: 0; }
+    .vase-body { fill: var(--blue); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+    #vase-status { margin: 8px 0 2px; font-weight: 900; }
+    #vase-stats { margin: 0; font-size: .85rem; font-weight: 800; opacity: .8; }
+    @media (prefers-reduced-motion: no-preference) {
+      .vase-card .fl.new { transform-box: fill-box; transform-origin: 50% 100%; animation: bloom .8s cubic-bezier(.2,1.4,.4,1); }
+      @keyframes bloom { from { transform: scale(.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    }
+
+    /* ===== Apoyo emocional: listón amarillo y mensajes de esperanza ===== */
+    .ribbon-link { display: inline-flex !important; align-items: center; justify-content: center; width: 38px; height: 38px; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); }
+    .ribbon-link svg { width: 22px; height: 22px; }
+    .care-note { max-width: 520px; margin: 14px auto 0; font-size: .88rem; font-weight: 800; line-height: 1.45; }
+    .care-note a { text-decoration: underline; }
+    .care { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start; padding: 26px; border: 2px solid var(--ink); border-radius: 28px; background: var(--white); box-shadow: var(--shadow); }
+    .care > svg { width: 64px; height: 64px; }
+    .care h2 { margin: 0 0 10px; font-size: clamp(1.5rem, 3.4vw, 2.2rem); letter-spacing: -1px; }
+    .care p { margin: 0 0 12px; line-height: 1.6; }
+    .care-lines { display: grid; gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
+    .care-lines li { padding: 10px 12px; border: 2px solid var(--ink); border-radius: 14px; background: var(--yellow); line-height: 1.45; }
+    .care-lines a { font-weight: 900; }
+    .care-small { font-size: .9rem; opacity: .85; }
+    .foot-care { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: .88rem; }
+    .foot-care svg { width: 18px; height: 18px; flex: none; }
+    .chat-care { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-top: 2px solid var(--ink); background: var(--yellow); font-size: .72rem; font-weight: 800; line-height: 1.25; }
+    .chat-care svg { width: 18px; height: 18px; flex: none; }
+    .chat-care a { text-decoration: underline; }
+    @media (max-width: 760px) { .care { grid-template-columns: 1fr; padding: 20px; } .care > svg { width: 48px; height: 48px; } }
+
     footer {
       margin-top: 55px;
       padding: 28px 0;
@@ -1220,6 +1266,10 @@
     .chat-form input { flex: 1; min-width: 0; padding: 10px 12px; border: 2.5px solid var(--ink); border-radius: 12px; font: inherit; font-size: 16px; }
     .chat-form button { padding: 0 14px; border: 2.5px solid var(--ink); border-radius: 12px; background: var(--pink); font-weight: 900; cursor: pointer; }
     .chat-form button:disabled { opacity: .5; cursor: wait; }
+    .chat-chips { display: flex; gap: 6px; overflow-x: auto; padding: 8px 10px; border-top: 2px solid var(--ink); background: var(--cream); scrollbar-width: thin; }
+    .chat-chips button { flex: none; padding: 5px 11px; border: 2px solid var(--ink); border-radius: 99px; background: var(--white); font-size: .76rem; font-weight: 800; white-space: nowrap; cursor: pointer; }
+    .chat-chips button:hover { background: var(--yellow); }
+    .chat-act { display: inline-block; margin-top: 8px; padding: 5px 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); font-size: .8rem; font-weight: 800; cursor: pointer; }
     @media (max-width: 600px) { .chat { left: 8px; right: 8px; bottom: 8px; width: auto; height: min(72vh, 560px); } }
     @media (prefers-reduced-motion: no-preference) {
       .chat:not([hidden]) { animation: pop .3s cubic-bezier(.2,1.4,.4,1); transform-origin: bottom left; }
@@ -1247,6 +1297,14 @@
     })();
   </script>
 
+  <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="ribbon" viewBox="0 0 24 24">
+      <path d="M12 13 L6 21.5 L10 20.3 L11.6 22 L13.3 14.5 Z" fill="#ffd85b" stroke="#202018" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M12 13 L18 21.5 L14 20.3 L12.4 22 L10.7 14.5 Z" fill="#ffd85b" stroke="#202018" stroke-width="1.3" stroke-linejoin="round"/>
+      <path d="M12 3 C8.5 3 6.5 6 8 9 C9 11 10.5 12.5 12 14 C13.5 12.5 15 11 16 9 C17.5 6 15.5 3 12 3 Z" fill="none" stroke="#202018" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M12 3 C8.5 3 6.5 6 8 9 C9 11 10.5 12.5 12 14 C13.5 12.5 15 11 16 9 C17.5 6 15.5 3 12 3 Z" fill="none" stroke="#ffd85b" stroke-width="2.8" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
   <header class="wrap">
     <nav class="nav" aria-label="Navegación principal">
       <a class="logo" href="#">FE <span>CON</span> FLOW ✨</a>
@@ -1256,6 +1314,7 @@
         <a href="#videos" data-open-videos>Videos</a>
         <a href="#libros" data-open-books>Libros</a>
         <a class="pill-button" href="#quiz">¡Juega!</a>
+        <a class="ribbon-link" href="#ayuda" aria-label="Apoyo emocional: hay gente a la que sí le importas" title="Hay gente a la que sí le importas"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg></a>
       </div>
     </nav>
   </header>
@@ -1317,6 +1376,7 @@
         <p id="verse">“Todo lo puedo en Cristo que me fortalece.”</p>
         <div id="reference">Filipenses 4:13</div>
         <button type="button" onclick="newVerse()">Otro recordatorio ↻</button>
+        <p class="care-note">💛 Si hoy te cuesta, recuerda: tu vida importa y hay gente a la que sí le importas. <a href="#ayuda">Pedir apoyo</a></p>
       </div>
     </section>
 
@@ -1325,23 +1385,49 @@
         <div>
           <span class="sticker" style="background:var(--blue)">MINI QUIZ ⚡</span>
           <h2>¿Cuánto sabes?</h2>
-          <p>Una pregunta rápida para poner a prueba tus conocimientos bíblicos.</p>
+          <p>Pon a prueba tus conocimientos bíblicos. Cada acierto te regala una flor 🌷 ¡Completa el florero de hoy con 5 flores! Mañana empieza uno nuevo.</p>
+          <div class="vase-card" id="vase-card">
+            <svg id="vase" viewBox="0 0 220 215" role="img" aria-label="Florero con 0 de 5 flores">
+              <g class="fl"><circle class="slot" cx="38" cy="78" r="17"/><path class="stem" d="M110 155 Q70 125 38 92"/><text class="head" x="38" y="78">🌷</text></g>
+              <g class="fl"><circle class="slot" cx="72" cy="48" r="17"/><path class="stem" d="M110 155 Q88 115 72 62"/><text class="head" x="72" y="48">🌹</text></g>
+              <g class="fl"><circle class="slot" cx="110" cy="32" r="17"/><path class="stem" d="M110 155 Q110 100 110 46"/><text class="head" x="110" y="32">🌻</text></g>
+              <g class="fl"><circle class="slot" cx="148" cy="48" r="17"/><path class="stem" d="M110 155 Q132 115 148 62"/><text class="head" x="148" y="48">🌼</text></g>
+              <g class="fl"><circle class="slot" cx="182" cy="78" r="17"/><path class="stem" d="M110 155 Q150 125 182 92"/><text class="head" x="182" y="78">🌸</text></g>
+              <path class="vase-body" d="M72 150 H148 Q156 150 154 160 L148 198 Q146 208 136 208 H84 Q74 208 72 198 L66 160 Q64 150 72 150 Z"/>
+              <text x="110" y="184" font-size="22" text-anchor="middle" dominant-baseline="central">💛</text>
+            </svg>
+            <p id="vase-status" aria-live="polite">Hoy: 0 de 5 flores</p>
+            <p id="vase-stats"></p>
+          </div>
         </div>
         <div class="quiz-box">
-          <h3>¿Quién construyó un arca antes del diluvio?</h3>
-          <div class="answers">
-            <button type="button" onclick="answer(false)">Moisés</button>
-            <button type="button" onclick="answer(true)">Noé</button>
-            <button type="button" onclick="answer(false)">David</button>
-          </div>
+          <p class="quiz-meta" id="quiz-count"></p>
+          <h3 id="quiz-q"></h3>
+          <div class="answers" id="quiz-answers"></div>
           <p id="quiz-result" aria-live="polite"></p>
+          <button type="button" class="quiz-next" id="quiz-next" hidden>Siguiente pregunta →</button>
+        </div>
+      </div>
+    </section>
+    <section id="ayuda" class="wrap">
+      <div class="care">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg>
+        <div>
+          <h2>Hay gente a la que sí le importas 💛</h2>
+          <p>Si estás pasando por un momento muy difícil, o tienes pensamientos de hacerte daño, no estás solo/a y no tienes que cargarlo en silencio. Pedir ayuda es un acto de valentía, no de debilidad. Habla hoy con alguien de confianza: un amigo, tu familia o tu líder de jóvenes.</p>
+          <ul class="care-lines">
+            <li><strong>Línea 1582 (ALMA):</strong> apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. <a href="tel:1582">Llamar</a> · <a href="https://wa.me/50230071582" target="_blank" rel="noopener noreferrer">WhatsApp 3007-1582</a></li>
+            <li><strong>Si estás en peligro ahora:</strong> llama al 110, 122 o 123 y no te quedes solo/a.</li>
+            <li><a href="https://findahelpline.com/es-ES/countries/gt" target="_blank" rel="noopener noreferrer">Más líneas de ayuda en Guatemala ↗</a></li>
+          </ul>
+          <p class="care-small">¿Te preocupa un amigo? Escúchalo sin juzgar, pregúntale con cariño cómo está y no lo dejes solo.</p>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap">Hecho con fe, alegría y mucho flow ✨</div>
+    <div class="wrap">Hecho con fe, alegría y mucho flow ✨<br><a class="foot-care" href="#ayuda"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg>Tu vida importa · Si necesitas hablar, aquí hay ayuda</a></div>
   </footer>
 
   <div class="video-backdrop" id="video-backdrop"></div>
@@ -1409,7 +1495,11 @@
       { text: "“Todo lo puedo en Cristo que me fortalece.”", reference: "Filipenses 4:13" },
       { text: "“El amor es paciente, es bondadoso.”", reference: "1 Corintios 13:4" },
       { text: "“Confía en el Señor con todo tu corazón.”", reference: "Proverbios 3:5" },
-      { text: "“Alégrense siempre en el Señor.”", reference: "Filipenses 4:4" }
+      { text: "“Alégrense siempre en el Señor.”", reference: "Filipenses 4:4" },
+      { text: "“El Señor está cerca de los que tienen el corazón roto.”", reference: "Salmo 34:18" },
+      { text: "“No tengas miedo, porque yo estoy contigo.”", reference: "Isaías 41:10" },
+      { text: "“Vengan a mí los cansados, y yo les daré descanso.”", reference: "Mateo 11:28" },
+      { text: "“Dios sana a los de corazón herido y venda sus heridas.”", reference: "Salmo 147:3" }
     ];
 
     let currentVerse = 0;
@@ -1420,12 +1510,146 @@
       document.getElementById("reference").textContent = verses[currentVerse].reference;
     }
 
-    function answer(isCorrect) {
-      const result = document.getElementById("quiz-result");
-      result.textContent = isCorrect
-        ? "¡Correcto! 🎉 Noé construyó el arca."
-        : "¡Casi! La respuesta correcta es Noé 😊";
-    }
+    /* ===== Quiz con premios: una flor por acierto, florero nuevo cada día ===== */
+    (function () {
+      var QUIZ = [
+        { q: "¿Quién construyó un arca antes del diluvio?", o: ["Moisés", "Noé", "David"], a: 1, e: "Noé construyó el arca por mandato de Dios (Génesis 6)." },
+        { q: "¿Cuántos días y noches estuvo Jonás dentro del gran pez?", o: ["Tres", "Siete", "Cuarenta"], a: 0, e: "Jonás estuvo tres días y tres noches en el pez (Jonás 1:17)." },
+        { q: "¿Quién derrotó al gigante Goliat?", o: ["Sansón", "Saúl", "David"], a: 2, e: "El joven pastor David lo venció con una honda y su confianza en Dios (1 Samuel 17)." },
+        { q: "¿En qué ciudad nació Jesús?", o: ["Nazaret", "Belén", "Jerusalén"], a: 1, e: "Jesús nació en Belén (Lucas 2)." },
+        { q: "¿Cuántos apóstoles eligió Jesús?", o: ["Siete", "Diez", "Doce"], a: 2, e: "Jesús eligió a doce apóstoles (Lucas 6)." },
+        { q: "¿Quién bautizó a Jesús en el río Jordán?", o: ["Pedro", "Juan el Bautista", "Pablo"], a: 1, e: "Juan el Bautista bautizó a Jesús (Mateo 3)." },
+        { q: "¿Cuál fue el primer milagro de Jesús según el Evangelio de Juan?", o: ["Caminar sobre el agua", "Multiplicar los panes", "Convertir el agua en vino"], a: 2, e: "Ocurrió en las bodas de Caná (Juan 2)." },
+        { q: "¿Quién recibió los Diez Mandamientos en el monte Sinaí?", o: ["Moisés", "Abraham", "Elías"], a: 0, e: "Dios los entregó a Moisés (Éxodo 20)." },
+        { q: "¿Qué ángel anunció a María que sería la madre de Jesús?", o: ["Miguel", "Rafael", "Gabriel"], a: 2, e: "El ángel Gabriel le dio la noticia (Lucas 1)." },
+        { q: "¿Cuántos días estuvo Jesús en el desierto antes de comenzar su misión?", o: ["Cuarenta", "Tres", "Doce"], a: 0, e: "Ayunó cuarenta días y fue tentado (Mateo 4)." },
+        { q: "¿Quién traicionó a Jesús por treinta monedas de plata?", o: ["Pedro", "Judas Iscariote", "Tomás"], a: 1, e: "Fue Judas Iscariote (Mateo 26)." },
+        { q: "¿Cuál es el primer libro de la Biblia?", o: ["Éxodo", "Salmos", "Génesis"], a: 2, e: "La Biblia comienza con el Génesis, el libro de la creación." },
+        { q: "¿Quién fue arrojado al foso de los leones por seguir orando a Dios?", o: ["Daniel", "José", "Elías"], a: 0, e: "Dios protegió a Daniel en el foso (Daniel 6)." },
+        { q: "¿Qué pidió Salomón a Dios cuando llegó a ser rey?", o: ["Riquezas", "Sabiduría", "Un ejército"], a: 1, e: "Pidió un corazón sabio para gobernar (1 Reyes 3)." },
+        { q: "¿Qué apóstol negó a Jesús tres veces?", o: ["Pedro", "Juan", "Santiago"], a: 0, e: "Pedro lo negó y luego lloró con arrepentimiento (Lucas 22)." },
+        { q: "¿Cómo se llamaba el hermano de Moisés que lo acompañó ante el faraón?", o: ["Josué", "Aarón", "Caleb"], a: 1, e: "Aarón acompañó a Moisés (Éxodo 4–7)." },
+        { q: "¿Cuántos libros tiene el Nuevo Testamento?", o: ["21", "27", "39"], a: 1, e: "El Nuevo Testamento tiene 27 libros." },
+        { q: "¿En qué camino se convirtió Saulo (Pablo) al ver una luz del cielo?", o: ["El de Jericó", "El de Emaús", "El de Damasco"], a: 2, e: "Camino a Damasco Jesús le habló (Hechos 9)." },
+        { q: "¿Cómo se llama la oración que Jesús enseñó a sus discípulos?", o: ["Padrenuestro", "Credo", "Gloria"], a: 0, e: "Jesús les enseñó el Padrenuestro (Mateo 6)." },
+        { q: "¿Qué mar se abrió para que el pueblo de Israel escapara de Egipto?", o: ["Mar Muerto", "Mar Rojo", "Mar de Galilea"], a: 1, e: "Dios abrió el Mar Rojo (Éxodo 14)." },
+        { q: "¿Quién fue vendido por sus hermanos y llegó a gobernar Egipto después del faraón?", o: ["José", "Benjamín", "Rubén"], a: 0, e: "La historia de José está en Génesis 37–41." },
+        { q: "¿Con cuántos panes y peces alimentó Jesús a unos cinco mil hombres?", o: ["Tres panes y un pez", "Cinco panes y dos peces", "Siete panes y tres peces"], a: 1, e: "Con cinco panes y dos peces alcanzó para todos (Mateo 14)." }
+      ];
+      var GOAL = 5, KEY = "fcf_quiz_v1", EMO = ["🌷", "🌹", "🌻", "🌼", "🌸"];
+      var elQ = document.getElementById("quiz-q"), elA = document.getElementById("quiz-answers"),
+          elR = document.getElementById("quiz-result"), elNext = document.getElementById("quiz-next"),
+          elCount = document.getElementById("quiz-count"), vase = document.getElementById("vase"),
+          card = document.getElementById("vase-card"), status = document.getElementById("vase-status"),
+          stats = document.getElementById("vase-stats");
+      if (!elQ || !elA || !elR || !vase) return;
+      var slots = vase.querySelectorAll(".fl");
+
+      function pad(n) { return String(n).padStart(2, "0"); }
+      function dayKey(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+      function today() { return dayKey(new Date()); }
+      function yesterday() { var d = new Date(); d.setDate(d.getDate() - 1); return dayKey(d); }
+
+      var st = { date: today(), flowers: 0, seen: [], answered: 0, total: 0, streak: 0, lastFull: "" };
+      try {
+        var raw = JSON.parse(localStorage.getItem(KEY) || "null");
+        if (raw && typeof raw === "object") { for (var k in st) if (raw[k] !== undefined) st[k] = raw[k]; }
+      } catch (e) {}
+      st.flowers = Math.min(GOAL, Math.max(0, +st.flowers || 0));
+      st.answered = Math.max(0, +st.answered || 0);
+      st.total = Math.max(0, +st.total || 0);
+      st.streak = Math.max(0, +st.streak || 0);
+      if (!Array.isArray(st.seen)) st.seen = [];
+      function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} }
+
+      // Cada día empieza con el florero vacío
+      function sync() {
+        var t = today();
+        if (st.date === t) return false;
+        st.date = t; st.flowers = 0; st.seen = []; st.answered = 0; save();
+        return true;
+      }
+
+      function renderVase(newIdx) {
+        slots.forEach(function (g, i) { g.classList.remove("new"); g.classList.toggle("on", i < st.flowers); });
+        if (newIdx >= 0 && slots[newIdx]) slots[newIdx].classList.add("new");
+        vase.setAttribute("aria-label", "Florero con " + st.flowers + " de " + GOAL + " flores");
+        var full = st.flowers >= GOAL;
+        card.classList.toggle("full", full);
+        status.textContent = full ? "¡Florero completo! 🎉 Mañana te espera uno nuevo." : "Hoy: " + st.flowers + " de " + GOAL + " flores";
+        var streak = (st.lastFull === today() || st.lastFull === yesterday()) ? st.streak : 0;
+        stats.textContent = "🔥 Racha: " + streak + (streak === 1 ? " día" : " días") + " · 🏆 Floreros: " + st.total;
+      }
+
+      var cur = null;
+      function shuffle(a) {
+        for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+        return a;
+      }
+
+      function show() {
+        sync();
+        renderVase(-1);
+        var pool = [], i;
+        for (i = 0; i < QUIZ.length; i++) if (st.seen.indexOf(i) < 0) pool.push(i);
+        if (!pool.length) { st.seen = []; for (i = 0; i < QUIZ.length; i++) pool.push(i); }
+        var idx = pool[Math.floor(Math.random() * pool.length)];
+        var q = QUIZ[idx];
+        var order = shuffle(q.o.map(function (_, n) { return n; }));
+        cur = { idx: idx, order: order, done: false };
+        elQ.textContent = q.q;
+        elA.innerHTML = "";
+        order.forEach(function (oi) {
+          var b = document.createElement("button");
+          b.type = "button"; b.textContent = q.o[oi];
+          b.addEventListener("click", function () { choose(b, oi === q.a); });
+          elA.appendChild(b);
+        });
+        if (elR.textContent) elR.textContent = "";
+        elNext.hidden = true;
+        elCount.textContent = "Pregunta " + (st.answered + 1) + " de hoy";
+      }
+
+      function choose(btn, ok) {
+        if (!cur || cur.done) return;
+        cur.done = true;
+        sync();
+        var q = QUIZ[cur.idx], msg, newIdx = -1;
+        st.seen.push(cur.idx); st.answered++;
+        Array.prototype.forEach.call(elA.querySelectorAll("button"), function (b, i) {
+          b.disabled = true;
+          if (cur.order[i] === q.a) b.classList.add("ok");
+        });
+        if (!ok) btn.classList.add("no");
+        if (ok) {
+          if (st.flowers < GOAL) {
+            st.flowers++; newIdx = st.flowers - 1;
+            msg = "¡Correcto! 🎉 Ganaste una flor " + EMO[newIdx] + ". " + q.e;
+            if (st.flowers >= GOAL) {
+              st.total++;
+              st.streak = (st.lastFull === yesterday()) ? st.streak + 1 : 1;
+              st.lastFull = today();
+              msg += "\n\n🏆 ¡Florero completo! Vuelve mañana por uno nuevo.";
+            }
+          } else {
+            msg = "¡Correcto! 🎉 " + q.e + "\n\nTu florero de hoy ya está lleno: sigue jugando por diversión.";
+          }
+        } else {
+          msg = "¡Casi! 😊 La respuesta correcta es «" + q.o[q.a] + "». " + q.e;
+        }
+        save();
+        renderVase(newIdx);
+        elR.textContent = msg;
+        elNext.hidden = false;
+        try { elNext.focus({ preventScroll: true }); } catch (e) {}
+      }
+
+      elNext.addEventListener("click", show);
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && sync()) show();
+      });
+      show();
+    })();
     /* ===== Panel de videos =====
        Para agregar un video, añade un objeto a esta lista:
        - YouTube:       { title, description, type: "youtube", src: "https://youtu.be/XXXXXXXXXXX" }  (acepta enlace o solo el ID)
@@ -2207,10 +2431,12 @@
       var lines = [
         "¡Hola! Soy el quetzal de QuezalCode. Tócame y pregúntame sobre los libros 📚",
         "Dios te ama tal como eres 💛",
+        "Hay gente a la que sí le importas 💛",
+        "No estás solo/a. Pedir ayuda es de valientes 🎗️",
         "Tú puedes con todo, ¡con fe! 💪",
         "¿Ya viste los videos? 🎬",
         "Hay libros para crecer en la fe 📚",
-        "¡Prueba el mini quiz! ⚡",
+        "¡Prueba el mini quiz y completa tu florero de hoy! 🌷",
         "Código, fe y mucho flow 💻✨",
         "Pregunta lo que quieras, aquí no hay filtro 🙌"
       ];
@@ -2355,13 +2581,24 @@
   <section class="chat" id="chat" role="dialog" aria-label="Chat con el quetzal de QuezalCode" hidden>
     <div class="chat-head">
       <svg viewBox="0 0 44 40" aria-hidden="true"><path d="M16 10 Q13 3 9 2 Q16 2 21 9Z M22 9 Q22 2 25 0 Q28 5 26 10Z" fill="#52c24d" stroke="#16323a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="23" r="14" fill="#5fcf56" stroke="#16323a" stroke-width="2.5"/><circle cx="27" cy="20" r="3.6" fill="#fff"/><circle cx="28" cy="20" r="1.7" fill="#111"/><path d="M34 23 L43 25 L34 28Z" fill="#e8472b" stroke="#16323a" stroke-width="2" stroke-linejoin="round"/></svg>
-      <div><strong>Pregúntale al quetzal</strong><small>Responde con los libros de la biblioteca</small></div>
+      <div><strong>Pregúntale al quetzal</strong><small>Preguntas básicas y libros de la biblioteca</small></div>
       <button type="button" class="chat-close" id="chat-close" aria-label="Cerrar el chat">✕</button>
     </div>
     <label class="chat-book">📚 Libro
       <select id="chat-book"><option value="">Todos los libros</option></select>
     </label>
     <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+    <div class="chat-chips" id="chat-chips" aria-label="Preguntas sugeridas">
+      <button type="button">¿Qué es Fe con Flow?</button>
+      <button type="button">¿Qué videos hay?</button>
+      <button type="button">¿Qué libros hay?</button>
+      <button type="button">Dame un versículo</button>
+      <button type="button">¿Cómo juego el quiz?</button>
+      <button type="button">¿Cómo estás?</button>
+      <button type="button">Necesito ayuda</button>
+      <button type="button">¿Quién eres?</button>
+    </div>
+    <div class="chat-care"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg><span>Hay gente a la que sí le importas. <a href="#ayuda" id="chat-care-link">Pedir apoyo</a></span></div>
     <form class="chat-form" id="chat-form" autocomplete="off">
       <input type="text" id="chat-input" maxlength="500" placeholder="Escribe tu pregunta…" aria-label="Tu pregunta" />
       <button type="submit" id="chat-send" aria-label="Enviar">➤</button>
@@ -2435,7 +2672,7 @@
         fillBooks();
         if (!started) {
           started = true;
-          add("bot", "¡Hola! Soy el quetzal de QuezalCode 💚 Elige un libro (o todos) y pregúntame lo que quieras. Te respondo con lo que dicen sus páginas.");
+          add("bot", "¡Hola! Soy el quetzal de QuezalCode 💚 Pregúntame lo básico de la página (videos, libros, versículo, quiz) o elige un libro y te respondo con lo que dicen sus páginas.");
         }
         setTimeout(function () { input.focus(); }, 50);
       }
@@ -2451,13 +2688,129 @@
       document.getElementById("chat-close").addEventListener("click", close);
       document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !chat.hidden) close(); });
 
+      /* ===== Respuestas básicas (funcionan sin internet ni Apps Script) ===== */
+      var NO_ANSWER = "No tengo una respuesta para ti en este momento 🙏 Mis respuestas son limitadas por hoy.";
+      var FAQ = [
+        { re: /(suicid|quitarme la vida|me voy a matar|matarme|terminar con mi vida|acabar con mi vida|no quiero (seguir )?(vivir|existir)|(quiero|quisiera|deseo) (morir|morirme|no existir|estar muerto|estar muerta|desaparecer)|me quiero morir|ya no quiero estar aqui|mejor (muerto|muerta)|todos estarian mejor sin mi|no vale la pena vivir|quiero (hacerme dano|lastimarme)|me hago dano|autolesion|me corto (los |las |la )?(brazos|munecas|venas|piernas)|ya no puedo mas)/, small: true,
+          a: ["Gracias por decírmelo 💛 Lo que sientes importa, y tu vida importa. Hay gente a la que sí le importas, aunque ahora el dolor no te deje verlo. No tienes que cargar esto en silencio ni solo/a.\n\n👉 Habla ahora mismo con alguien de confianza: tu familia, un amigo o tu líder de jóvenes.\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora o piensas hacerte daño, llama ya al 110, 122 o 123 y no te quedes solo/a.\n\nSi hablas de un amigo: quédate con él, escúchalo sin juzgar y ayúdalo a contactar estas líneas."],
+          act: "ayuda" },
+        { re: /(como (estas|esta usted|te va|andas|te encuentras|te sientes|amaneciste|te ha ido)|que tal (estas|tu dia|todo)|como va (todo|tu dia))/, small: true, max: 9,
+          a: ["¡Muy bien, gracias por preguntar! 💚 Aquí estoy, listo para ayudarte. ¿Y tú, cómo estás?", "¡Todo bien por aquí! 🌟 Gracias por preguntar. ¿Y tú, cómo te va?"] },
+        { re: /(no (estoy|me siento|ando|me fue|me ha ido|fue) (muy |tan |nada )?bien|me (fue|ha ido) (muy |super |bastante |tan |re )?(mal|horrible|pesimo|fatal)|tuve un (muy )?(mal|dificil|feo|pesimo|horrible) dia|fue un (muy )?(mal|dificil|feo|pesimo|horrible) dia|dia (malo|dificil|feo|horrible|pesimo)|todo me sale mal|hoy (me fue|estuvo) (mal|feo|horrible|pesimo))/, small: true, max: 14,
+          a: ["Lamento que hoy haya sido un día difícil 💛 Los días malos pasan, y no tienes que cargarlos solo/a: cuéntaselo a alguien de confianza (tu familia, un amigo o tu líder de jóvenes). Si sientes que es demasiado, busca ayuda profesional; en Guatemala puedes llamar a la línea 1582 (ALMA).\n\nMientras tanto, te dejo una palabra de ánimo:"],
+          act: "verso" },
+        { re: /(me (fue|ha ido) (muy |super |bastante |re )?(bien|genial|excelente|increible|de maravilla)|tuve un (muy )?(buen|gran|lindo|excelente) dia|fue un (muy )?(buen|gran|lindo|excelente) dia|hoy (me fue|estuvo|fue) (bien|genial|excelente|increible|lindo)|dia (bueno|genial|increible|lindo))/, small: true, max: 14,
+          a: ["¡Qué bueno! 🙌 Me alegra que te haya ido bien hoy. Dale gracias a Dios por ese buen día 💛 Y si quieres seguir con la racha, ¡completa tu florero en el quiz! 🌷"],
+          act: "quiz" },
+        { re: /((^| )(yo )?(estoy|me siento|ando|toy) (muy |super |bastante |re )?(bien|genial|feliz|contento|contenta|alegre|tranquilo|tranquila|excelente)\b|^(muy |super )?(bien|genial|excelente)( gracias)?( y tu)?$|^todo bien$|de maravilla)/, small: true, max: 9,
+          a: ["¡Qué alegría! 🎉 Me da gusto que estés bien. Disfruta ese momento y dale gracias a Dios 🙌", "¡Me alegra mucho! 💚 Que sigas con esa buena energía. ¿Quieres un versículo, ver un video o jugar el quiz?"] },
+        { re: /(necesito (ayuda|ayudita|que me ayudes|apoyo)|ayuda por favor|ayudame|ayudenme|puedes ayudarme|me puedes ayudar|me ayudas|^ayuda$|^auxilio$)/, small: true, max: 9,
+          a: ["¡Claro, aquí estoy para ayudarte! 💚 Cuéntame qué necesitas. Puedo guiarte con los videos 🎬, los libros 📚, el versículo del día ✨ o el quiz ⚡.\n\nSi lo que necesitas es hablar de algo personal, busca a una persona de confianza: tu familia, un amigo o tu líder de jóvenes. También puedes llamar a la línea 1582 (ALMA), gratuita y confidencial."] },
+        { re: /\b(gracias|muchas gracias|thanks|te lo agradezco)\b/, small: true, max: 6,
+          a: ["¡De nada! 💚 Aquí sigo por si tienes otra pregunta.", "¡Con gusto! Pregunta lo que quieras 🙌"] },
+        { re: /\b(adios|chao|chau|bye|hasta luego|nos vemos)\b/, small: true, max: 5,
+          a: ["¡Hasta pronto! Dios te bendiga 💛", "¡Nos vemos! Vuelve cuando quieras 🙌"] },
+        { re: /\b(hola|holi|holis|buenas|buenos dias|buen dia|buenas tardes|buenas noches|hey|saludos|que tal)\b/, small: true, max: 5,
+          a: ["¡Hola! 💚 Soy el quetzal de QuezalCode. ¿Cómo estás hoy? También puedes preguntarme por los videos, los libros, el versículo del día o el quiz."] },
+        { re: /(por que (un )?quetzal|que es (un )?quetzal|ave nacional|por que eres (un )?(quetzal|pajaro|ave))/, small: true,
+          a: ["El quetzal es el ave nacional de Guatemala y un símbolo de libertad 🇬🇹 Por eso soy tu guía por aquí."] },
+        { re: /(quien eres|como te llamas|tu nombre|que eres|eres (un )?(bot|robot|ia)|eres (real|humano|persona)|quien (te )?(creo|hizo)|quezalcode|mascota)/, small: true,
+          a: ["Soy el quetzal, la mascota de QuezalCode 💚 Soy un chatbot (no una persona): respondo preguntas básicas de la página y busco en los libros de la biblioteca."] },
+        { re: /(que (puedes|sabes|haces)|en que (me )?(ayudas|puedes ayudar)|puedes ayudarme|me puedes ayudar|me ayudas|para que sirves|como (funcionas|te uso)|^ayuda$|necesito ayuda con la pagina)/, small: true,
+          a: ["Puedo contarte qué hay en la página, llevarte a los videos 🎬, a los libros 📚, darte un versículo ✨ o explicarte el quiz y el florero ⚡🌷. Y si eliges un libro arriba, busco la respuesta en sus páginas."],
+          act: null },
+        { re: /(estoy (triste|mal|deprimid|ansios|desanimad|cansad)|me siento (mal|solo|sola|triste|vacio|vacia|ansios)|desanim|tristeza|ansiedad|deprim)/,
+          a: ["Gracias por contármelo 💛 Lo que sientes importa. Habla hoy con alguien de confianza (un amigo, tu familia o tu líder de jóvenes); no tienes que cargarlo solo/a. Si sientes que no puedes más, busca ayuda profesional: en Guatemala puedes llamar a la línea 1582 (ALMA, lunes a viernes de 7:00 a 19:00) o a emergencias (110, 122 o 123).\n\nMientras tanto, te dejo una palabra de ánimo:"],
+          act: "verso" },
+        { re: /(que es (esto|esta pagina|la pagina|fe con flow)|de que (trata|va) (esto|la pagina|esta pagina)?|fe con flow|que hay (aqui|en la pagina|en esta pagina)|para que es (esta )?pagina)/,
+          a: ["Fe con Flow es un espacio para jóvenes que quieren crecer en la fe, hacer buenos amigos y pasarlo increíble en el camino ✌️ Aquí hay videos de reflexión, una biblioteca de libros, un versículo para cada día y un mini quiz con florero de premios."],
+          act: "planes" },
+        { re: /(para quien|quien puede|que edad|edades|puedo (participar|unirme|entrar)|es para (mi|jovenes|todos))/,
+          a: ["Está pensada para jóvenes que buscan vivir su fe con propósito y sin pose 🙌 Entra, mira los videos y lee con calma."] },
+        { re: /(noche sin filtro|fe en accion|preguntas reales|plan|planes|actividad|actividades|evento|eventos|reunion|reuniones|que hacen)/,
+          a: ["Son tres ideas de la página:\n🎸 Noche sin filtro: música, juegos y conversaciones honestas.\n🌱 Fe en acción: ideas sencillas para servir a tu comunidad.\n🧠 Preguntas reales: un lugar seguro para preguntar, escuchar y descubrir juntos.\n\nFechas y lugares no los tengo publicados aquí."],
+          act: "planes" },
+        { re: /(video|videos|reflexion|reflexiones|ver algo|vídeo)/, max: 9,
+          a: ["Tenemos videos de reflexión 🎬 Se abren en un panel con su reproductor y la lista completa; elige el que quieras."],
+          act: "videos" },
+        { re: /(libro|libros|biblia|lectura|lecturas|leer|biblioteca)/, max: 7, nobook: true,
+          a: ["La biblioteca 📚 tiene dos pestañas: Biblia y Otros libros, con buscador por título, autor o tema. Entre los libros que puedo consultar para responderte están:\n• Para salvarte\n• Libro de la Vida (Santa Teresa de Jesús)\n• Entrevistas a la Virgen María\n• María, Madre nuestra\n• Momentos de paz\n• Cómo rezar en todo momento\n\nElige uno arriba en «Libro» y pregúntame sobre su contenido."],
+          act: "libros" },
+        { re: /(versiculo|verso|cita biblica|palabra de dios|inspiracion|inspirame|recordatorio|dame (algo|una palabra)|animame)/,
+          a: ["¡Va un recordatorio para hoy! ✨"], act: "verso" },
+        { re: /(quiz|trivia|jugar|juego|adivin|preguntas? biblicas?|como (se )?juego|\bflor(es|ero)?\b|premio|premios|recompensa|racha)/,
+          a: ["El mini quiz ⚡ tiene preguntas bíblicas con tres respuestas. Cada acierto te regala una flor 🌷 y con 5 flores completas el florero de hoy 🏆 Cada día empieza uno nuevo, ¡y se guarda tu racha!"],
+          act: "quiz" },
+        { re: /(contacto|contactar|telefono|whatsapp|instagram|facebook|tiktok|correo|email|redes|donde (estan|queda|se reunen)|ubicacion|direccion|horario)/,
+          a: ["Por ahora la página no publica teléfono, redes, ubicación ni horarios, y no quiero inventarte datos 🙏 Pregúntale a la persona que te compartió el enlace."] },
+        { re: /(gratis|cuesta|precio|pagar|cobran|costo|cuanto vale)/,
+          a: ["En la página no veo ningún cobro: los videos, los libros, el versículo y el quiz se pueden usar libremente 💚"] }
+      ];
+
+      function norm(s) {
+        return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+      }
+      var lastFaq = -1;
+      function faqAnswer(q, bookChosen) {
+        var n = norm(q), words = n ? n.split(" ").length : 0;
+        for (var i = 0; i < FAQ.length; i++) {
+          var f = FAQ[i];
+          if (bookChosen && !f.small) continue;
+          if (f.max && words > f.max) continue;
+          if (f.re.test(n)) {
+            var a = f.a[Math.floor(Math.random() * f.a.length)];
+            return { text: a, act: f.act || null };
+          }
+        }
+        return null;
+      }
+
+      function act(name) {
+        var go = function (sel) { var el = document.querySelector(sel); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); };
+        chat.hidden = true;
+        if (name === "videos") { var v = document.querySelector("button[data-open-videos]"); if (v) v.click(); }
+        else if (name === "libros") { var b = document.querySelector("button[data-open-books]"); if (b) b.click(); }
+        else if (name === "verso") { try { if (typeof newVerse === "function") newVerse(); } catch (e) {} go("#versiculo"); }
+        else if (name === "quiz") go("#quiz");
+        else if (name === "planes") go("#planes");
+        else if (name === "ayuda") go("#ayuda");
+      }
+      var ACT_LABEL = { videos: "🎬 Abrir videos", libros: "📚 Abrir libros", verso: "✨ Ver otro versículo", quiz: "⚡ Ir al quiz", planes: "👀 Ver los planes", ayuda: "💛 Ver líneas de ayuda" };
+      function reply(r) {
+        busy = true; sendBtn.disabled = true;
+        var typing = add("bot chat-typing", "");
+        typing.innerHTML = "<i></i><i></i><i></i>";
+        setTimeout(function () {
+          typing.remove();
+          var m = add("bot", r.text);
+          if (r.act && ACT_LABEL[r.act]) {
+            var b = document.createElement("button");
+            b.type = "button"; b.className = "chat-act"; b.textContent = ACT_LABEL[r.act];
+            b.addEventListener("click", function () { act(r.act); });
+            m.appendChild(b);
+            log.scrollTop = log.scrollHeight;
+          }
+          busy = false; sendBtn.disabled = false; input.focus();
+        }, 450);
+      }
+      document.getElementById("chat-care-link").addEventListener("click", function () { chat.hidden = true; });
+      document.getElementById("chat-chips").addEventListener("click", function (e) {
+        var b = e.target.closest && e.target.closest("button");
+        if (!b || busy) return;
+        input.value = b.textContent;
+        form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event("submit", { cancelable: true }));
+      });
+
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         var q = input.value.trim();
         if (!q || busy) return;
-        if (!API) { add("bot", "El chat todavía no está conectado. Falta la dirección del Apps Script."); return; }
         input.value = "";
         add("user", q);
+        var local = faqAnswer(q, !!select.value);
+        if (local) { reply(local); return; }
+        if (!API) { reply({ text: NO_ANSWER, act: null }); return; }
         var prev = history.slice(-6);
         history.push({ role: "user", text: q });
         busy = true; sendBtn.disabled = true;
@@ -2472,16 +2825,16 @@
           .then(function (r) { return r.json(); })
           .then(function (d) {
             typing.remove();
-            if (d && d.ok) {
+            if (d && d.ok && d.answer && String(d.answer).trim()) {
               add("bot", d.answer, d.sources);
               history.push({ role: "assistant", text: d.answer });
             } else {
-              add("bot", (d && d.error) || "Algo salió mal. Intenta otra vez.");
+              add("bot", NO_ANSWER);
             }
           })
           .catch(function () {
             typing.remove();
-            add("bot", "No pude conectarme. Revisa tu internet e intenta de nuevo.");
+            add("bot", NO_ANSWER);
           })
           .then(function () { busy = false; sendBtn.disabled = false; input.focus(); });
       });
