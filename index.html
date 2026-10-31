@@ -351,6 +351,33 @@
     .chat-care a { text-decoration: underline; }
     @media (max-width: 760px) { .care { grid-template-columns: 1fr; padding: 20px; } .care > svg { width: 48px; height: 48px; } }
 
+    /* ===== Panel de música: Drive y YouTube Music ===== */
+    .music-panel .book-panel-head { background: var(--pink); }
+    .music-now { margin-bottom: 18px; padding: 14px; border: 2px solid var(--ink); border-radius: 18px; background: var(--white); box-shadow: 4px 4px 0 var(--ink); }
+    .music-now[hidden] { display: none; }
+    .music-now strong { display: block; font-size: 1.1rem; line-height: 1.25; overflow-wrap: anywhere; }
+    .music-now small { display: block; margin-top: 3px; opacity: .8; }
+    .music-player { width: 100%; max-width: 460px; aspect-ratio: 16 / 9; margin: 12px auto 0; border: 2px solid var(--ink); border-radius: 14px; overflow: hidden; background: #000; }
+    .music-player iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .music-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin-top: 12px; }
+    .music-controls button, .music-controls a { padding: 8px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--yellow); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); font: inherit; font-size: .85rem; font-weight: 900; text-decoration: none; cursor: pointer; }
+    .music-controls button:disabled { opacity: .45; cursor: default; }
+    .music-note { margin: 10px 0 0; font-size: .78rem; text-align: center; opacity: .75; }
+    .music-card { cursor: pointer; font: inherit; }
+    .music-card[aria-current="true"] { background: var(--yellow); }
+    .music-cover { height: 76px; min-height: 76px; padding: 0; overflow: hidden; background: var(--purple); }
+    .music-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* ===== Icono de video (cuando no hay portada) ===== */
+    .video-thumb { position: relative; }
+    .video-thumb img { position: absolute; inset: 0; }
+    .video-icon { display: block; width: 58%; max-width: 62px; height: auto; }
+    .video-icon rect { fill: var(--white); stroke: var(--ink); stroke-width: 3; }
+    .video-icon path { fill: var(--pink); stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; }
+    .video-poster.no-cover { background: var(--blue); }
+    .video-poster img { position: absolute; inset: 0; }
+    .video-bigicon { position: absolute; inset: 0; display: grid; place-items: center; font-size: clamp(3rem, 14vw, 5.5rem); opacity: .85; }
+
     footer {
       margin-top: 55px;
       padding: 28px 0;
@@ -679,6 +706,9 @@
     }
     .book-tab[aria-selected="true"] { background: var(--yellow); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
     .book-tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+    /* Tres paneles: Biblia · Libros cristianos · Libros para estudio */
+    .book-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+    .book-tab { flex-direction: column; gap: 5px; padding: 10px 6px; font-size: .84rem; line-height: 1.15; text-align: center; }
     .book-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
     .book-card {
       display: grid; grid-template-columns: 76px 1fr; align-items: center;
@@ -1244,6 +1274,58 @@
     @keyframes bkPow { 0%, 72% { opacity: 0; transform: translateX(-50%) rotate(-4deg) scale(.3); } 78% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1.2); } 86%, 100% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1); } }
     @keyframes bkSpark { 0%, 70% { opacity: 0; transform: scale(.3) rotate(0); } 78% { opacity: 1; transform: scale(1.3) rotate(20deg); } 92%, 100% { opacity: 0; transform: scale(.8) rotate(40deg); } }
 
+    /* ===== Parlantes: al tocar "Música" suenan y luego se abre el panel ===== */
+    .spk { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(247,243,232,.9); opacity: 0; }
+    .spk[hidden] { display: none; }
+    .spk-scene { position: relative; display: flex; align-items: center; gap: clamp(14px, 5vw, 30px); transform: rotate(-3deg); filter: drop-shadow(6px 6px 0 rgba(32,32,24,.3)); }
+    .spk-box { --w: clamp(92px, 24vw, 140px); width: var(--w); height: calc(var(--w) * 1.5); display: flex; flex-direction: column; align-items: center; justify-content: space-around; padding: 10px 0; border: 4px solid var(--ink); border-radius: 18px; background: #2b2b24; }
+    .spk-box i { display: block; }
+    .spk-tw { width: 22%; aspect-ratio: 1; border: 3px solid var(--yellow); border-radius: 50%; background: #111; }
+    .spk-wf { position: relative; width: 62%; aspect-ratio: 1; border: 4px solid var(--yellow); border-radius: 50%; background: radial-gradient(circle, var(--pink) 0 16%, #111 17% 100%); }
+    .spk-wf::before, .spk-wf::after { content: ""; position: absolute; inset: -4px; border: 4px solid var(--pink); border-radius: 50%; opacity: 0; }
+    .spk-pow { position: absolute; left: 50%; top: -58px; transform: translateX(-50%) rotate(-4deg); white-space: nowrap; font-size: clamp(1.4rem, 7vw, 2.1rem); font-weight: 1000; color: var(--yellow); -webkit-text-stroke: 3px var(--ink); paint-order: stroke fill; opacity: 0; }
+    .spk-note { position: absolute; font-size: clamp(1.7rem, 7vw, 2.5rem); font-weight: 900; color: var(--pink); -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; opacity: 0; }
+    .spk-note.n1 { left: -30px; top: 6%; } .spk-note.n2 { left: 24%; top: -22px; } .spk-note.n3 { right: 22%; bottom: -30px; } .spk-note.n4 { right: -30px; top: 14%; } .spk-note.n5 { left: 42%; bottom: -36px; }
+
+    .spk.run { animation: spkOverlay 1.45s ease forwards; }
+    .spk.run .spk-scene { animation: spkPop 1.45s both; }
+    .spk.run .spk-box { animation: spkBeat .36s ease-in-out .2s 3; }
+    .spk.run .spk-box.right { animation-delay: .26s; }
+    .spk.run .spk-wf { animation: spkPump .36s ease-in-out .2s 3; }
+    .spk.run .spk-box.right .spk-wf { animation-delay: .26s; }
+    .spk.run .spk-wf::before { animation: spkWave .72s ease-out .2s 2; }
+    .spk.run .spk-wf::after { animation: spkWave .72s ease-out .56s 2; }
+    .spk.run .spk-pow { animation: spkPow 1.45s both; }
+    .spk.run .spk-note { animation: spkNote 1.1s ease-out both; }
+    .spk.run .spk-note.n1 { animation-delay: .15s; } .spk.run .spk-note.n2 { animation-delay: .3s; } .spk.run .spk-note.n3 { animation-delay: .45s; } .spk.run .spk-note.n4 { animation-delay: .2s; } .spk.run .spk-note.n5 { animation-delay: .38s; }
+
+    @keyframes spkOverlay { 0% { opacity: 0; } 10%, 82% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes spkPop { 0% { transform: rotate(-3deg) scale(.5); } 14%, 100% { transform: rotate(-3deg) scale(1); } }
+    @keyframes spkBeat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-7px) scale(1.04); } }
+    @keyframes spkPump { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
+    @keyframes spkWave { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+    @keyframes spkPow { 0%, 48% { opacity: 0; transform: translateX(-50%) rotate(-4deg) scale(.3); } 56% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1.2); } 66%, 100% { opacity: 1; transform: translateX(-50%) rotate(-4deg) scale(1); } }
+    @keyframes spkNote { 0% { opacity: 0; transform: translateY(14px) scale(.4) rotate(-10deg); } 22% { opacity: 1; transform: translateY(-6px) scale(1.2) rotate(8deg); } 100% { opacity: 0; transform: translateY(-70px) scale(.9) rotate(22deg); } }
+
+    /* ===== Aviso de cookies y privacidad ===== */
+    .cookie { position: fixed; z-index: 80; left: 50%; bottom: 12px; transform: translateX(-50%); width: min(560px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow-y: auto; padding: 16px; border: 3px solid var(--ink); border-radius: 20px; background: var(--white); box-shadow: 6px 6px 0 var(--ink); color: var(--ink); }
+    .cookie[hidden] { display: none; }
+    .cookie strong { display: block; margin-bottom: 6px; font-size: 1.05rem; }
+    .cookie p { margin: 0 0 12px; font-size: .9rem; line-height: 1.5; }
+    .cookie-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .cookie-btn { padding: 9px 14px; border: 2px solid var(--ink); border-radius: 999px; background: var(--white); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); font: inherit; font-size: .85rem; font-weight: 900; cursor: pointer; }
+    .cookie-btn.ok { background: var(--yellow); }
+    .cookie-link { padding: 6px 4px; border: 0; background: none; color: var(--ink); font: inherit; font-size: .85rem; font-weight: 800; text-decoration: underline; cursor: pointer; }
+    .cookie-info { margin: 0 0 12px; padding: 12px; border: 2px dashed var(--ink); border-radius: 14px; background: var(--cream); font-size: .84rem; line-height: 1.5; }
+    .cookie-info[hidden] { display: none; }
+    .cookie-info ul { margin: 6px 0 0; padding-left: 18px; }
+    .cookie-info li { margin-bottom: 6px; }
+    .consent-gate { display: grid; place-content: center; justify-items: center; gap: 10px; box-sizing: border-box; width: 100%; height: 100%; min-height: 150px; padding: 16px; text-align: center; background: var(--cream); color: var(--ink); font-size: .85rem; line-height: 1.4; }
+    .consent-gate p { margin: 0; max-width: 34ch; }
+    .video-player .consent-gate, .music-player .consent-gate { position: absolute; inset: 0; }
+    .music-player { position: relative; }
+    .foot-cookie { display: inline-block; margin-top: 8px; font-size: .85rem; }
+
     /* ===== Chat del quetzal ===== */
     .chat { position: fixed; z-index: 45; left: 124px; bottom: 12px; width: min(380px, calc(100vw - 140px)); height: min(70vh, 520px); display: flex; flex-direction: column; background: var(--white); border: 3px solid var(--ink); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
     .chat[hidden] { display: none; }
@@ -1313,6 +1395,8 @@
         <a href="#versiculo">Un versículo</a>
         <a href="#videos" data-open-videos>Videos</a>
         <a href="#libros" data-open-books>Libros</a>
+        <a href="#musica" data-open-music>Música</a>
+        <a href="#juegos" data-open-games>Juegos</a>
         <a class="pill-button" href="#quiz">¡Juega!</a>
         <a class="ribbon-link" href="#ayuda" aria-label="Apoyo emocional: hay gente a la que sí le importas" title="Hay gente a la que sí le importas"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg></a>
       </div>
@@ -1333,6 +1417,8 @@
           <a class="pill-button" href="#versiculo" style="background:var(--white)">Dame inspiración ✨</a>
           <button type="button" class="pill-button" data-open-videos style="background:var(--pink)">🎬 Ver videos</button>
           <button type="button" class="pill-button" data-open-books style="background:var(--blue)">📚 Ver libros</button>
+          <button type="button" class="pill-button" data-open-music style="background:var(--green)">🎵 Escuchar música</button>
+          <button type="button" class="pill-button" data-open-games style="background:var(--purple)">🎮 Jugar jueguitos</button>
         </div>
       </div>
 
@@ -1427,7 +1513,7 @@
   </main>
 
   <footer>
-    <div class="wrap">Hecho con fe, alegría y mucho flow ✨<br><a class="foot-care" href="#ayuda"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg>Tu vida importa · Si necesitas hablar, aquí hay ayuda</a></div>
+    <div class="wrap">Hecho con fe, alegría y mucho flow ✨<br><a class="foot-care" href="#ayuda"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg>Tu vida importa · Si necesitas hablar, aquí hay ayuda</a><br><a class="foot-cookie" href="#" id="cookie-open">🍪 Cookies y privacidad</a></div>
   </footer>
 
   <div class="video-backdrop" id="video-backdrop"></div>
@@ -1468,7 +1554,8 @@
       <p class="book-intro">Un espacio para descubrir lecturas que te ayuden a crecer en la fe. Busca un título en la biblioteca.</p>
       <div class="book-tabs" role="tablist" aria-label="Secciones de la biblioteca">
         <button type="button" class="book-tab" role="tab" id="book-tab-biblia" data-book-tab="Biblia" aria-selected="true" aria-controls="book-list">📖 Biblia <span id="book-tab-count-biblia">0</span></button>
-        <button type="button" class="book-tab" role="tab" id="book-tab-otros" data-book-tab="Otros libros" aria-selected="false" aria-controls="book-list">📚 Otros libros <span id="book-tab-count-otros">0</span></button>
+        <button type="button" class="book-tab" role="tab" id="book-tab-cristianos" data-book-tab="Libros cristianos" aria-selected="false" aria-controls="book-list">✝️ Libros cristianos <span id="book-tab-count-cristianos">0</span></button>
+        <button type="button" class="book-tab" role="tab" id="book-tab-estudio" data-book-tab="Libros para estudio" aria-selected="false" aria-controls="book-list">🎓 Libros para estudio <span id="book-tab-count-estudio">0</span></button>
       </div>
       <input class="book-search" id="book-search" type="search" placeholder="Buscar por título, autor o tema…" aria-label="Buscar libros">
       <h4 class="video-list-title"><span id="book-section-name">Biblia</span> <span id="book-count">0</span></h4>
@@ -1487,6 +1574,35 @@
       <p class="book-reader-note">
         <span id="book-reader-alt-wrap"><button type="button" id="book-reader-alt">Probar otro visor</button> · </span>¿No carga? Usa «Abrir ↗» para verlo en una pestaña nueva.
       </p>
+    </div>
+  </aside>
+
+  <div class="book-backdrop" id="music-backdrop"></div>
+  <aside class="book-panel music-panel" id="music-panel" role="dialog" aria-modal="true" aria-labelledby="music-panel-title" inert>
+    <div class="book-panel-head">
+      <div>
+        <span class="sticker" style="background:var(--yellow)">🎵 MÚSICA</span>
+        <h2 id="music-panel-title">Música</h2>
+      </div>
+      <button type="button" class="video-close" id="music-close" aria-label="Cerrar panel de música">✕</button>
+    </div>
+    <div class="book-panel-body" id="music-body">
+      <p class="book-intro">Canciones para alabar, relajarte y recargar energía. Elige una y dale play.</p>
+      <div class="music-now" id="music-now" hidden>
+        <strong id="music-now-title"></strong>
+        <small id="music-now-artist"></small>
+        <div class="music-player" id="music-player"></div>
+        <div class="music-controls">
+          <button type="button" id="music-prev" aria-label="Canción anterior">⏮ Anterior</button>
+          <button type="button" id="music-next" aria-label="Canción siguiente">Siguiente ⏭</button>
+          <a id="music-open" href="#" target="_blank" rel="noopener noreferrer">Abrir ↗</a>
+        </div>
+        <p class="music-note">¿No suena? Algunas canciones no permiten reproducirse aquí: usa «Abrir ↗». Al cerrar el panel se detiene la música.</p>
+      </div>
+      <input class="book-search" id="music-search" type="search" placeholder="Buscar canción o artista…" aria-label="Buscar música">
+      <h4 class="video-list-title">Canciones <span id="music-count">0</span></h4>
+      <ul class="book-list" id="music-list"></ul>
+      <div class="book-empty" id="music-empty" hidden>Cargando música… 🎵</div>
     </div>
   </aside>
 
@@ -1705,10 +1821,9 @@
         return "file";
       }
 
+      // Solo se usa portada si pusiste una en la columna "poster"; si no (o si no carga), se ve el icono.
       function thumbFor(video) {
-        if (video.poster) return video.poster;
-        const id = videoKind(video) === "youtube" ? youtubeId(video.src) : "";
-        return id ? "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg" : "";
+        return video.poster || "";
       }
 
       function emptyState(message) {
@@ -1735,6 +1850,7 @@
             return;
           }
           if (autoplay) {
+            if (window.fcfConsent && fcfConsent.gate(player, "este video", () => renderPlayer(true))) return;
             const frame = document.createElement("iframe");
             frame.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
             frame.title = video.title;
@@ -1746,10 +1862,18 @@
             const poster = make("button", "video-poster");
             poster.type = "button";
             poster.setAttribute("aria-label", "Reproducir: " + video.title);
-            const img = document.createElement("img");
-            img.src = thumbFor(video);
-            img.alt = "";
-            poster.append(img, make("span", "video-play", "▶"));
+            poster.classList.add("no-cover");
+            poster.append(make("span", "video-bigicon", "🎬"));
+            const cover = thumbFor(video);
+            if (cover) {
+              const img = document.createElement("img");
+              img.alt = "";
+              img.addEventListener("load", () => poster.classList.remove("no-cover"));
+              img.addEventListener("error", () => img.remove());
+              img.src = cover;
+              poster.append(img);
+            }
+            poster.append(make("span", "video-play", "▶"));
             poster.addEventListener("click", () => renderPlayer(true));
             player.append(poster);
           }
@@ -1765,6 +1889,7 @@
 
           // Reproduce el archivo de Drive dentro del reproductor adaptable.
           // El archivo debe tener acceso general: "Cualquier persona con el enlace".
+          if (window.fcfConsent && fcfConsent.gate(player, "este video", () => renderPlayer(true))) return;
           const el = document.createElement("video");
           el.controls = true;
           el.playsInline = true;
@@ -1813,6 +1938,8 @@
         renderPlayer(autoplay);
       }
 
+      const THUMB_COLORS = ["var(--blue)", "var(--pink)", "var(--yellow)", "var(--purple)"];
+      const VIDEO_ICON = '<svg class="video-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="4" y="9" width="40" height="30" rx="7"/><path d="M20 17 L34 24 L20 31 Z"/></svg>';
       function buildList() {
         countEl.textContent = videoLibrary.length;
         videoLibrary.forEach((video, i) => {
@@ -1821,15 +1948,16 @@
           card.type = "button";
 
           const thumb = make("div", "video-thumb");
+          thumb.style.background = THUMB_COLORS[i % THUMB_COLORS.length];
+          thumb.insertAdjacentHTML("beforeend", VIDEO_ICON);
           const src = thumbFor(video);
           if (src) {
             const img = document.createElement("img");
-            img.src = src;
             img.alt = "";
             img.loading = "lazy";
+            img.addEventListener("error", () => img.remove());
+            img.src = src;
             thumb.append(img);
-          } else {
-            thumb.textContent = "🎬";
           }
 
           const text = make("div");
@@ -1920,7 +2048,8 @@
 
     /* ===== Panel de libros =====
        Los libros se cargan desde Google Sheets (mismo Apps Script que los videos),
-       pidiendo las hojas "Biblia" y "Otros libros" con el parámetro ?sheet=.
+       pidiendo las hojas "Biblia", "Libros cristianos" y "Libros para estudio" con el parámetro ?sheet=.
+       (Si la hoja "Libros cristianos" todavía no existe, se usa la hoja "Otros libros" como respaldo.)
        Columnas esperadas en cada hoja: title, author, description, category, url
        (también se aceptan: titulo, autor, descripcion, categoria, enlace).
        Los videos NO se tocan: el script sin parámetro sigue devolviendo la hoja de videos. */
@@ -1929,7 +2058,8 @@
     const BOOK_API_URL = VIDEO_API_URL; // mismo Apps Script
     const BOOK_SHEETS = [
       { sheet: "Biblia", category: "Biblia" },
-      { sheet: "Otros libros", category: "Otros libros" }
+      { sheet: "Libros cristianos", category: "Libros cristianos", fallback: "Otros libros" },
+      { sheet: "Libros para estudio", category: "Libros para estudio" }
     ];
 
     // Convierte el enlace de cada libro en una lista de "visores" que se prueban en orden.
@@ -2028,6 +2158,14 @@
           "&callback=" + callbackName + "&t=" + Date.now();
         document.head.appendChild(script);
         setTimeout(() => finish([]), 10000);
+      });
+    }
+
+    // Si la hoja principal viene vacía y hay una hoja de respaldo, se carga esa con la misma categoría.
+    function loadBookSection(config, index) {
+      return loadBookSheet(config, index).then((rows) => {
+        if (rows.length || !config.fallback) return rows;
+        return loadBookSheet({ sheet: config.fallback, category: config.category }, index + 10);
       });
     }
 
@@ -2250,7 +2388,13 @@
         readerOpen.href = resolved.open;
         currentResolved = resolved;
         readerEl.hidden = false;
-        showViewer(0);
+        if (window.fcfConsent && !fcfConsent.allowed()) {
+          clearViewer();
+          pagesEl.hidden = false;
+          fcfConsent.gate(pagesEl, "este libro", () => { if (currentResolved === resolved) showViewer(0); });
+        } else {
+          showViewer(0);
+        }
         readerBack.focus({ preventScroll: true });
       }
 
@@ -2304,7 +2448,7 @@
         }
       });
       renderBooks();
-      Promise.all(BOOK_SHEETS.map(loadBookSheet)).then((groups) => {
+      Promise.all(BOOK_SHEETS.map(loadBookSection)).then((groups) => {
         bookLibrary = groups.flat();
         booksLoading = false;
         renderBooks();
@@ -2578,6 +2722,123 @@
       }, true);
     })();
   </script>
+  <div class="spk" id="spk" aria-hidden="true" hidden>
+    <div class="spk-scene">
+      <div class="spk-box left"><i class="spk-tw"></i><i class="spk-wf"></i></div>
+      <div class="spk-box right"><i class="spk-tw"></i><i class="spk-wf"></i></div>
+      <span class="spk-note n1">♪</span><span class="spk-note n2">♫</span><span class="spk-note n3">♬</span><span class="spk-note n4">♪</span><span class="spk-note n5">♫</span>
+      <div class="spk-pow">¡DALE PLAY!</div>
+    </div>
+  </div>
+  <script>
+    /* Parlantes: al tocar "Música" suenan los parlantes y luego se abre el panel */
+    (function () {
+      var spk = document.getElementById("spk");
+      if (!spk) return;
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var busy = false, bypass = false;
+
+      document.addEventListener("click", function (e) {
+        if (bypass || reduce) return;
+        var btn = e.target.closest && e.target.closest("[data-open-music]");
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (busy) return;
+        busy = true;
+        spk.hidden = false;
+        spk.classList.remove("run");
+        void spk.offsetWidth;
+        spk.classList.add("run");
+        // Después de los primeros golpes de música se abre el panel
+        setTimeout(function () { bypass = true; btn.click(); bypass = false; }, 1150);
+        setTimeout(function () { spk.classList.remove("run"); spk.hidden = true; busy = false; }, 1500);
+      }, true);
+    })();
+  </script>
+  <div class="cookie" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" hidden>
+    <strong id="cookie-title">🍪 Cookies y privacidad</strong>
+    <p>Guardamos en tu navegador el progreso de tu quiz y un código anónimo para el chat. Los videos, la música y los libros se cargan desde YouTube y Google Drive, que pueden usar sus propias cookies. ¿Quieres activarlos?</p>
+    <div class="cookie-info" id="cookie-info" hidden>
+      <strong>¿Qué se guarda?</strong>
+      <ul>
+        <li><b>En tu navegador (necesario):</b> tu progreso del quiz y el florero, un código aleatorio para el chat (sin nombre ni datos personales) y esta misma elección. No salen de tu dispositivo, salvo el código del chat, que se envía junto con tus preguntas.</li>
+        <li><b>YouTube y YouTube Music:</b> se cargan para ver videos y escuchar música. Solo si aceptas.</li>
+        <li><b>Google Drive:</b> se carga para algunos videos, canciones y libros. Solo si aceptas.</li>
+        <li><b>Listas de videos, libros y música:</b> la página las pide a Google Sheets mediante un Apps Script de Google, para poder mostrarte el contenido.</li>
+        <li><b>Chat del quetzal:</b> tus preguntas se envían a ese mismo servicio para buscar en los libros. No escribas datos personales.</li>
+        <li>Esta página no incluye publicidad ni herramientas de estadísticas de visitas.</li>
+      </ul>
+      <p style="margin:8px 0 0">Puedes cambiar tu decisión cuando quieras con «🍪 Cookies y privacidad», al final de la página.</p>
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn ok" data-cookie="all">Aceptar todo</button>
+      <button type="button" class="cookie-btn" data-cookie="necessary">Solo lo necesario</button>
+      <button type="button" class="cookie-link" id="cookie-more" aria-expanded="false">Más información</button>
+    </div>
+  </div>
+  <script>
+    /* Cookies: aviso con elección + bloqueo de YouTube / Google Drive hasta que la persona acepte */
+    (function () {
+      var KEY = "fcf_cookie_choice";
+      var choice = "";
+      try { choice = localStorage.getItem(KEY) || ""; } catch (e) {}
+      if (choice !== "all" && choice !== "necessary") choice = "";
+      var banner = document.getElementById("cookie-banner");
+      var info = document.getElementById("cookie-info");
+      var more = document.getElementById("cookie-more");
+      if (!banner) return;
+
+      function setChoice(value) {
+        choice = value;
+        try { localStorage.setItem(KEY, value); } catch (e) {}
+        banner.hidden = true;
+      }
+      function showInfo(open) {
+        info.hidden = !open;
+        more.setAttribute("aria-expanded", open ? "true" : "false");
+        more.textContent = open ? "Ocultar información" : "Más información";
+      }
+      function openBanner(withInfo) {
+        showInfo(!!withInfo);
+        banner.hidden = false;
+      }
+
+      banner.addEventListener("click", function (e) {
+        var b = e.target.closest && e.target.closest("[data-cookie]");
+        if (b) setChoice(b.getAttribute("data-cookie"));
+      });
+      more.addEventListener("click", function () { showInfo(info.hidden); });
+      document.getElementById("cookie-open").addEventListener("click", function (e) {
+        e.preventDefault();
+        openBanner(true);
+      });
+
+      // Si aún no hay decisión, el aviso aparece poco después de cargar la página.
+      if (!choice) setTimeout(function () { if (!choice) openBanner(false); }, 900);
+
+      window.fcfConsent = {
+        allowed: function () { return choice === "all"; },
+        open: function () { openBanner(true); },
+        // Si aún no se aceptó, muestra en "container" un aviso con botón y devuelve true (hay que parar).
+        gate: function (container, what, onGranted) {
+          if (choice === "all") return false;
+          var box = document.createElement("div");
+          box.className = "consent-gate";
+          var p = document.createElement("p");
+          p.textContent = "🍪 Para ver " + what + " se carga contenido de Google/YouTube, que puede usar cookies.";
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "cookie-btn ok";
+          btn.textContent = "Aceptar y ver";
+          btn.addEventListener("click", function () { setChoice("all"); onGranted(); });
+          box.append(p, btn);
+          container.replaceChildren(box);
+          return true;
+        }
+      };
+    })();
+  </script>
   <section class="chat" id="chat" role="dialog" aria-label="Chat con el quetzal de QuezalCode" hidden>
     <div class="chat-head">
       <svg viewBox="0 0 44 40" aria-hidden="true"><path d="M16 10 Q13 3 9 2 Q16 2 21 9Z M22 9 Q22 2 25 0 Q28 5 26 10Z" fill="#52c24d" stroke="#16323a" stroke-width="1.6" stroke-linejoin="round"/><circle cx="22" cy="23" r="14" fill="#5fcf56" stroke="#16323a" stroke-width="2.5"/><circle cx="27" cy="20" r="3.6" fill="#fff"/><circle cx="28" cy="20" r="1.7" fill="#111"/><path d="M34 23 L43 25 L34 28Z" fill="#e8472b" stroke="#16323a" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -2672,7 +2933,7 @@
         fillBooks();
         if (!started) {
           started = true;
-          add("bot", "¡Hola! Soy el quetzal de QuezalCode 💚 Pregúntame lo básico de la página (videos, libros, versículo, quiz) o elige un libro y te respondo con lo que dicen sus páginas.");
+          add("bot", "¡Hola! Soy el quetzal de QuezalCode 💚 Pregúntame lo básico de la página (videos, libros, música, versículo, quiz) o elige un libro y te respondo con lo que dicen sus páginas.");
         }
         setTimeout(function () { input.focus(); }, 50);
       }
@@ -2717,24 +2978,30 @@
         { re: /(quien eres|como te llamas|tu nombre|que eres|eres (un )?(bot|robot|ia)|eres (real|humano|persona)|quien (te )?(creo|hizo)|quezalcode|mascota)/, small: true,
           a: ["Soy el quetzal, la mascota de QuezalCode 💚 Soy un chatbot (no una persona): respondo preguntas básicas de la página y busco en los libros de la biblioteca."] },
         { re: /(que (puedes|sabes|haces)|en que (me )?(ayudas|puedes ayudar)|puedes ayudarme|me puedes ayudar|me ayudas|para que sirves|como (funcionas|te uso)|^ayuda$|necesito ayuda con la pagina)/, small: true,
-          a: ["Puedo contarte qué hay en la página, llevarte a los videos 🎬, a los libros 📚, darte un versículo ✨ o explicarte el quiz y el florero ⚡🌷. Y si eliges un libro arriba, busco la respuesta en sus páginas."],
+          a: ["Puedo contarte qué hay en la página, llevarte a los videos 🎬, a los libros 📚, a la música 🎵, darte un versículo ✨ o explicarte el quiz y el florero ⚡🌷. Y si eliges un libro arriba, busco la respuesta en sus páginas."],
           act: null },
         { re: /(estoy (triste|mal|deprimid|ansios|desanimad|cansad)|me siento (mal|solo|sola|triste|vacio|vacia|ansios)|desanim|tristeza|ansiedad|deprim)/,
           a: ["Gracias por contármelo 💛 Lo que sientes importa. Habla hoy con alguien de confianza (un amigo, tu familia o tu líder de jóvenes); no tienes que cargarlo solo/a. Si sientes que no puedes más, busca ayuda profesional: en Guatemala puedes llamar a la línea 1582 (ALMA, lunes a viernes de 7:00 a 19:00) o a emergencias (110, 122 o 123).\n\nMientras tanto, te dejo una palabra de ánimo:"],
           act: "verso" },
         { re: /(que es (esto|esta pagina|la pagina|fe con flow)|de que (trata|va) (esto|la pagina|esta pagina)?|fe con flow|que hay (aqui|en la pagina|en esta pagina)|para que es (esta )?pagina)/,
-          a: ["Fe con Flow es un espacio para jóvenes que quieren crecer en la fe, hacer buenos amigos y pasarlo increíble en el camino ✌️ Aquí hay videos de reflexión, una biblioteca de libros, un versículo para cada día y un mini quiz con florero de premios."],
+          a: ["Fe con Flow es un espacio para jóvenes que quieren crecer en la fe, hacer buenos amigos y pasarlo increíble en el camino ✌️ Aquí hay videos de reflexión, una biblioteca de libros, música, un versículo para cada día y un mini quiz con florero de premios."],
           act: "planes" },
         { re: /(para quien|quien puede|que edad|edades|puedo (participar|unirme|entrar)|es para (mi|jovenes|todos))/,
           a: ["Está pensada para jóvenes que buscan vivir su fe con propósito y sin pose 🙌 Entra, mira los videos y lee con calma."] },
         { re: /(noche sin filtro|fe en accion|preguntas reales|plan|planes|actividad|actividades|evento|eventos|reunion|reuniones|que hacen)/,
           a: ["Son tres ideas de la página:\n🎸 Noche sin filtro: música, juegos y conversaciones honestas.\n🌱 Fe en acción: ideas sencillas para servir a tu comunidad.\n🧠 Preguntas reales: un lugar seguro para preguntar, escuchar y descubrir juntos.\n\nFechas y lugares no los tengo publicados aquí."],
           act: "planes" },
+        { re: /(cookie|cookies|galletas|privacidad|datos personales|rastrean|guardan mis datos|politica de privacidad)/, max: 10,
+          a: ["Guardamos en tu navegador tu progreso del quiz y un código anónimo para el chat 🍪 Los videos, la música y los libros vienen de YouTube y Google Drive, que pueden usar cookies solo si tú aceptas. No hay publicidad ni estadísticas de visitas. Puedes cambiar tu decisión cuando quieras."],
+          act: "cookies" },
+        { re: /(musica|cancion|canciones|alabanza|alabanzas|adoracion|playlist|youtube music|spotify)/, max: 9,
+          a: ["Tenemos un panel de música 🎵 con canciones de Drive y YouTube Music para alabar, relajarte o recargar energía. Elige una y dale play."],
+          act: "musica" },
         { re: /(video|videos|reflexion|reflexiones|ver algo|vídeo)/, max: 9,
           a: ["Tenemos videos de reflexión 🎬 Se abren en un panel con su reproductor y la lista completa; elige el que quieras."],
           act: "videos" },
         { re: /(libro|libros|biblia|lectura|lecturas|leer|biblioteca)/, max: 7, nobook: true,
-          a: ["La biblioteca 📚 tiene dos pestañas: Biblia y Otros libros, con buscador por título, autor o tema. Entre los libros que puedo consultar para responderte están:\n• Para salvarte\n• Libro de la Vida (Santa Teresa de Jesús)\n• Entrevistas a la Virgen María\n• María, Madre nuestra\n• Momentos de paz\n• Cómo rezar en todo momento\n\nElige uno arriba en «Libro» y pregúntame sobre su contenido."],
+          a: ["La biblioteca 📚 tiene tres paneles: Biblia, Libros cristianos y Libros para estudio, con buscador por título, autor o tema. Entre los libros que puedo consultar para responderte están:\n• Para salvarte\n• Libro de la Vida (Santa Teresa de Jesús)\n• Entrevistas a la Virgen María\n• María, Madre nuestra\n• Momentos de paz\n• Cómo rezar en todo momento\n\nElige uno arriba en «Libro» y pregúntame sobre su contenido."],
           act: "libros" },
         { re: /(versiculo|verso|cita biblica|palabra de dios|inspiracion|inspirame|recordatorio|dame (algo|una palabra)|animame)/,
           a: ["¡Va un recordatorio para hoy! ✨"], act: "verso" },
@@ -2775,8 +3042,10 @@
         else if (name === "quiz") go("#quiz");
         else if (name === "planes") go("#planes");
         else if (name === "ayuda") go("#ayuda");
+        else if (name === "cookies") { if (window.fcfConsent) fcfConsent.open(); }
+        else if (name === "musica") { var mu = document.querySelector("button[data-open-music]"); if (mu) mu.click(); }
       }
-      var ACT_LABEL = { videos: "🎬 Abrir videos", libros: "📚 Abrir libros", verso: "✨ Ver otro versículo", quiz: "⚡ Ir al quiz", planes: "👀 Ver los planes", ayuda: "💛 Ver líneas de ayuda" };
+      var ACT_LABEL = { videos: "🎬 Abrir videos", libros: "📚 Abrir libros", verso: "✨ Ver otro versículo", quiz: "⚡ Ir al quiz", planes: "👀 Ver los planes", ayuda: "💛 Ver líneas de ayuda", musica: "🎧 Abrir música", cookies: "🍪 Ver cookies y privacidad" };
       function reply(r) {
         busy = true; sendBtn.disabled = true;
         var typing = add("bot chat-typing", "");
@@ -2840,5 +3109,1491 @@
       });
     })();
   </script>
+  <script>
+    /* ===== Panel de música: canciones de Drive y YouTube Music (hoja "Música") ===== */
+    (function () {
+      const MUSIC_SHEET = "Música";
+      const panel = document.getElementById("music-panel");
+      const backdrop = document.getElementById("music-backdrop");
+      const closeBtn = document.getElementById("music-close");
+      const body = document.getElementById("music-body");
+      const listEl = document.getElementById("music-list");
+      const countEl = document.getElementById("music-count");
+      const searchEl = document.getElementById("music-search");
+      const emptyEl = document.getElementById("music-empty");
+      const nowEl = document.getElementById("music-now");
+      const nowTitle = document.getElementById("music-now-title");
+      const nowArtist = document.getElementById("music-now-artist");
+      const player = document.getElementById("music-player");
+      const openLink = document.getElementById("music-open");
+      const prevBtn = document.getElementById("music-prev");
+      const nextBtn = document.getElementById("music-next");
+      const pageParts = document.querySelectorAll("header, main, footer");
+      let tracks = [], current = -1, lastOpener = null, started = false;
+
+      // Convierte un enlace de Drive o de YouTube / YouTube Music en algo que se pueda reproducir aquí.
+      function parseLink(raw) {
+        raw = String(raw || "").trim();
+        if (!raw) return null;
+        const d = raw.match(/drive\.google\.com\/file\/d\/([\w-]+)/) ||
+          (/drive\.google\.com/.test(raw) && raw.match(/[?&]id=([\w-]+)/));
+        if (d) {
+          return {
+            kind: "drive",
+            embed: "https://drive.google.com/file/d/" + d[1] + "/preview",
+            open: "https://drive.google.com/file/d/" + d[1] + "/view",
+            openLabel: "Abrir en Drive ↗",
+            thumb: ""
+          };
+        }
+        let u = null;
+        try { u = new URL(raw); } catch (e) {
+          if (/^[\w-]{11}$/.test(raw)) u = new URL("https://www.youtube.com/watch?v=" + raw);
+        }
+        if (!u || !/(^|\.)(youtube\.com|youtu\.be)$/.test(u.hostname)) return null;
+        const v = /(^|\.)youtu\.be$/.test(u.hostname) ? u.pathname.slice(1).split("/")[0] : (u.searchParams.get("v") || "");
+        const list = u.searchParams.get("list") || "";
+        let embed = "", thumb = "";
+        if (/^[\w-]{11}$/.test(v)) {
+          embed = "https://www.youtube.com/embed/" + v + "?autoplay=1&rel=0&playsinline=1" + (list ? "&list=" + encodeURIComponent(list) : "");
+          thumb = "https://i.ytimg.com/vi/" + v + "/mqdefault.jpg";
+        } else if (list) {
+          embed = "https://www.youtube.com/embed/videoseries?list=" + encodeURIComponent(list) + "&autoplay=1&playsinline=1";
+        } else {
+          return null;
+        }
+        return {
+          kind: "youtube",
+          embed: embed,
+          open: u.href,
+          openLabel: u.hostname === "music.youtube.com" ? "Abrir en YouTube Music ↗" : "Abrir en YouTube ↗",
+          thumb: thumb
+        };
+      }
+
+      function loadMusic() {
+        return new Promise((resolve) => {
+          const callbackName = "__musicSheetCallback";
+          const script = document.createElement("script");
+          let finished = false;
+          const finish = (items) => {
+            if (finished) return;
+            finished = true;
+            tracks = (Array.isArray(items) ? items : []).map((r) => {
+              const link = parseLink(r.url || r.enlace || r.link || r.src);
+              return {
+                title: String(r.title || r.titulo || r["título"] || r.cancion || r["canción"] || "").trim(),
+                artist: String(r.artist || r.artista || r.author || r.autor || "").trim(),
+                description: String(r.description || r.descripcion || r["descripción"] || "").trim(),
+                link: link
+              };
+            }).filter((t) => t.title && t.link);
+            try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+            script.remove();
+            resolve();
+          };
+          window[callbackName] = finish;
+          script.onerror = () => finish([]);
+          script.src = VIDEO_API_URL + (VIDEO_API_URL.includes("?") ? "&" : "?") +
+            "sheet=" + encodeURIComponent(MUSIC_SHEET) + "&callback=" + callbackName + "&t=" + Date.now();
+          document.head.appendChild(script);
+          setTimeout(() => finish([]), 10000);
+        });
+      }
+
+      function norm(s) {
+        return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+
+      function render() {
+        const q = norm(searchEl.value.trim());
+        const items = [];
+        tracks.forEach((t, i) => {
+          if (!q || norm(t.title + " " + t.artist + " " + t.description).indexOf(q) > -1) items.push([t, i]);
+        });
+        listEl.replaceChildren();
+        items.forEach((pair) => {
+          const t = pair[0], i = pair[1];
+          const li = document.createElement("li");
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "book-card music-card";
+          btn.setAttribute("aria-label", "Reproducir " + t.title);
+          if (i === current) btn.setAttribute("aria-current", "true");
+          const cover = document.createElement("span");
+          cover.className = "book-cover music-cover";
+          cover.setAttribute("aria-hidden", "true");
+          if (t.link.thumb) {
+            const img = new Image();
+            img.alt = ""; img.loading = "lazy"; img.src = t.link.thumb;
+            img.onerror = () => { cover.textContent = "🎧"; };
+            cover.appendChild(img);
+          } else {
+            cover.textContent = "💿";
+          }
+          const text = document.createElement("span");
+          const strong = document.createElement("strong");
+          strong.textContent = t.title;
+          text.appendChild(strong);
+          const sub = [t.artist, t.description].filter(Boolean).join(" · ");
+          if (sub) {
+            const small = document.createElement("small");
+            small.textContent = sub;
+            text.appendChild(small);
+          }
+          btn.append(cover, text);
+          btn.addEventListener("click", () => play(i));
+          li.appendChild(btn);
+          listEl.appendChild(li);
+        });
+        countEl.textContent = String(items.length);
+        emptyEl.hidden = items.length > 0 || !started;
+        if (!items.length && started) {
+          emptyEl.innerHTML = tracks.length
+            ? "No encontré canciones con esa búsqueda 🔎"
+            : "🎵 Todavía no hay música publicada.<br>Pronto habrá canciones para ti.";
+        }
+      }
+
+      function play(i) {
+        if (!tracks.length) return;
+        current = (i + tracks.length) % tracks.length;
+        const t = tracks[current];
+        nowEl.hidden = false;
+        nowTitle.textContent = t.title;
+        nowArtist.textContent = t.artist;
+        nowArtist.hidden = !t.artist;
+        openLink.href = t.link.open;
+        openLink.textContent = t.link.openLabel;
+        if (!(window.fcfConsent && fcfConsent.gate(player, "esta canción", () => play(current)))) {
+          const frame = document.createElement("iframe");
+          frame.title = "Reproductor: " + t.title;
+          frame.src = t.link.embed;
+          frame.allow = "autoplay; encrypted-media; fullscreen; picture-in-picture";
+          frame.setAttribute("allowfullscreen", "");
+          frame.referrerPolicy = "strict-origin-when-cross-origin";
+          player.replaceChildren(frame);
+        }
+        prevBtn.disabled = nextBtn.disabled = tracks.length < 2;
+        render();
+        body.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function stop() {
+        player.replaceChildren(); // detiene la música
+        nowEl.hidden = true;
+        current = -1;
+      }
+
+      function openPanel(opener) {
+        lastOpener = opener || null;
+        panel.inert = false;
+        panel.classList.add("open");
+        backdrop.classList.add("open");
+        pageParts.forEach((part) => { part.inert = true; });
+        document.body.style.overflow = "hidden";
+        if (!started) {
+          emptyEl.hidden = false;
+          emptyEl.textContent = "Cargando música… 🎵";
+          loadMusic().then(() => { started = true; render(); });
+        } else {
+          render();
+        }
+        requestAnimationFrame(() => closeBtn.focus({ preventScroll: true }));
+      }
+
+      function closePanel() {
+        stop();
+        render();
+        panel.classList.remove("open");
+        backdrop.classList.remove("open");
+        panel.inert = true;
+        pageParts.forEach((part) => { part.inert = false; });
+        document.body.style.overflow = "";
+        if (lastOpener) lastOpener.focus({ preventScroll: true });
+      }
+
+      document.querySelectorAll("[data-open-music]").forEach((btn) => {
+        btn.addEventListener("click", (event) => { event.preventDefault(); openPanel(btn); });
+      });
+      closeBtn.addEventListener("click", closePanel);
+      backdrop.addEventListener("click", closePanel);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && panel.classList.contains("open")) closePanel();
+      });
+      prevBtn.addEventListener("click", () => play(current - 1));
+      nextBtn.addEventListener("click", () => play(current + 1));
+      searchEl.addEventListener("input", render);
+    })();
+  </script>
+
+  <!-- ===== PANEL DE JUEGOS (v26: con niveles) ===== -->
+  <style>
+    .games-panel .book-panel-head { background: var(--purple); }
+    .gm-hub, .gm-levels { display: grid; gap: 10px; }
+    @media (min-width: 560px) { .gm-hub, .gm-levels { grid-template-columns: 1fr 1fr; gap: 14px; } }
+    .gm-tile { display: grid; grid-template-columns: 46px minmax(0, 1fr); column-gap: 12px; align-items: center; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: translate .15s, box-shadow .15s; }
+    .gm-tile .e { grid-row: 1 / span 3; font-size: 2.1rem; text-align: center; }
+    .gm-tile strong { font-size: 1.05rem; }
+    .gm-tile small { font-size: .85rem; line-height: 1.3; }
+    .gm-tile .lv { margin-top: 3px; font-size: .75rem; font-weight: 900; }
+    @media (hover: hover) { .gm-tile:hover, .gm-level:hover { translate: -2px -2px; box-shadow: 5px 5px 0 var(--ink); } }
+    .gm-tile:active, .gm-level:active { translate: 2px 2px; box-shadow: 1px 1px 0 var(--ink); }
+
+    .gm-level { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; column-gap: 10px; align-items: center; padding: 11px 14px; border: 2px solid var(--ink); border-radius: 14px; background: var(--white); box-shadow: 3px 3px 0 var(--ink); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: translate .15s, box-shadow .15s; }
+    .gm-level .n { display: grid; place-items: center; width: 36px; height: 36px; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); font-weight: 900; }
+    .gm-level strong { display: block; font-size: 1rem; }
+    .gm-level small { font-size: .8rem; line-height: 1.3; }
+    .gm-level .ok { font-size: 1.3rem; }
+
+    .gm-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .gm-back { flex: none; padding: 7px 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--white); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 900; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+    .gm-title { font-size: 1.02rem; line-height: 1.2; }
+    .gm-info { margin: 0 0 10px; font-weight: 800; font-size: .92rem; }
+    .gm-msg { min-height: 1.4em; margin: 12px 0 8px; font-weight: 900; font-size: 1rem; text-align: center; }
+    .gm-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; }
+    .gm-row .pill-button { cursor: pointer; padding: 9px 16px; font-size: .9rem; font-family: inherit; }
+    .gm-stars { margin-top: 4px; font-size: 1.8rem; text-align: center; }
+
+    /* Memoria */
+    .gm-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 420px; margin: 0 auto; }
+    .gm-card { display: grid; place-items: center; align-content: center; aspect-ratio: 1; padding: 2px; border: 2px solid var(--ink); border-radius: 12px; background: var(--yellow); color: var(--ink); font: inherit; font-size: 1.6rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+    .gm-card.up { background: var(--white); animation: gmFlip .3s ease-out; cursor: default; }
+    .gm-card.done { background: var(--green); }
+    .gm-card .gm-e { font-size: 1.9rem; line-height: 1; }
+    .gm-card .gm-l { margin-top: 2px; font-size: .62rem; font-weight: 800; }
+    @keyframes gmFlip { from { transform: rotateY(90deg) scale(.9); } to { transform: none; } }
+
+    /* Ordena el versículo */
+    .gm-answer, .gm-chips { display: flex; flex-wrap: wrap; gap: 7px; padding: 10px; border-radius: 14px; }
+    .gm-answer { min-height: 76px; align-content: flex-start; border: 2px dashed var(--ink); background: var(--white); }
+    .gm-chips { justify-content: center; margin-top: 10px; }
+    .gm-chip { padding: 8px 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--blue); color: var(--ink); font: inherit; font-size: .95rem; font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); animation: gmPop .25s ease-out; }
+    .gm-answer .gm-chip { background: var(--yellow); }
+    .gm-answer.ok .gm-chip { background: var(--green); }
+    .gm-answer.no { animation: gmShake .4s; }
+    @keyframes gmPop { from { transform: scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
+    @keyframes gmShake { 0%, 100% { translate: 0; } 25% { translate: -7px; } 50% { translate: 7px; } 75% { translate: -4px; } }
+
+    /* ¿Quién es? */
+    .gm-clue { margin: 2px 0 8px; font-size: 3.2rem; text-align: center; line-height: 1.1; }
+    .gm-text-clue { margin: 0 0 12px; padding: 10px 12px; border: 2px solid var(--ink); border-radius: 12px; background: var(--yellow); font-weight: 800; font-size: .95rem; line-height: 1.35; }
+    .gm-opts { display: grid; gap: 8px; }
+    .gm-opt { padding: 11px 14px; border: 2px solid var(--ink); border-radius: 12px; background: var(--white); color: var(--ink); font: inherit; font-size: 1rem; font-weight: 800; text-align: left; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+    .gm-opt:disabled { cursor: default; }
+    .gm-opt.ok { background: var(--green); animation: gmPop .35s ease-out; }
+    .gm-opt.no { background: var(--pink); animation: gmShake .4s; }
+
+    /* Atrapa bendiciones */
+    .gm-how { padding: 12px 14px; border: 2px solid var(--ink); border-radius: 16px; background: var(--white); box-shadow: 3px 3px 0 var(--ink); }
+    .gm-how p { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 9px; font-weight: 800; font-size: .95rem; line-height: 1.35; }
+    .gm-how p:last-child { margin-bottom: 0; }
+    .gm-how-e { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border: 2px solid var(--ink); border-radius: 50%; background: var(--yellow); font-size: 1.1rem; }
+    .gm-hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-weight: 900; font-size: 1.15rem; }
+    .gm-hud .got { color: #1d8a3a; }
+    .gm-track { height: 14px; margin-bottom: 8px; border: 2px solid var(--ink); border-radius: 99px; background: var(--white); overflow: hidden; }
+    .gm-track i { display: block; height: 100%; background: var(--green); transition: width 1s linear, background .3s; }
+    .gm-track.low i { background: var(--pink); }
+    .gm-arena { position: relative; height: 300px; overflow: hidden; border: 2px solid var(--ink); border-radius: 16px; background: linear-gradient(#fffefa, #dff1ff); touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+    .gm-count { position: absolute; inset: 0; display: grid; place-items: center; font-size: 4.5rem; font-weight: 900; animation: gmPop .3s ease-out; }
+    .gm-star { position: absolute; display: grid; place-items: center; padding: 0; border: 2px solid var(--ink); border-radius: 50%; background: var(--white); box-shadow: 2px 2px 0 var(--ink); cursor: pointer; animation: gmPop .2s ease-out; }
+    .gm-star.hit { animation: gmHit .3s ease-out forwards; pointer-events: none; }
+    @keyframes gmHit { to { transform: scale(1.7); opacity: 0; } }
+    .gm-plus { position: absolute; z-index: 3; font-weight: 900; font-size: 1.3rem; color: #1d8a3a; pointer-events: none; animation: gmPlus .7s ease-out forwards; }
+    @keyframes gmPlus { to { transform: translateY(-46px); opacity: 0; } }
+    /* Mientras el aviso de cookies está visible, deja espacio para poder subir el contenido por encima de él */
+    body:has(#cookie-banner:not([hidden])) .games-panel .book-panel-body { padding-bottom: 240px; }
+    /* Guías: ¿vamos por buen camino? */
+    .gm-guide { margin: 0 0 10px; padding: 8px 12px; border: 2px solid var(--ink); border-radius: 12px; background: var(--white); font-weight: 800; font-size: .88rem; line-height: 1.35; text-align: center; transition: background .25s; }
+    .gm-guide.good { background: #d4f5c4; }
+    .gm-guide.warn { background: #ffe9b0; }
+    .gm-guide.bad { background: #ffd3d9; }
+    .gm-guide[hidden] { display: none; }
+    .gm-chip.right { background: var(--green) !important; }
+    .gm-chip.right::after { content: " ✓"; }
+    .gm-chip.off { background: #ffb44d !important; }
+    .gm-chip.off::after { content: " ?"; }
+    .gm-toggle { display: block; width: 100%; margin: 0 0 12px; padding: 9px 12px; border: 2px dashed var(--ink); border-radius: 12px; background: var(--white); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 800; text-align: left; cursor: pointer; }
+    .gm-toggle.on { border-style: solid; background: #d4f5c4; }
+    .gm-opts.two { grid-template-columns: 1fr 1fr; }
+    .gm-opts.two .gm-opt { text-align: center; padding: 14px 8px; font-size: 1.05rem; }
+    .gm-text-clue.big { padding: 14px; font-size: 1.12rem; line-height: 1.4; text-align: center; background: var(--white); }
+    .gm-answer.gm-letter { gap: 5px; }
+    .gm-chip.gm-letter { min-width: 42px; padding: 9px 6px; border-radius: 12px; font-size: 1.2rem; text-align: center; }
+    .gm-chip.gm-book { padding: 9px 13px; font-size: .95rem; }
+    @media (prefers-reduced-motion: reduce) { .gm-card.up, .gm-chip, .gm-opt.ok, .gm-star, .gm-count { animation: none; } .gm-track i { transition: none; } }
+  </style>
+
+  <div class="book-backdrop" id="games-backdrop"></div>
+  <aside class="book-panel games-panel" id="games-panel" role="dialog" aria-modal="true" aria-labelledby="games-panel-title" inert>
+    <div class="book-panel-head">
+      <div>
+        <span class="sticker" style="background:var(--yellow)">🎮 JUEGOS</span>
+        <h2 id="games-panel-title">Jueguitos</h2>
+      </div>
+      <button type="button" class="video-close" id="games-close" aria-label="Cerrar panel de juegos">✕</button>
+    </div>
+    <div class="book-panel-body" id="games-body"></div>
+  </aside>
+
+  <script>
+  (function () {
+    var panel = document.getElementById("games-panel");
+    var backdrop = document.getElementById("games-backdrop");
+    var closeBtn = document.getElementById("games-close");
+    var body = document.getElementById("games-body");
+    var parts = document.querySelectorAll("header, main, footer");
+    var lastOpener = null, cleanup = null, view = "hub", currentGame = null;
+    var progress = {}; // solo mientras la página está abierta (no guarda nada en el navegador)
+
+    function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text !== undefined) n.textContent = text; return n; }
+    function btn(cls, text, fn) { var b = el("button", cls, text); b.type = "button"; if (fn) b.addEventListener("click", fn); return b; }
+    function row() { var r = el("div", "gm-row"); r.append.apply(r, arguments); return r; }
+    function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+    function celebrate(node) {
+      if (!window.fxBurst || !node) return;
+      var r = node.getBoundingClientRect();
+      window.fxBurst(r.left + r.width / 2, r.top + r.height / 2, ["💛", "✨", "🙌", "⭐", "🎉"], 14);
+    }
+    function stop() { if (cleanup) { cleanup(); cleanup = null; } }
+    function clear() { stop(); body.replaceChildren(); }
+    var guides = true; // las guías se pueden apagar desde el menú
+    function guideEl() { var g = el("p", "gm-guide"); g.setAttribute("aria-live", "polite"); return g; }
+    function setGuide(g, text, state) { g.hidden = !guides; g.className = "gm-guide " + (state || ""); g.textContent = text; }
+    function orderMark(gd, placedVals, itemVals) {
+      var good = 0; while (good < placedVals.length && placedVals[good] === itemVals[good]) good++;
+      if (!placedVals.length) setGuide(gd, "🧭 Toca la pieza con la que empieza.", "");
+      else if (good === placedVals.length) setGuide(gd, "🧭 ¡Vas bien! " + good + " de " + itemVals.length + " en su lugar.", "good");
+      else setGuide(gd, "🧭 La pieza " + (good + 1) + " no va ahí (naranja). Tócala para quitarla.", "warn");
+      return good;
+    }
+    function mcqGuide(gd, hist, total, need, score, answered) {
+      var left = total - answered, dots = [];
+      for (var i = 0; i < total; i++) dots.push(i < hist.length ? (hist[i] ? "✅" : "❌") : "⚪");
+      var txt, st;
+      if (score >= need) { txt = "¡Ya alcanzaste la meta! Sigue así."; st = "good"; }
+      else if (score + left >= need) {
+        var more = need - score;
+        if (more === left) { txt = "Debes acertar todas las que quedan (" + left + ")."; st = "warn"; }
+        else { txt = "Aún puedes pasar: te faltan " + more + " acierto" + (more > 1 ? "s" : "") + "."; st = "good"; }
+      } else { txt = "Ya no alcanzas la meta de este nivel, pero sigue practicando 💛"; st = "bad"; }
+      setGuide(gd, "🧭 " + dots.join(" ") + " · " + txt, st);
+    }
+    function guideToggle() {
+      var t = btn("gm-toggle", "", function () { guides = !guides; paint(); });
+      function paint() {
+        t.classList.toggle("on", guides); t.setAttribute("aria-pressed", String(guides));
+        t.textContent = guides ? "🧭 Guías activadas: te aviso si vas por buen camino (toca para quitarlas)" : "🧭 Guías desactivadas: modo reto (toca para activarlas)";
+      }
+      paint(); return t;
+    }
+    function done(g, i) { (progress[g.id] = progress[g.id] || {})[i] = true; }
+    function doneCount(g) { return Object.keys(progress[g.id] || {}).length; }
+
+    // Botones al terminar un nivel
+    function endButtons(ctl, passed, againText) {
+      var items = [];
+      if (passed && ctl.next) items.push(btn("pill-button", "Siguiente nivel ▶", ctl.next));
+      items.push(btn("pill-button", againText || "🔁 Repetir nivel", ctl.again));
+      if (passed && !ctl.next) items.unshift(el("p", "gm-msg", "🏆 ¡Superaste el último nivel!"));
+      var r = row.apply(null, items.filter(function (x) { return x.tagName === "BUTTON"; }));
+      var wrap = el("div"); if (passed && !ctl.next) wrap.append(items[0]);
+      wrap.append(r); return wrap;
+    }
+
+    // ---------- Menú y selector de niveles ----------
+    var GAMES = [];
+    function hub() {
+      clear(); view = "hub"; currentGame = null;
+      body.append(el("p", "book-intro", "Juegos cortitos para pasar el rato. Elige uno, escoge tu nivel y ¡a jugar!"), guideToggle());
+      var wrap = el("div", "gm-hub");
+      GAMES.forEach(function (g) {
+        var t = btn("gm-tile", "", function () { levelsView(g); });
+        t.style.background = g.color;
+        t.append(el("span", "e", g.emoji), el("strong", "", g.name), el("small", "", g.desc),
+          el("span", "lv", "Niveles: " + doneCount(g) + "/" + g.levels.length + " superados"));
+        wrap.append(t);
+      });
+      body.append(wrap);
+      body.scrollTop = 0;
+    }
+    function levelsView(g) {
+      clear(); view = "levels"; currentGame = g;
+      var bar = el("div", "gm-bar");
+      bar.append(btn("gm-back", "← Juegos", hub), el("strong", "gm-title", g.emoji + " " + g.name));
+      body.append(bar, el("p", "book-intro", "Elige un nivel. Puedes saltar al que quieras."), guideToggle());
+      var wrap = el("div", "gm-levels");
+      g.levels.forEach(function (lv, i) {
+        var b = btn("gm-level", "", function () { play(g, i); });
+        var txt = el("div"); txt.append(el("strong", "", lv.name), el("small", "", lv.desc));
+        b.append(el("span", "n", String(i + 1)), txt, el("span", "ok", (progress[g.id] || {})[i] ? "✅" : ""));
+        wrap.append(b);
+      });
+      body.append(wrap);
+      body.scrollTop = 0;
+    }
+    function play(g, i) {
+      clear(); view = "game"; currentGame = g;
+      var bar = el("div", "gm-bar");
+      bar.append(btn("gm-back", "← Niveles", function () { levelsView(g); }), el("strong", "gm-title", g.emoji + " " + g.name + " · Nivel " + (i + 1)));
+      var area = el("div", "gm-area");
+      body.append(bar, area);
+      g.run(area, i, {
+        again: function () { play(g, i); },
+        next: i + 1 < g.levels.length ? function () { play(g, i + 1); } : null,
+        win: function () { done(g, i); }
+      });
+      body.scrollTop = 0;
+    }
+
+    // ---------- 1. Memoria ----------
+    var MEM = [["🕊️", "Paloma"], ["🐋", "Jonás"], ["🌈", "Noé"], ["🦁", "Daniel"], ["⭐", "Belén"], ["🐑", "Pastor"],
+      ["🍞", "Panes"], ["🌊", "Mar Rojo"], ["🪨", "David"], ["🔥", "Zarza"], ["📖", "Biblia"], ["✝️", "Cruz"]];
+    var MEM_PAIRS = [4, 6, 8, 10, 12];
+    function memory(area, lvl, ctl) {
+      var pairsN = MEM_PAIRS[lvl], set = shuffle(MEM).slice(0, pairsN);
+      var deck = shuffle(set.concat(set)), open = [], lock = false, moves = 0, found = 0;
+      var info = el("p", "gm-info"), grid = el("div", "gm-grid"), msg = el("p", "gm-msg");
+      msg.setAttribute("aria-live", "polite");
+      var gd = guideEl(), t3 = Math.floor(pairsN * 1.6), t2 = Math.floor(pairsN * 2.4);
+      function upd() {
+        info.textContent = "Intentos: " + moves + " · Parejas: " + found + "/" + pairsN;
+        if (moves === 0) setGuide(gd, "🧭 Voltea dos cartas. Para ⭐⭐⭐ termina en " + t3 + " intentos o menos.", "");
+        else if (moves <= t3) setGuide(gd, "🧭 ¡Vas para ⭐⭐⭐! Te quedan " + (t3 - moves) + " intentos para mantenerlas.", "good");
+        else if (moves <= t2) setGuide(gd, "🧭 Vas para ⭐⭐. Te quedan " + (t2 - moves) + " intentos para mantener 2 estrellas.", "warn");
+        else setGuide(gd, "🧭 Vas para ⭐. ¡Sigue! Lo importante es encontrar todas las parejas.", "bad");
+      }
+      function face(b, c, up) {
+        b.classList.toggle("up", up);
+        if (up) { b.replaceChildren(el("span", "gm-e", c[0]), el("span", "gm-l", c[1])); b.setAttribute("aria-label", c[1]); }
+        else { b.textContent = "❓"; b.setAttribute("aria-label", "Carta boca abajo"); }
+      }
+      deck.forEach(function (c) {
+        var b = btn("gm-card", "❓");
+        b.setAttribute("aria-label", "Carta boca abajo");
+        b.addEventListener("click", function () {
+          if (lock || b.classList.contains("up")) return;
+          face(b, c, true); open.push({ b: b, c: c });
+          if (open.length < 2) return;
+          moves++; lock = true;
+          var x = open[0], y = open[1];
+          if (x.c[0] === y.c[0]) {
+            x.b.classList.add("done"); y.b.classList.add("done");
+            found++; open = []; lock = false; upd();
+            if (found === pairsN) {
+              var s = moves <= pairsN * 1.6 ? 3 : moves <= pairsN * 2.4 ? 2 : 1;
+              msg.textContent = "🎉 ¡Nivel superado en " + moves + " intentos!";
+              ctl.win(); celebrate(grid);
+              area.append(el("div", "gm-stars", "⭐".repeat(s) + "☆".repeat(3 - s)), endButtons(ctl, true));
+            }
+          } else {
+            upd();
+            setTimeout(function () { face(x.b, x.c, false); face(y.b, y.c, false); open = []; lock = false; }, 800);
+          }
+        });
+        grid.append(b);
+      });
+      upd();
+      area.append(info, gd, grid, msg);
+    }
+
+    // ---------- 2. Ordena el versículo ----------
+    var VERSES = [
+      ["Dios es amor.", "1 Juan 4:8"], ["Oren sin cesar.", "1 Tesalonicenses 5:17"], ["Sé fuerte y valiente.", "Josué 1:9"],
+      ["El amor jamás se extingue.", "1 Corintios 13:8"], ["Yo soy el buen pastor.", "Juan 10:11"], ["Para Dios todo es posible.", "Mateo 19:26"],
+      ["Alégrense siempre en el Señor.", "Filipenses 4:4"],
+      ["Ustedes son la luz del mundo.", "Mateo 5:14"], ["Yo soy la luz del mundo.", "Juan 8:12"], ["No temas, porque yo estoy contigo.", "Isaías 41:10"],
+      ["El amor es paciente, es bondadoso.", "1 Corintios 13:4"], ["Dios es nuestro refugio y nuestra fortaleza.", "Salmo 46:1"],
+      ["El gozo del Señor es nuestra fortaleza.", "Nehemías 8:10"], ["Ama a tu prójimo como a ti mismo.", "Mateo 22:39"],
+      ["Dejen que los niños vengan a mí.", "Marcos 10:14"], ["Te alabo porque soy una creación admirable.", "Salmo 139:14"],
+      ["Háganlo todo para la gloria de Dios.", "1 Corintios 10:31"], ["Sean bondadosos y compasivos unos con otros.", "Efesios 4:32"],
+      ["El Señor es mi luz y mi salvación.", "Salmo 27:1"], ["El Señor es mi pastor, nada me faltará.", "Salmo 23:1"],
+      ["Todo lo puedo en Cristo que me fortalece.", "Filipenses 4:13"], ["Confía en el Señor con todo tu corazón.", "Proverbios 3:5"],
+      ["Crea en mí, oh Dios, un corazón limpio.", "Salmo 51:10"], ["Si Dios es por nosotros, ¿quién contra nosotros?", "Romanos 8:31"],
+      ["Den gracias al Señor, porque él es bueno.", "Salmo 107:1"], ["Cuando pases por las aguas, yo estaré contigo.", "Isaías 43:2"],
+      ["Yo soy el camino, la verdad y la vida.", "Juan 14:6"], ["Busquen primeramente el reino de Dios y su justicia.", "Mateo 6:33"],
+      ["Cantad alegres a Dios, habitantes de toda la tierra.", "Salmo 100:1"], ["Jesucristo es el mismo ayer, hoy y por los siglos.", "Hebreos 13:8"],
+      ["En el principio creó Dios los cielos y la tierra.", "Génesis 1:1"], ["Bienaventurados los de limpio corazón, porque ellos verán a Dios.", "Mateo 5:8"],
+      ["Lámpara es a mis pies tu palabra, y lumbrera a mi camino.", "Salmo 119:105"],
+      ["Amémonos los unos a los otros, porque el amor viene de Dios.", "1 Juan 4:7"],
+      ["Porque tanto amó Dios al mundo que dio a su Hijo unigénito.", "Juan 3:16"],
+      ["Mi ayuda viene del Señor, creador del cielo y de la tierra.", "Salmo 121:2"],
+      ["Pidan, y se les dará; busquen, y encontrarán; llamen, y se les abrirá.", "Mateo 7:7"],
+      ["Este es el día que ha hecho el Señor; regocijémonos y alegrémonos en él.", "Salmo 118:24"]
+    ];
+    function vLevel(v) { var n = v[0].split(" ").length; return n <= 5 ? 0 : n <= 7 ? 1 : n <= 9 ? 2 : 3; }
+    function verse(area, lvl, ctl) {
+      var rounds = shuffle(VERSES.filter(function (v) { return vLevel(v) === lvl; })).slice(0, 5), r = 0;
+      function round() {
+        area.replaceChildren();
+        var text = rounds[r][0], ref = rounds[r][1], words = text.split(" ");
+        var order = shuffle(words.map(function (w, k) { return k; })), placed = [], finished = false;
+        var info = el("p", "gm-info", "Versículo " + (r + 1) + " de " + rounds.length + " · Toca las palabras en orden."), ans = el("div", "gm-answer"), chips = el("div", "gm-chips"), msg = el("p", "gm-msg");
+        msg.setAttribute("aria-live", "polite");
+        var tools = row(), gd = guideEl();
+        function render() {
+          ans.replaceChildren(); chips.replaceChildren();
+          var good = orderMark(gd, placed.map(function (k) { return words[k]; }), words);
+          placed.forEach(function (k, pos) {
+            ans.append(btn("gm-chip" + (pos < good ? " right" : pos === good ? " off" : ""), words[k], function () { if (finished) return; placed.splice(pos, 1); ans.classList.remove("no"); msg.textContent = ""; render(); }));
+          });
+          order.forEach(function (k) {
+            if (placed.indexOf(k) !== -1) return;
+            chips.append(btn("gm-chip", words[k], function () { if (finished) return; placed.push(k); render(); check(); }));
+          });
+        }
+        function check() {
+          if (placed.length !== words.length) return;
+          if (placed.map(function (k) { return words[k]; }).join(" ") === text) {
+            finished = true; ans.classList.add("ok");
+            msg.textContent = "🎉 ¡Correcto! " + ref;
+            celebrate(ans);
+            tools.replaceChildren();
+            if (r + 1 < rounds.length) tools.append(btn("pill-button", "Siguiente versículo ▶", function () { r++; round(); }));
+            else { ctl.win(); area.append(el("p", "gm-msg", "🏅 ¡Nivel superado! " + rounds.length + " versículos armados.")); tools.replaceChildren(); area.append(endButtons(ctl, true)); }
+          } else {
+            ans.classList.remove("no"); void ans.offsetWidth; ans.classList.add("no");
+            msg.textContent = "Casi… toca una palabra para quitarla, o usa 💡 Pista.";
+          }
+        }
+        tools.append(
+          btn("pill-button", "💡 Pista", function () {
+            if (finished) return;
+            var good = 0; while (good < placed.length && words[placed[good]] === words[good]) good++;
+            placed = placed.slice(0, good);
+            var need = words[good];
+            var k = order.filter(function (x) { return placed.indexOf(x) === -1 && words[x] === need; })[0];
+            if (k !== undefined) { placed.push(k); ans.classList.remove("no"); msg.textContent = ""; render(); check(); }
+          }),
+          btn("pill-button", "🔀 Reiniciar", function () { if (finished) return; placed = []; order = shuffle(order); ans.classList.remove("no"); msg.textContent = ""; render(); })
+        );
+        area.append(info, gd, ans, chips, msg, tools);
+        render();
+      }
+      round();
+    }
+
+    // ---------- 3. ¿Quién es? ----------
+    // nivel: 1 conocidos, 2 medios, 3 difíciles
+    var WHO = [
+      ["Noé", "🚢🌈", "Construyó un arca y vio el primer arcoíris.", 1],
+      ["Moisés", "🌊🏜️", "Dios abrió el mar Rojo para que su pueblo pasara.", 1],
+      ["Jonás", "🐋⛵", "Pasó tres días dentro de un gran pez.", 1],
+      ["Daniel", "🦁🙏", "Dios cerró la boca de los leones por él.", 1],
+      ["David", "🧒🪨", "Con una honda y una piedra venció a un gigante.", 1],
+      ["Adán y Eva", "🍎🐍", "Los primeros humanos, en el huerto del Edén.", 1],
+      ["Jesús", "⭐👶✝️", "Hijo de Dios: nació en Belén, murió en la cruz y resucitó.", 1],
+      ["María", "👩👶👼", "Madre de Jesús; un ángel le dio la gran noticia.", 1],
+      ["Pedro", "🎣🌊", "Pescador que siguió a Jesús y caminó sobre el agua.", 1],
+      ["Ester", "👸🙏", "Reina valiente que ayudó a salvar a su pueblo.", 2],
+      ["Los Magos de Oriente", "🌟🐪🎁", "Siguieron una estrella para adorar a Jesús.", 2],
+      ["Abraham", "🌌⛺👴", "Dios le prometió una familia tan grande como las estrellas.", 2],
+      ["Sansón", "💪✂️", "Tenía una fuerza enorme y su secreto era su cabello.", 2],
+      ["Zaqueo", "🌳👀💰", "Se subió a un árbol para ver a Jesús.", 2],
+      ["Juan el Bautista", "🦗🍯💧", "Bautizaba en el río Jordán y preparó el camino de Jesús.", 2],
+      ["José, el de la túnica", "🧥⛓️👑", "Sus hermanos lo vendieron, pero llegó a gobernar Egipto.", 2],
+      ["Salomón", "👑⚖️🧠", "Pidió sabiduría a Dios y construyó el templo.", 2],
+      ["Pablo", "⚡✉️", "Conoció a Jesús camino a Damasco y escribió cartas a las iglesias.", 2],
+      ["Gedeón", "🏺🔦🎺", "Venció a un gran ejército con 300 hombres, trompetas y jarras.", 3],
+      ["Josué", "🏰🧱🚶", "Los muros de Jericó cayeron después de marchar a su alrededor.", 3],
+      ["Rut", "🌾👩🤝", "Le dijo a su suegra: «tu pueblo será mi pueblo».", 3],
+      ["Elías", "🐦🔥", "Dios envió fuego del cielo y los cuervos le llevaban comida.", 3],
+      ["Samuel", "👦🛏️👂", "Siendo niño oyó la voz de Dios en la noche.", 3],
+      ["Lázaro", "⚰️🌅", "Jesús lo resucitó después de cuatro días.", 3],
+      ["Goliat", "🛡️🗡️🏔️", "Gigante filisteo que desafió al pueblo de Dios.", 3],
+      ["Jacob", "🪜😴", "Soñó con una escalera que llegaba al cielo.", 3],
+      ["Nehemías", "🧱🛠️🏙️", "Dirigió la reconstrucción de los muros de Jerusalén.", 3]
+    ];
+    var WHO_LEVELS = [
+      { pool: [1], opts: 3, text: true }, { pool: [2], opts: 3, text: true },
+      { pool: [3], opts: 4, text: true }, { pool: [1, 2, 3], opts: 4, text: false }
+    ];
+    function who(area, lvl, ctl) {
+      var L = WHO_LEVELS[lvl], total = 6, need = 4;
+      var rounds = shuffle(WHO.filter(function (c) { return L.pool.indexOf(c[3]) !== -1; })).slice(0, total), n = 0, score = 0;
+      function show() {
+        area.replaceChildren();
+        if (n >= rounds.length) {
+          var pass = score >= need;
+          var m = el("p", "gm-msg", (pass ? "🎉 ¡Nivel superado! " : "💛 ¡Casi! ") + "Aciertos: " + score + " de " + rounds.length + (pass ? "" : " (necesitas " + need + ")"));
+          if (pass) { ctl.win(); celebrate(m); }
+          area.append(m, endButtons(ctl, pass));
+          return;
+        }
+        var r = rounds[n], answered = false;
+        area.append(el("p", "gm-info", "Pregunta " + (n + 1) + " de " + rounds.length + " · Aciertos: " + score + " · Necesitas " + need + " para pasar"));
+        var gd = guideEl(), hist = area.hist = area.hist || [];
+        area.append(gd); mcqGuide(gd, hist, rounds.length, need, score, n);
+        var clue = el("div", "gm-clue", r[1]); clue.setAttribute("role", "img"); clue.setAttribute("aria-label", "Pista en emojis");
+        area.append(clue);
+        if (L.text) area.append(el("p", "gm-text-clue", "💡 " + r[2]));
+        area.append(el("p", "gm-msg", "¿Quién o quiénes son?"));
+        var opts = el("div", "gm-opts"), msg = el("p", "gm-msg"); msg.setAttribute("aria-live", "polite");
+        var others = shuffle(WHO.filter(function (c) { return c[0] !== r[0]; })).slice(0, L.opts - 1).map(function (c) { return c[0]; });
+        shuffle([r[0]].concat(others)).forEach(function (o) {
+          var b = btn("gm-opt", o, function () {
+            if (answered) return; answered = true;
+            var good = o === r[0];
+            if (good) score++;
+            hist[n] = good; mcqGuide(gd, hist, rounds.length, need, score, n + 1);
+            b.classList.add(good ? "ok" : "no");
+            Array.prototype.forEach.call(opts.children, function (x) { x.disabled = true; if (x.textContent === r[0]) x.classList.add("ok"); });
+            msg.textContent = (good ? "✅ ¡Sí! " : "Era " + r[0] + ". ") + (L.text ? "" : r[2]);
+            if (good) celebrate(b);
+            area.append(row(btn("pill-button", n + 1 < rounds.length ? "Siguiente ▶" : "Ver resultado", function () { n++; show(); })));
+          });
+          opts.append(b);
+        });
+        area.append(opts, msg);
+      }
+      show();
+    }
+
+    // ---------- 4. Atrapa bendiciones ----------
+    var CATCH = [
+      { meta: 10, life: 1900, every: 900, size: 68 }, { meta: 14, life: 1500, every: 700, size: 60 },
+      { meta: 18, life: 1200, every: 560, size: 54 }, { meta: 22, life: 1000, every: 450, size: 50 }
+    ];
+    var BLESS = ["💛", "🕊️", "✨", "🌟", "🙌", "🌈"];
+    function catcher(area, lvl, ctl) {
+      var L = CATCH[lvl], TIME = 20, score = 0, left = TIME, I = [], ended = false;
+      cleanup = function () { I.forEach(clearInterval); };
+      var how = el("div", "gm-how");
+      [["👆", "Toca los emojis que van apareciendo: " + BLESS.join(" ")],
+       ["⭐", "Cada uno que toques suma +1 punto"],
+       ["⏱", "Tienes " + TIME + " segundos y los emojis desaparecen solos"],
+       ["🎯", "Meta: " + L.meta + " puntos para pasar de nivel"]].forEach(function (x) {
+        var p = el("p"); p.append(el("span", "gm-how-e", x[0]), document.createTextNode(x[1])); how.append(p);
+      });
+      area.append(how, row(btn("pill-button", "▶ ¡Empezar!", begin)));
+
+      function begin() {
+        area.replaceChildren();
+        var hud = el("div", "gm-hud"), sc = el("span"), tm = el("span");
+        hud.append(sc, tm);
+        var track = el("div", "gm-track"), fill = el("i"); track.append(fill);
+        var arena = el("div", "gm-arena"), msg = el("p", "gm-msg"), gd = guideEl(); msg.setAttribute("aria-live", "polite");
+        area.append(hud, track, gd, arena, msg);
+        function upd() {
+          sc.textContent = "⭐ " + score + " / " + L.meta; tm.textContent = "⏱ " + left + " s";
+          fill.style.width = (left / TIME * 100) + "%"; track.classList.toggle("low", left <= 5);
+          sc.classList.toggle("got", score >= L.meta);
+          var elapsed = TIME - left, expected = L.meta * elapsed / TIME;
+          if (score >= L.meta) setGuide(gd, "🧭 ¡Meta lograda! Sigue sumando ⭐", "good");
+          else if (elapsed < 1) setGuide(gd, "🧭 ¡Prepárate! Toca cada emoji que aparezca.", "");
+          else if (score >= expected) setGuide(gd, "🧭 ¡Vas bien! Mantén el ritmo.", "good");
+          else setGuide(gd, "🧭 Ve más rápido: te faltan " + (L.meta - score) + " puntos para la meta.", "warn");
+        }
+        upd();
+        var n = 3, c = el("div", "gm-count", "3"); arena.append(c);
+        var cd = setInterval(function () {
+          n--;
+          if (n > 0) { c.textContent = String(n); c.style.animation = "none"; void c.offsetWidth; c.style.animation = ""; }
+          else if (n === 0) c.textContent = "¡YA!";
+          else { clearInterval(cd); c.remove(); go(); }
+        }, 700);
+        I.push(cd);
+
+        function add() {
+          var s = btn("gm-star", pick(BLESS));
+          s.setAttribute("aria-label", "Bendición: tócala");
+          s.style.width = s.style.height = L.size + "px";
+          s.style.fontSize = Math.round(L.size * .55) + "px";
+          var x = Math.random() * Math.max(10, arena.clientWidth - L.size), y = Math.random() * Math.max(10, arena.clientHeight - L.size);
+          s.style.left = x + "px"; s.style.top = y + "px";
+          var gone = setTimeout(function () { s.remove(); }, L.life);
+          s.addEventListener("pointerdown", function (e) {
+            e.preventDefault();
+            if (ended || s.classList.contains("hit")) return;
+            clearTimeout(gone); score++; upd();
+            s.classList.add("hit"); setTimeout(function () { s.remove(); }, 300);
+            var p = el("span", "gm-plus", "+1"); p.style.left = (x + L.size / 3) + "px"; p.style.top = y + "px";
+            arena.append(p); setTimeout(function () { p.remove(); }, 750);
+          });
+          arena.append(s);
+        }
+        function finish() {
+          if (ended) return; ended = true; stop();
+          arena.replaceChildren();
+          var pass = score >= L.meta;
+          msg.textContent = pass ? "🏆 ¡Nivel superado! Atrapaste " + score + " (meta " + L.meta + ")" : "💛 Atrapaste " + score + ". Te faltaron " + (L.meta - score) + " para la meta.";
+          if (pass) { ctl.win(); celebrate(arena); }
+          area.append(endButtons(ctl, pass, pass ? "🔁 Repetir nivel" : "🔁 Intentar otra vez"));
+        }
+        function go() {
+          I.push(setInterval(add, L.every));
+          I.push(setInterval(function () { left--; upd(); if (left <= 0) finish(); }, 1000));
+          add();
+        }
+      }
+    }
+
+    GAMES = [
+      { id: "mem", name: "Memoria bíblica", emoji: "🧠", desc: "Encuentra las parejas de personajes y símbolos.", color: "var(--yellow)", run: memory,
+        levels: [["Fácil", 4], ["Normal", 6], ["Retador", 8], ["Difícil", 10], ["Experto", 12]].map(function (x) { return { name: x[0], desc: x[1] * 2 + " cartas · " + x[1] + " parejas" }; }) },
+      { id: "ver", name: "Ordena el versículo", emoji: "✝️", desc: "Toca las palabras en el orden correcto.", color: "var(--blue)", run: verse,
+        levels: [{ name: "Fácil", desc: "Versículos cortitos (hasta 5 palabras)" }, { name: "Normal", desc: "Versículos de 6 a 7 palabras" }, { name: "Retador", desc: "Versículos de 8 a 9 palabras" }, { name: "Difícil", desc: "Versículos largos (10 palabras o más)" }] },
+      { id: "who", name: "¿Quién es?", emoji: "🔍", desc: "Adivina el personaje bíblico con emojis.", color: "var(--pink)", run: who,
+        levels: [{ name: "Fácil", desc: "Personajes muy conocidos · 3 opciones" }, { name: "Normal", desc: "Personajes que ya conoces más · 3 opciones" }, { name: "Difícil", desc: "Personajes menos conocidos · 4 opciones" }, { name: "Experto", desc: "Todos mezclados, ¡solo emojis! · 4 opciones" }] },
+      { id: "cat", name: "Atrapa bendiciones", emoji: "✨", desc: "Toca los emojis antes de que desaparezcan.", color: "var(--green)", run: catcher,
+        levels: CATCH.map(function (c, i) { return { name: ["Fácil", "Normal", "Difícil", "Turbo"][i], desc: "Meta: " + c.meta + " puntos · 20 segundos" }; }) }
+    ];
+
+    // =====================================================================
+    //  JUEGOS NUEVOS (v27)
+    // =====================================================================
+
+    // ---------- Motor de opción múltiple ----------
+    function mcq(area, ctl, cfg) {
+      var rounds = cfg.rounds, need = cfg.need, n = 0, score = 0;
+      function show() {
+        area.replaceChildren();
+        if (n >= rounds.length) {
+          var pass = score >= need;
+          var m = el("p", "gm-msg", (pass ? "🎉 ¡Nivel superado! " : "💛 ¡Casi! ") + "Aciertos: " + score + " de " + rounds.length + (pass ? "" : " (necesitas " + need + ")"));
+          if (pass) { ctl.win(); celebrate(m); }
+          area.append(m, endButtons(ctl, pass));
+          return;
+        }
+        var r = rounds[n], answered = false;
+        area.append(el("p", "gm-info", "Pregunta " + (n + 1) + " de " + rounds.length + " · Aciertos: " + score + " · Necesitas " + need + " para pasar"));
+        var gd = guideEl(), hist = area.hist = area.hist || [];
+        area.append(gd); mcqGuide(gd, hist, rounds.length, need, score, n);
+        if (r.clue) { var c = el("div", "gm-clue", r.clue); c.setAttribute("role", "img"); c.setAttribute("aria-label", "Pista en emojis"); area.append(c); }
+        if (r.q) area.append(el("p", "gm-text-clue big", r.q));
+        if (r.ask) area.append(el("p", "gm-msg", r.ask));
+        var opts = el("div", "gm-opts" + (cfg.two ? " two" : "")), msg = el("p", "gm-msg"); msg.setAttribute("aria-live", "polite");
+        (cfg.fixed ? r.options : shuffle(r.options)).forEach(function (o) {
+          var b = btn("gm-opt", o, function () {
+            if (answered) return; answered = true;
+            var good = o === r.answer;
+            if (good) score++;
+            hist[n] = good; mcqGuide(gd, hist, rounds.length, need, score, n + 1);
+            b.classList.add(good ? "ok" : "no");
+            Array.prototype.forEach.call(opts.children, function (x) { x.disabled = true; if (x.textContent === r.answer) x.classList.add("ok"); });
+            msg.textContent = (good ? "✅ ¡Sí! " : "❌ Era: " + r.answer + ". ") + (r.why || "");
+            if (good) celebrate(b);
+            area.append(row(btn("pill-button", n + 1 < rounds.length ? "Siguiente ▶" : "Ver resultado", function () { n++; show(); })));
+          });
+          opts.append(b);
+        });
+        area.append(opts, msg);
+      }
+      show();
+    }
+
+    // ---------- Motor de ordenar (letras, libros…) ----------
+    function seq(area, cfg) {
+      area.replaceChildren();
+      var items = cfg.items, order = shuffle(items.map(function (x, k) { return k; })), tries = 0;
+      while (items.length > 1 && order.every(function (k, i) { return k === i; }) && tries++ < 10) order = shuffle(order);
+      var placed = [], finished = false;
+      var info = el("p", "gm-info", cfg.info), ans = el("div", "gm-answer " + (cfg.cls || "")), chips = el("div", "gm-chips"), msg = el("p", "gm-msg"), tools = row(), gd = guideEl();
+      msg.setAttribute("aria-live", "polite");
+      if (cfg.clue) area.append(info, el("p", "gm-text-clue", cfg.clue)); else area.append(info);
+      function render() {
+        ans.replaceChildren(); chips.replaceChildren();
+        var good = orderMark(gd, placed.map(function (k) { return items[k]; }), items);
+        placed.forEach(function (k, pos) {
+          ans.append(btn("gm-chip " + (cfg.cls || "") + (pos < good ? " right" : pos === good ? " off" : ""), items[k], function () { if (finished) return; placed.splice(pos, 1); ans.classList.remove("no"); msg.textContent = ""; render(); }));
+        });
+        order.forEach(function (k) {
+          if (placed.indexOf(k) !== -1) return;
+          chips.append(btn("gm-chip " + (cfg.cls || ""), items[k], function () { if (finished) return; placed.push(k); render(); check(); }));
+        });
+      }
+      function check() {
+        if (placed.length !== items.length) return;
+        var ok = placed.every(function (k, i) { return items[k] === items[i]; });
+        if (ok) {
+          finished = true; ans.classList.add("ok");
+          msg.textContent = cfg.okText || "🎉 ¡Correcto!";
+          celebrate(ans); tools.replaceChildren(); cfg.onWin(tools);
+        } else {
+          ans.classList.remove("no"); void ans.offsetWidth; ans.classList.add("no");
+          msg.textContent = "Casi… toca una pieza para quitarla, o usa 💡 Pista.";
+        }
+      }
+      tools.append(
+        btn("pill-button", "💡 Pista", function () {
+          if (finished) return;
+          var good = 0; while (good < placed.length && items[placed[good]] === items[good]) good++;
+          placed = placed.slice(0, good);
+          var need = items[good];
+          var k = order.filter(function (x) { return placed.indexOf(x) === -1 && items[x] === need; })[0];
+          if (k !== undefined) { placed.push(k); ans.classList.remove("no"); msg.textContent = ""; render(); check(); }
+        }),
+        btn("pill-button", "🔀 Reiniciar", function () { if (finished) return; placed = []; order = shuffle(order); ans.classList.remove("no"); msg.textContent = ""; render(); })
+      );
+      area.append(gd, ans, chips, msg, tools);
+      render();
+    }
+
+    // ---------- 5. ¿Verdadero o falso? ----------
+    // [afirmación, ¿es verdad?, explicación, nivel]
+    var TF = [
+      ["Jonás pasó tres días dentro de un gran pez.", true, "Jonás 1:17.", 1],
+      ["Noé construyó un arca.", true, "Dios le pidió construir el arca para salvar a su familia y a los animales.", 1],
+      ["Jesús nació en Belén.", true, "Nació en Belén de Judea.", 1],
+      ["David venció al gigante Goliat con una espada.", false, "Usó una honda y una piedra.", 1],
+      ["Dios descansó el séptimo día de la creación.", true, "Génesis 2:2.", 1],
+      ["Moisés recibió los diez mandamientos en el monte Sinaí.", true, "Éxodo 19 y 20.", 1],
+      ["Jesús tenía doce discípulos.", true, "Los doce apóstoles.", 1],
+      ["Daniel fue arrojado a un foso de leones.", true, "Daniel 6: Dios lo protegió.", 1],
+      ["Adán y Eva vivieron en el huerto del Edén.", true, "Génesis 2.", 1],
+      ["Jesús nació en Jerusalén.", false, "Nació en Belén.", 1],
+      ["El arca de Noé fue construida de piedra.", false, "Fue de madera.", 1],
+      ["Los Magos le llevaron a Jesús oro, incienso y mirra.", true, "Mateo 2:11.", 1],
+      ["La Biblia protestante tiene 66 libros.", true, "39 del Antiguo Testamento y 27 del Nuevo.", 2],
+      ["El primer libro de la Biblia es Éxodo.", false, "El primero es Génesis.", 2],
+      ["Jesús convirtió el agua en vino en una boda en Caná.", true, "Juan 2: fue su primer milagro.", 2],
+      ["Pedro caminó sobre el agua hacia Jesús.", true, "Mateo 14:29.", 2],
+      ["Jesús fue bautizado por Juan el Bautista en el río Jordán.", true, "Mateo 3:13-17.", 2],
+      ["Judas fue uno de los doce discípulos.", true, "Judas Iscariote.", 2],
+      ["Jesús resucitó al tercer día.", true, "Resucitó al tercer día, como había anunciado.", 2],
+      ["El apóstol Pablo escribió el libro de Génesis.", false, "Pablo escribió cartas del Nuevo Testamento, como Romanos.", 2],
+      ["Sansón perdió su fuerza cuando le cortaron el cabello.", true, "Jueces 16.", 2],
+      ["El ángel Gabriel anunció a María que tendría a Jesús.", true, "Lucas 1:26-31.", 2],
+      ["Moisés cruzó el mar Rojo con ayuda de Dios.", true, "Éxodo 14.", 2],
+      ["Zaqueo era pescador.", false, "Era cobrador de impuestos (Lucas 19).", 2],
+      ["Salomón construyó el primer templo en Jerusalén.", true, "1 Reyes 6.", 3],
+      ["Rut era israelita de nacimiento.", false, "Era moabita (Rut 1:4).", 3],
+      ["El libro de los Salmos es uno de los libros de poesía de la Biblia.", true, "Salmos, Job, Proverbios, Eclesiastés y Cantares son libros poéticos.", 3],
+      ["Josué guió al pueblo a la tierra prometida después de Moisés.", true, "Josué 1.", 3],
+      ["Elías fue llevado al cielo en un carro de fuego.", true, "2 Reyes 2:11.", 3],
+      ["Gedeón venció a los madianitas con 10.000 hombres.", false, "Fueron solo 300 hombres (Jueces 7).", 3],
+      ["Pablo se llamaba Saulo antes de conocer a Jesús.", true, "Hechos 13:9.", 3],
+      ["Lázaro fue sanado de lepra por Jesús.", false, "Jesús lo resucitó (Juan 11).", 3],
+      ["Jacob tuvo doce hijos.", true, "Fueron los padres de las doce tribus de Israel.", 3],
+      ["El profeta Samuel ungió a David como rey.", true, "1 Samuel 16.", 3],
+      ["Dios envió a Jonás a la ciudad de Nínive.", true, "Jonás 1:2.", 3],
+      ["Ester era reina de Egipto.", false, "Era reina de Persia.", 3],
+      ["La torre de Babel se construyó para llegar hasta el cielo.", true, "Génesis 11.", 3],
+      ["Jesús dio el Sermón del Monte desde un barco.", false, "Lo dio en un monte (Mateo 5).", 3],
+      ["Moisés construyó el arca.", false, "El arca la construyó Noé.", 1],
+      ["Jesús tenía siete discípulos.", false, "Eligió a doce discípulos.", 1],
+      ["Daniel fue arrojado a un horno de fuego.", false, "A Daniel lo echaron al foso de los leones; el horno fue para sus tres amigos.", 2],
+      ["Pedro vendió a Jesús por treinta monedas.", false, "Eso lo hizo Judas Iscariote.", 2],
+      ["Jesús murió en la cruz y resucitó ese mismo día.", false, "Resucitó al tercer día.", 2],
+      ["Noé tuvo cuatro hijos.", false, "Tuvo tres: Sem, Cam y Jafet.", 2],
+      ["Abraham era hijo de Isaac.", false, "Al revés: Isaac era hijo de Abraham.", 3],
+      ["Sara fue la madre de Moisés.", false, "La madre de Moisés fue Jocabed.", 3]
+    ];
+    function trueFalse(area, lvl, ctl) {
+      var pool = lvl < 3 ? TF.filter(function (x) { return x[3] === lvl + 1; }) : TF;
+      var rounds = shuffle(pool).slice(0, 8).map(function (x) {
+        return { q: x[0], ask: "¿Verdadero o falso?", options: ["✅ Verdadero", "❌ Falso"], answer: x[1] ? "✅ Verdadero" : "❌ Falso", why: x[2] };
+      });
+      mcq(area, ctl, { rounds: rounds, need: 6, two: true, fixed: true });
+    }
+
+    // ---------- 6. Completa el versículo ----------
+    function strip3(w) { var m = /^([¿¡«“"(]*)(.*?)([.,;:!?»”")]*)$/.exec(w); return { pre: m[1], core: m[2], suf: m[3] }; }
+    var VOCAB = (function () {
+      var seen = {}, out = [];
+      VERSES.forEach(function (v) { v[0].split(" ").forEach(function (w) { var c = strip3(w).core.toLowerCase(); if (c.length >= 5 && !seen[c]) { seen[c] = 1; out.push(c); } }); });
+      return out;
+    })();
+    function sameCase(w, ref) { return ref.charAt(0) !== ref.charAt(0).toLowerCase() ? w.charAt(0).toUpperCase() + w.slice(1) : w; }
+    function fill(area, lvl, ctl) {
+      var two = lvl === 3, optsN = lvl === 0 ? 3 : 4;
+      var pool = VERSES.filter(function (v) { var l = vLevel(v); return lvl === 0 ? l <= 1 : lvl === 1 ? (l === 1 || l === 2) : l >= 2; });
+      var rounds = [];
+      shuffle(pool).forEach(function (v) {
+        if (rounds.length >= 5) return;
+        var words = v[0].split(" "), parts = words.map(strip3);
+        var elig = []; parts.forEach(function (p, i) { if (p.core.length >= 5) elig.push(i); });
+        var used = parts.map(function (p) { return p.core.toLowerCase(); });
+        function distract(ref, k) {
+          return shuffle(VOCAB.filter(function (w) { return used.indexOf(w) === -1; })).slice(0, k).map(function (w) { return sameCase(w, ref); });
+        }
+        if (!two) {
+          if (!elig.length) return;
+          var i = pick(elig), w = parts[i].core;
+          var shown = words.map(function (x, k) { return k === i ? parts[k].pre + "_____" + parts[k].suf : x; }).join(" ");
+          rounds.push({ q: shown, ask: "¿Qué palabra falta?", options: [w].concat(distract(w, optsN - 1)), answer: w, why: "«" + v[0] + "» — " + v[1] });
+        } else {
+          var cand = [];
+          elig.forEach(function (a) { elig.forEach(function (b) { if (b - a >= 2) cand.push([a, b]); }); });
+          if (!cand.length) return;
+          var ab = pick(cand), w1 = parts[ab[0]].core, w2 = parts[ab[1]].core, d = distract(w1, 2);
+          var shown2 = words.map(function (x, k) { return (k === ab[0] || k === ab[1]) ? parts[k].pre + "_____" + parts[k].suf : x; }).join(" ");
+          var combos = [w1 + " · " + w2, w2 + " · " + w1, w1 + " · " + sameCase(d[0], w2), sameCase(d[1], w1) + " · " + w2];
+          var uniq = combos.filter(function (c, k) { return combos.indexOf(c) === k; });
+          rounds.push({ q: shown2, ask: "¿Qué palabras faltan, en orden?", options: uniq, answer: combos[0], why: "«" + v[0] + "» — " + v[1] });
+        }
+      });
+      mcq(area, ctl, { rounds: rounds, need: 4 });
+    }
+
+    // ---------- 7. Palabra revuelta ----------
+    var WORDS = [
+      [["AMOR", "Lo que Dios siente por ti"], ["CRUZ", "Símbolo del cristianismo"], ["ARCA", "La construyó Noé"], ["GOZO", "Alegría profunda que viene de Dios"],
+       ["REINO", "Jesús habló mucho del ___ de Dios"], ["SALMO", "Canción o poema del libro de David"], ["ÁNGEL", "Mensajero de Dios"], ["JESÚS", "El Hijo de Dios"], ["BELÉN", "Ciudad donde nació Jesús"]],
+      [["GRACIA", "Favor de Dios que no merecemos"], ["BIBLIA", "El libro de Dios"], ["PERDÓN", "Lo que Dios nos da cuando nos arrepentimos"], ["PASTOR", "Jesús es el buen ___"],
+       ["ORACIÓN", "Hablar con Dios"], ["MILAGRO", "Algo imposible que Dios hace"], ["PROFETA", "Habla de parte de Dios"], ["SEMILLA", "La parábola del sembrador habla de una ___"],
+       ["TEMPLO", "Casa de Dios en Jerusalén"], ["CORDERO", "Jesús es el ___ de Dios"]],
+      [["ALABANZA", "Cantar para honrar a Dios"], ["ESPÍRITU", "Santo ___: Dios que vive en nosotros"], ["ESPERANZA", "Confianza en que Dios cumple sus promesas"], ["BENDICIÓN", "Algo bueno que Dios nos da"],
+       ["SALVACIÓN", "Lo que Jesús nos regala al morir por nosotros"], ["PARÁBOLA", "Historia con enseñanza que contaba Jesús"], ["DISCÍPULO", "Seguidor de Jesús"], ["CREACIÓN", "Todo lo que Dios hizo en seis días"],
+       ["PACIENCIA", "Esperar con calma, fruto del Espíritu"], ["FIDELIDAD", "Ser siempre leal, como Dios con nosotros"]],
+      [["MISERICORDIA", "Compasión de Dios hacia nosotros"], ["RESURRECCIÓN", "Jesús volvió a la vida"], ["MANDAMIENTOS", "Las diez leyes que Dios dio a Moisés"], ["GENEROSIDAD", "Dar con alegría a los demás"],
+       ["HOSPITALIDAD", "Recibir bien a los demás en tu casa"], ["ARREPENTIMIENTO", "Cambiar de rumbo y pedir perdón a Dios"], ["TESTIMONIO", "Contar lo que Dios hizo en tu vida"], ["INTERCESIÓN", "Orar por otras personas"]]
+    ];
+    function scramble(area, lvl, ctl) {
+      var rounds = shuffle(WORDS[lvl]).slice(0, 5), r = 0;
+      function round() {
+        var w = rounds[r][0];
+        seq(area, {
+          items: w.split(""), cls: "gm-letter", info: "Palabra " + (r + 1) + " de " + rounds.length + " · Ordena las letras.",
+          clue: "💡 " + rounds[r][1], okText: "🎉 ¡Correcto! " + w,
+          onWin: function (tools) {
+            if (r + 1 < rounds.length) tools.append(btn("pill-button", "Siguiente palabra ▶", function () { r++; round(); }));
+            else { ctl.win(); area.append(el("p", "gm-msg", "🏅 ¡Nivel superado!"), endButtons(ctl, true)); }
+          }
+        });
+      }
+      round();
+    }
+
+    // ---------- 8. Libros en orden ----------
+    var BOOKS = ["Génesis", "Éxodo", "Levítico", "Números", "Deuteronomio", "Josué", "Jueces", "Rut", "1 Samuel", "2 Samuel", "1 Reyes", "2 Reyes", "1 Crónicas", "2 Crónicas", "Esdras", "Nehemías", "Ester", "Job", "Salmos", "Proverbios", "Eclesiastés", "Cantares", "Isaías", "Jeremías", "Lamentaciones", "Ezequiel", "Daniel", "Oseas", "Joel", "Amós", "Abdías", "Jonás", "Miqueas", "Nahúm", "Habacuc", "Sofonías", "Hageo", "Zacarías", "Malaquías",
+      "Mateo", "Marcos", "Lucas", "Juan", "Hechos", "Romanos", "1 Corintios", "2 Corintios", "Gálatas", "Efesios", "Filipenses", "Colosenses", "1 Tesalonicenses", "2 Tesalonicenses", "1 Timoteo", "2 Timoteo", "Tito", "Filemón", "Hebreos", "Santiago", "1 Pedro", "2 Pedro", "1 Juan", "2 Juan", "3 Juan", "Judas", "Apocalipsis"];
+    var BOOK_LEVELS = [["Génesis", "Rut", 4], ["Mateo", "2 Corintios", 4], ["Job", "Lamentaciones", 5], ["Romanos", "2 Tesalonicenses", 5], ["Génesis", "Apocalipsis", 6]];
+    function books(area, lvl, ctl) {
+      var cfg = BOOK_LEVELS[lvl], a = BOOKS.indexOf(cfg[0]), b = BOOKS.indexOf(cfg[1]), w = cfg[2], total = 3, r = 0;
+      function round() {
+        var start = a + Math.floor(Math.random() * (b - a - w + 2));
+        seq(area, {
+          items: BOOKS.slice(start, start + w), cls: "gm-book", info: "Ronda " + (r + 1) + " de " + total + " · Ordénalos como están en la Biblia.",
+          okText: "🎉 ¡En orden!",
+          onWin: function (tools) {
+            if (r + 1 < total) tools.append(btn("pill-button", "Siguiente ronda ▶", function () { r++; round(); }));
+            else { ctl.win(); area.append(el("p", "gm-msg", "🏅 ¡Nivel superado!"), endButtons(ctl, true)); }
+          }
+        });
+      }
+      round();
+    }
+
+    // ---------- 9. ¿Qué historia es? ----------
+    // [historia, emojis, qué pasó, nivel]
+    var STORY = [
+      ["El arca de Noé", "🚢🌧️🐘", "Dios salvó a Noé, a su familia y a los animales del diluvio.", 1],
+      ["La creación", "🌍☀️🌙", "En seis días Dios creó el cielo, la tierra y todo lo que hay en ellos.", 1],
+      ["El nacimiento de Jesús", "🌟👶🐑", "Jesús nació en Belén y lo visitaron unos pastores.", 1],
+      ["David y Goliat", "🧒🪨🛡️", "David venció al gigante Goliat con una honda y una piedra.", 1],
+      ["Jonás y el gran pez", "🐋⛵", "Jonás pasó tres días dentro de un gran pez.", 1],
+      ["Daniel en el foso de los leones", "🦁🙏🌙", "Dios cerró la boca de los leones y protegió a Daniel.", 1],
+      ["La multiplicación de los panes", "🍞🐟👥", "Jesús alimentó a miles de personas con cinco panes y dos peces.", 1],
+      ["La resurrección de Jesús", "🪨🌅🙌", "Jesús resucitó al tercer día.", 1],
+      ["El paso del mar Rojo", "🌊🏜️🚶", "Dios abrió el mar para que su pueblo pasara.", 2],
+      ["Los diez mandamientos", "🏔️📜", "Dios le dio a Moisés los diez mandamientos en el monte Sinaí.", 2],
+      ["La zarza ardiente", "🔥🌿👞", "Dios habló a Moisés desde una zarza que ardía sin consumirse.", 2],
+      ["El bautismo de Jesús", "💧🕊️🏞️", "Juan bautizó a Jesús en el río Jordán y el Espíritu bajó como paloma.", 2],
+      ["Las bodas de Caná", "💍🍷🏺", "En una boda, Jesús convirtió el agua en vino.", 2],
+      ["Jesús calma la tormenta", "⛈️⛵😴", "Jesús calmó el viento y el mar con su palabra.", 2],
+      ["El buen samaritano", "🛣️🤕🐴", "Un samaritano ayudó a un herido que otros ignoraron.", 2],
+      ["La torre de Babel", "🧱🗼🗣️", "Quisieron construir una torre hasta el cielo y Dios confundió sus idiomas.", 2],
+      ["Pedro camina sobre el agua", "🛶🌊👣", "Pedro caminó sobre el agua hacia Jesús, pero dudó.", 2],
+      ["La última cena", "🍞🍷👥", "Jesús compartió el pan y el vino con sus discípulos antes de su muerte.", 2],
+      ["La caída de Jericó", "🏰🎺🧱", "Los muros de Jericó cayeron después de que el pueblo marchó alrededor.", 3],
+      ["El hijo pródigo", "👦💰🐷", "Un hijo gastó su herencia, volvió arrepentido y su padre lo recibió con alegría.", 3],
+      ["Pentecostés", "🔥👥🕊️", "El Espíritu Santo vino sobre los discípulos en Jerusalén.", 3],
+      ["La escalera de Jacob", "🪜😴✨", "Jacob soñó con una escalera entre la tierra y el cielo.", 3],
+      ["Elías en el monte Carmelo", "🔥🐂⛰️", "Elías oró y Dios envió fuego del cielo.", 3],
+      ["La viuda y las dos monedas", "🪙🪙👩", "Una viuda pobre dio dos monedas, todo lo que tenía.", 3],
+      ["El juicio de Salomón", "👑👶👶⚖️", "Salomón mostró su sabiduría al decidir entre dos madres.", 3],
+      ["Lázaro resucita", "🪦🙂🌅", "Jesús resucitó a Lázaro después de cuatro días en el sepulcro.", 3],
+      ["El horno de fuego", "🔥🙏👬", "Tres jóvenes confiaron en Dios y fueron protegidos del fuego.", 3]
+    ];
+    function story(area, lvl, ctl) {
+      var pool = lvl < 3 ? STORY.filter(function (x) { return x[3] === lvl + 1; }) : STORY, optsN = lvl >= 2 ? 4 : 3;
+      var rounds = shuffle(pool).slice(0, 6).map(function (x) {
+        var others = shuffle(STORY.filter(function (y) { return y[0] !== x[0]; })).slice(0, optsN - 1).map(function (y) { return y[0]; });
+        return { clue: x[1], ask: "¿Qué historia de la Biblia es?", options: [x[0]].concat(others), answer: x[0], why: x[2] };
+      });
+      mcq(area, ctl, { rounds: rounds, need: 4 });
+    }
+
+    GAMES.push(
+      { id: "tf", name: "¿Verdadero o falso?", emoji: "✅", desc: "Lee la frase y decide si es verdad.", color: "var(--purple)", run: trueFalse,
+        levels: [{ name: "Fácil", desc: "Historias muy conocidas · 8 frases" }, { name: "Normal", desc: "Un poco más de la Biblia · 8 frases" }, { name: "Difícil", desc: "Para conocedores · 8 frases" }, { name: "Experto", desc: "Todo mezclado · 8 frases" }] },
+      { id: "fill", name: "Completa el versículo", emoji: "🧩", desc: "Elige la palabra que falta.", color: "var(--yellow)", run: fill,
+        levels: [{ name: "Fácil", desc: "Versículos cortos · 3 opciones" }, { name: "Normal", desc: "Versículos medianos · 4 opciones" }, { name: "Difícil", desc: "Versículos largos · 4 opciones" }, { name: "Experto", desc: "¡Dos palabras faltan en cada versículo!" }] },
+      { id: "scr", name: "Palabra revuelta", emoji: "🔤", desc: "Ordena las letras y descubre la palabra.", color: "var(--blue)", run: scramble,
+        levels: [{ name: "Fácil", desc: "Palabras de 4 a 5 letras" }, { name: "Normal", desc: "Palabras de 6 a 7 letras" }, { name: "Difícil", desc: "Palabras de 8 a 9 letras" }, { name: "Experto", desc: "Palabras largas (10 letras o más)" }] },
+      { id: "book", name: "Libros en orden", emoji: "📚", desc: "Pon los libros de la Biblia en su orden.", color: "var(--pink)", run: books,
+        levels: [{ name: "Fácil", desc: "Génesis a Rut · 4 libros seguidos" }, { name: "Normal", desc: "Mateo a 2 Corintios · 4 libros seguidos" }, { name: "Difícil", desc: "Job a Lamentaciones · 5 libros seguidos" }, { name: "Retador", desc: "Cartas de Pablo · 5 libros seguidos" }, { name: "Experto", desc: "Toda la Biblia · 6 libros seguidos" }] },
+      { id: "story", name: "¿Qué historia es?", emoji: "📜", desc: "Adivina la historia bíblica con emojis.", color: "var(--green)", run: story,
+        levels: [{ name: "Fácil", desc: "Historias muy conocidas · 3 opciones" }, { name: "Normal", desc: "Más historias · 3 opciones" }, { name: "Difícil", desc: "Para conocedores · 4 opciones" }, { name: "Experto", desc: "Todas mezcladas · 4 opciones" }] }
+    );
+
+    // ---------- Abrir / cerrar ----------
+    function openPanel(opener) {
+      lastOpener = opener || null;
+      panel.inert = false;
+      panel.classList.add("open"); backdrop.classList.add("open");
+      parts.forEach(function (p) { p.inert = true; });
+      document.body.style.overflow = "hidden";
+      hub();
+      requestAnimationFrame(function () { closeBtn.focus({ preventScroll: true }); });
+    }
+    function closePanel() {
+      clear(); view = "hub";
+      panel.classList.remove("open"); backdrop.classList.remove("open");
+      panel.inert = true;
+      parts.forEach(function (p) { p.inert = false; });
+      document.body.style.overflow = "";
+      if (lastOpener) lastOpener.focus({ preventScroll: true });
+    }
+    document.querySelectorAll("[data-open-games]").forEach(function (b) {
+      b.addEventListener("click", function (e) { e.preventDefault(); openPanel(b); });
+    });
+    closeBtn.addEventListener("click", closePanel);
+    backdrop.addEventListener("click", closePanel);
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape" || !panel.classList.contains("open")) return;
+      if (view === "game" && currentGame) levelsView(currentGame);
+      else if (view === "levels") hub();
+      else closePanel();
+    });
+  })();
+  </script>
+
+  <!-- ===== CAPA INTERACTIVA (v23): se suma encima de lo que ya existía ===== -->
+  <style>
+    /* Menú que flota como píldora al hacer scroll (funciona con o sin animaciones) */
+    header.wrap { position: sticky; top: 0; z-index: 30; }
+    section[id] { scroll-margin-top: 84px; }
+    .nav-links a.active:not(.pill-button):not(.ribbon-link) { box-shadow: inset 0 -7px 0 var(--yellow); }
+
+    .fx-top { position: fixed; right: 14px; bottom: 14px; z-index: 42; width: 52px; height: 52px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--pink); box-shadow: 3px 3px 0 var(--ink); font-size: 1.5rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px) scale(.8); transition: opacity .25s, transform .25s, visibility 0s .25s; }
+    .fx-top.show { opacity: 1; visibility: visible; transform: none; transition: opacity .25s, transform .25s; }
+    .fx-top:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      /* Barra de progreso de lectura */
+      .fx-progress { position: fixed; top: 0; left: 0; right: 0; height: 6px; z-index: 90; pointer-events: none; }
+      .fx-progress i { display: block; height: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, var(--pink), var(--yellow), var(--green), var(--blue), var(--purple)); border-bottom: 2px solid var(--ink); }
+
+      /* Menú que se encoge */
+      header.wrap { transition: padding .3s ease, top .3s ease, background .3s, box-shadow .3s, border-radius .3s; border: 2px solid transparent; border-radius: 999px; }
+      header.wrap.scrolled { top: 8px; padding: 8px 18px; background: rgba(255, 254, 250, .92); border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+      .nav-links a:not(.pill-button):not(.ribbon-link) { transition: box-shadow .25s; }
+      .nav-links a:not(.pill-button):not(.ribbon-link):hover { box-shadow: inset 0 -7px 0 var(--pink); }
+
+      /* Emojis que suben de fondo */
+      .fx-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+      .fx-bg span { position: absolute; bottom: -60px; left: var(--x); font-size: var(--s); opacity: .2; animation: fxRise var(--d) linear var(--dl) infinite; }
+      @keyframes fxRise { from { transform: translateY(0) rotate(0); } to { transform: translateY(-120vh) rotate(360deg); } }
+
+      /* Letras del título que saltan al pasar el dedo o el cursor */
+      .fx-l { display: inline-block; }
+      .fx-l.jelly { animation: fxJelly .65s cubic-bezier(.2, 1.4, .4, 1); }
+      @keyframes fxJelly { 0% { transform: scale(1, 1); } 25% { transform: scale(.8, 1.25) translateY(-10px); } 55% { transform: scale(1.18, .85); } 80% { transform: scale(.95, 1.06); } 100% { transform: scale(1, 1); } }
+
+      .hero-art { transition: transform .25s ease-out; will-change: transform; }
+      .card { transition: translate .2s ease, box-shadow .2s ease, transform .18s ease-out; }
+      .card .emoji.spin { animation: fxSpin .7s cubic-bezier(.3, 1.5, .5, 1); }
+      @keyframes fxSpin { from { transform: rotate(0) scale(1); } 50% { transform: rotate(200deg) scale(1.5); } to { transform: rotate(360deg) scale(1); } }
+
+      /* Pegatinas arrastrables */
+      .floaty { cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+      .floaty.drag { cursor: grabbing; animation: none; z-index: 5; box-shadow: 7px 7px 0 var(--ink); }
+      .floaty.back { transition: transform .6s cubic-bezier(.2, 1.7, .4, 1); }
+
+      /* Versículo: palabra por palabra */
+      .fx-w { display: inline-block; animation: fxWord .55s cubic-bezier(.2, 1.4, .4, 1) both; animation-delay: calc(var(--i) * 55ms); }
+      @keyframes fxWord { from { opacity: 0; transform: translateY(18px) scale(.7) rotate(-4deg); } to { opacity: 1; transform: none; } }
+
+      /* Quiz: opciones que entran, tiemblan o brillan */
+      .answers button { animation: fxIn .4s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .answers button:nth-child(2) { animation-delay: .08s; }
+      .answers button:nth-child(3) { animation-delay: .16s; }
+      .answers button:nth-child(4) { animation-delay: .24s; }
+      .answers button.no { animation: fxShake .45s; }
+      .answers button.ok { animation: fxOk .6s; }
+      @keyframes fxIn { from { opacity: 0; scale: .85; } to { opacity: 1; scale: 1; } }
+      @keyframes fxShake { 0%, 100% { translate: 0; } 20% { translate: -9px; } 40% { translate: 9px; } 60% { translate: -6px; } 80% { translate: 5px; } }
+      @keyframes fxOk { 0% { scale: 1; } 35% { scale: 1.07; } 100% { scale: 1; } }
+      .vase-card.full { animation: fxGlow 1.6s ease-in-out infinite; }
+      @keyframes fxGlow { 0%, 100% { box-shadow: 4px 4px 0 var(--ink); } 50% { box-shadow: 4px 4px 0 var(--ink), 0 0 26px 6px rgba(255, 216, 91, .9); } }
+
+      /* Las listas de los paneles entran una por una */
+      .video-panel.open .video-list > li, .book-panel.open .book-list > li { animation: fxSlide .5s cubic-bezier(.2, .9, .3, 1) both; animation-delay: .55s; }
+      .video-panel.open .video-list > li:nth-child(1), .book-panel.open .book-list > li:nth-child(1) { animation-delay: .12s; }
+      .video-panel.open .video-list > li:nth-child(2), .book-panel.open .book-list > li:nth-child(2) { animation-delay: .19s; }
+      .video-panel.open .video-list > li:nth-child(3), .book-panel.open .book-list > li:nth-child(3) { animation-delay: .26s; }
+      .video-panel.open .video-list > li:nth-child(4), .book-panel.open .book-list > li:nth-child(4) { animation-delay: .33s; }
+      .video-panel.open .video-list > li:nth-child(5), .book-panel.open .book-list > li:nth-child(5) { animation-delay: .4s; }
+      .video-panel.open .video-list > li:nth-child(6), .book-panel.open .book-list > li:nth-child(6) { animation-delay: .47s; }
+      .book-panel.open .book-list > li, .video-panel.open .video-list > li { translate: 0 0; }
+      @keyframes fxSlide { from { opacity: 0; translate: 44px 0; } to { opacity: 1; translate: 0 0; } }
+
+      /* Onda al tocar botones */
+      .fx-r { position: relative; overflow: hidden; }
+      .fx-ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, .6); pointer-events: none; transform: scale(0); animation: fxRipple .6s ease-out forwards; }
+      @keyframes fxRipple { to { transform: scale(1); opacity: 0; } }
+
+      /* Cohete de volver arriba */
+      .fx-top.fly { animation: fxFly .7s ease-in forwards; }
+      @keyframes fxFly { to { transform: translateY(-110vh) rotate(-10deg); opacity: 0; } }
+    }
+  </style>
+  <style>
+    /* ===== Formato compacto para móviles (los paneles siguen a pantalla completa) ===== */
+    @media (max-width: 760px) {
+      :root { --shadow: 3px 3px 0 var(--ink); --round: 16px; }
+      body.device-mobile .wrap, .wrap { width: calc(100% - 24px); }
+
+      /* Inicio */
+      .hero { gap: 14px; padding: 14px 0 22px; }
+      .hero .sticker { padding: 5px 10px; font-size: .8rem; }
+      h1 { margin: 10px 0; font-size: clamp(2.2rem, 11.5vw, 3.1rem); letter-spacing: -2px; line-height: .95; }
+      .hero p { font-size: .94rem; line-height: 1.45; margin: 0; }
+      .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+      .hero-actions .pill-button { padding: 9px 8px; font-size: .84rem; text-align: center; box-shadow: 2px 2px 0 var(--ink); }
+      .hero-art { min-height: 0; margin-top: 6px; }
+      .hero-photo { border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); }
+      .floaty { padding: 5px 9px; font-size: .74rem; border-radius: 10px; box-shadow: 2px 2px 0 var(--ink); }
+
+      /* Secciones */
+      section { padding: 18px 0; }
+      .section-heading { margin-bottom: 12px; }
+      h2 { font-size: 1.5rem; letter-spacing: -1px; }
+      .section-heading p { margin: 6px 0 0; font-size: .88rem; line-height: 1.4; }
+
+      /* Tarjetas: en fila, emoji a la izquierda */
+      .cards { gap: 10px; }
+      .card { display: grid; grid-template-columns: 42px minmax(0, 1fr); column-gap: 12px; align-items: center; min-height: 0; padding: 12px 14px; border-radius: 16px; box-shadow: 3px 3px 0 var(--ink); }
+      .card .emoji { grid-row: 1 / span 2; font-size: 1.9rem; text-align: center; }
+      .card h3 { margin: 0 0 2px; font-size: 1.02rem; }
+      .card p { margin: 0; font-size: .86rem; line-height: 1.38; }
+
+      /* Versículo */
+      .verse-section { padding: 18px 14px; border-radius: 20px; }
+      .verse-section h2 { margin-bottom: 4px; font-size: 1.3rem; }
+      #verse { margin: 10px auto; font-size: 1.12rem; line-height: 1.3; }
+      #reference { font-size: .9rem; }
+      .verse-section button { margin-top: 6px; padding: 8px 14px; font-size: .88rem; }
+      .care-note { margin-top: 10px; font-size: .78rem; }
+
+      /* Quiz */
+      .quiz { gap: 12px; padding: 14px 12px; border-radius: 20px; }
+      .quiz h2 { font-size: 1.45rem; margin-bottom: 4px; }
+      .quiz p { margin: 6px 0; font-size: .86rem; line-height: 1.4; }
+      .vase-card { margin-top: 8px; padding: 8px 8px 8px; border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+      .vase-card svg { width: min(140px, 52%); }
+      #vase-status { margin: 4px 0 0; font-size: .85rem; }
+      #vase-stats { font-size: .75rem; }
+      .quiz-box { padding: 12px; border-radius: 14px; }
+      .quiz-box h3 { margin: 0 0 8px; font-size: .98rem; line-height: 1.3; }
+      .answers { gap: 7px; }
+      .answers button { padding: 9px 11px; border-radius: 10px; font-size: .9rem; }
+      #quiz-result { font-size: .86rem; }
+      .quiz-next { margin-top: 8px; padding: 8px 14px; font-size: .88rem; }
+
+      /* Apoyo emocional y pie */
+      .care { gap: 8px; padding: 14px; border-radius: 18px; }
+      .care h2 { font-size: 1.15rem; margin-bottom: 6px; }
+      .care p { margin-bottom: 8px; font-size: .88rem; line-height: 1.45; }
+      .care-lines { gap: 6px; margin-bottom: 8px; }
+      .care-lines li { padding: 7px 10px; border-radius: 10px; font-size: .84rem; line-height: 1.35; }
+      footer { margin-top: 20px; padding: 16px 0 20px; font-size: .85rem; }
+
+      /* Dentro de los paneles (siguen a pantalla completa, solo se compactan las tarjetas) */
+      .book-intro { margin-bottom: 10px; font-size: .88rem; line-height: 1.4; }
+      .book-search { padding: 9px 12px; margin-bottom: 10px; border-radius: 12px; }
+      .book-tabs { gap: 6px; margin-bottom: 10px; }
+      .book-tab { padding: 7px 4px; font-size: .74rem; border-radius: 11px; box-shadow: 2px 2px 0 var(--ink); }
+      .book-list { gap: 8px; }
+      .book-card { grid-template-columns: 52px minmax(0, 1fr); gap: 10px; padding: 8px; border-radius: 13px; box-shadow: 2px 2px 0 var(--ink); }
+      .book-cover { width: 52px; min-height: 68px; padding: 4px; font-size: 1.4rem; }
+      .music-cover { height: 52px; min-height: 52px; }
+      .book-card strong { font-size: .9rem; line-height: 1.2; }
+      .book-card small { margin-top: 3px; font-size: .75rem; line-height: 1.3; }
+      .book-actions { gap: 6px; margin-top: 6px; }
+      .book-actions a, .book-actions button, .book-card a { padding: 5px 9px; font-size: .78rem; }
+      .music-now { margin-bottom: 12px; padding: 10px; border-radius: 14px; box-shadow: 2px 2px 0 var(--ink); }
+      .music-now strong { font-size: .98rem; }
+      .music-controls button, .music-controls a { padding: 6px 11px; font-size: .78rem; }
+      .music-note { font-size: .7rem; }
+      .video-list-title { margin: 12px 0 8px; font-size: .95rem; }
+
+      /* Mascota, avisos y botón de subir */
+      .mascot { left: 8px; bottom: 8px; gap: 6px; }
+      .m-btn { width: 62px; }
+      .m-bubble { max-width: 165px; padding: 7px 9px; font-size: .78rem; border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); }
+      .fx-top { width: 42px; height: 42px; right: 10px; bottom: 10px; font-size: 1.2rem; }
+      .cookie { padding: 12px 14px; }
+      .cookie strong { margin-bottom: 4px; font-size: .95rem; }
+      .cookie p { margin-bottom: 8px; font-size: .8rem; line-height: 1.4; }
+      .cookie-btn { padding: 7px 11px; font-size: .8rem; }
+    }
+  </style>
+  <div class="fx-progress" aria-hidden="true"><i id="fx-bar"></i></div>
+  <button type="button" class="fx-top" id="fx-top" aria-label="Volver arriba">🚀</button>
+
+  <script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+    var rand = function (a, b) { return a + Math.random() * (b - a); };
+
+    // ---- Menú: píldora al bajar + resaltar la sección actual + botón volver arriba (siempre activo) ----
+    var header = $("header.wrap"), topBtn = $("#fx-top"), bar = $("#fx-bar");
+    var heroArt = $(".hero-art"), ticking = false;
+    function onScroll() {
+      ticking = false;
+      var y = window.scrollY || 0;
+      var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (header) header.classList.toggle("scrolled", y > 40);
+      if (topBtn) topBtn.classList.toggle("show", y > 600);
+      if (!reduce) {
+        if (bar) bar.style.transform = "scaleX(" + Math.min(1, y / max) + ")";
+        if (heroArt && y < 900) heroArt.style.translate = "0 " + (y * 0.07).toFixed(1) + "px";
+      }
+    }
+    window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    onScroll();
+
+    if (topBtn) topBtn.addEventListener("click", function () {
+      if (reduce) { window.scrollTo(0, 0); return; }
+      topBtn.classList.add("fly");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(function () { topBtn.classList.remove("fly"); }, 900);
+    });
+
+    if ("IntersectionObserver" in window) {
+      var links = {};
+      $$(".nav-links a[href^='#']").forEach(function (a) { links[a.getAttribute("href")] = a; });
+      var spy = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var a = links["#" + e.target.id];
+          if (!a) return;
+          if (e.isIntersecting) { $$(".nav-links a.active").forEach(function (x) { x.classList.remove("active"); }); a.classList.add("active"); }
+          else a.classList.remove("active");
+        });
+      }, { rootMargin: "-40% 0px -50% 0px" });
+      ["planes", "versiculo", "quiz"].forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
+    }
+
+    if (reduce) return; // lo demás es movimiento: se respeta "menos movimiento"
+
+    // ---- Utilidades: ráfaga de emojis y lluvia ----
+    function burst(x, y, set, n) {
+      for (var i = 0; i < n; i++) {
+        var p = document.createElement("span");
+        p.textContent = set[i % set.length];
+        p.setAttribute("aria-hidden", "true");
+        p.style.cssText = "position:fixed;pointer-events:none;z-index:9999;font-size:" + rand(1, 1.8).toFixed(2) + "rem;left:" + x + "px;top:" + y + "px;margin:-.5em 0 0 -.5em";
+        document.body.appendChild(p);
+        var a = rand(0, Math.PI * 2), d = rand(50, 130);
+        var dx = Math.cos(a) * d, dy = Math.sin(a) * d - 30;
+        var an = p.animate([
+          { transform: "translate(0,0) scale(.3) rotate(0)", opacity: 1 },
+          { transform: "translate(" + dx + "px," + dy + "px) scale(1.1) rotate(" + dx + "deg)", opacity: 1, offset: .55 },
+          { transform: "translate(" + dx * 1.1 + "px," + (dy + 70) + "px) scale(.8) rotate(" + dx * 1.6 + "deg)", opacity: 0 }
+        ], { duration: rand(750, 1200), easing: "cubic-bezier(.2,.8,.3,1)" });
+        an.onfinish = (function (el) { return function () { el.remove(); }; })(p);
+      }
+    }
+    function rain(set, n) {
+      for (var i = 0; i < n; i++) {
+        var p = document.createElement("span");
+        p.textContent = set[i % set.length];
+        p.setAttribute("aria-hidden", "true");
+        p.style.cssText = "position:fixed;pointer-events:none;z-index:9999;top:-40px;left:" + rand(0, 100) + "vw;font-size:" + rand(1.3, 2.4).toFixed(2) + "rem";
+        document.body.appendChild(p);
+        var sway = rand(-60, 60);
+        var an = p.animate([
+          { transform: "translate(0,0) rotate(0)", opacity: 1 },
+          { transform: "translate(" + sway + "px," + window.innerHeight * 1.1 + "px) rotate(" + sway * 4 + "deg)", opacity: 1 }
+        ], { duration: rand(1800, 3200), delay: rand(0, 900), easing: "ease-in", fill: "backwards" });
+        an.onfinish = (function (el) { return function () { el.remove(); }; })(p);
+      }
+    }
+    window.fxBurst = burst; window.fxRain = rain;
+    var HEARTS = ["💛", "✨", "🙌", "⭐", "💖"];
+
+    // ---- Emojis de fondo que suben ----
+    var bg = document.createElement("div");
+    bg.className = "fx-bg"; bg.setAttribute("aria-hidden", "true");
+    ["🕊️", "✨", "💛", "🎶", "🌱", "⭐", "📖", "🙌", "🌷", "☁️"].forEach(function (e, i) {
+      var s = document.createElement("span");
+      s.textContent = e;
+      s.style.cssText = "--x:" + (6 + i * 9.5) + "%;--s:" + rand(1.4, 2.6).toFixed(1) + "rem;--d:" + rand(22, 38).toFixed(0) + "s;--dl:-" + rand(0, 30).toFixed(0) + "s";
+      bg.appendChild(s);
+    });
+    document.body.appendChild(bg);
+
+    // ---- Título: cada letra salta ----
+    var h1 = $(".hero h1");
+    if (h1) {
+      h1.setAttribute("aria-label", h1.textContent.replace(/\s+/g, " ").trim());
+      (function split(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.textContent.split("").forEach(function (ch) {
+              if (/\s/.test(ch)) { frag.appendChild(document.createTextNode(ch)); return; }
+              var s = document.createElement("span");
+              s.className = "fx-l"; s.textContent = ch; s.setAttribute("aria-hidden", "true");
+              frag.appendChild(s);
+            });
+            node.replaceChild(frag, n);
+          } else if (n.nodeType === 1 && n.tagName !== "BR") split(n);
+        });
+      })(h1);
+      h1.addEventListener("pointerover", function (e) {
+        var l = e.target.closest && e.target.closest(".fx-l");
+        if (!l || l.classList.contains("jelly")) return;
+        l.classList.add("jelly");
+        l.addEventListener("animationend", function () { l.classList.remove("jelly"); }, { once: true });
+      });
+    }
+
+    // ---- Inclinación 3D (solo con ratón) ----
+    if (fine) {
+      var hero = $(".hero");
+      if (hero && heroArt) {
+        hero.addEventListener("pointermove", function (e) {
+          var r = heroArt.getBoundingClientRect();
+          var x = (e.clientX - (r.left + r.width / 2)) / (window.innerWidth / 2);
+          var y = (e.clientY - (r.top + r.height / 2)) / (window.innerHeight / 2);
+          heroArt.style.transform = "perspective(900px) rotateY(" + (x * 9).toFixed(2) + "deg) rotateX(" + (-y * 7).toFixed(2) + "deg)";
+        });
+        hero.addEventListener("pointerleave", function () { heroArt.style.transform = ""; });
+      }
+      $$(".card").forEach(function (c) {
+        c.addEventListener("pointermove", function (e) {
+          var r = c.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+          c.style.transform = "perspective(700px) rotateY(" + (x * 10).toFixed(2) + "deg) rotateX(" + (-y * 10).toFixed(2) + "deg)";
+        });
+        c.addEventListener("pointerleave", function () { c.style.transform = ""; });
+      });
+
+      // Estela de chispas del cursor
+      var last = 0;
+      window.addEventListener("pointermove", function (e) {
+        if (e.pointerType !== "mouse") return;
+        var now = performance.now();
+        if (now - last < 75) return;
+        last = now;
+        var p = document.createElement("span");
+        p.textContent = ["✨", "⭐", "💛"][Math.floor(Math.random() * 3)];
+        p.setAttribute("aria-hidden", "true");
+        p.style.cssText = "position:fixed;pointer-events:none;z-index:9998;font-size:" + rand(.8, 1.2).toFixed(2) + "rem;left:" + e.clientX + "px;top:" + e.clientY + "px;margin:-.5em 0 0 -.5em";
+        document.body.appendChild(p);
+        var an = p.animate([
+          { transform: "translate(0,0) scale(1) rotate(0)", opacity: .9 },
+          { transform: "translate(" + rand(-14, 14) + "px," + rand(18, 36) + "px) scale(.2) rotate(" + rand(-90, 90) + "deg)", opacity: 0 }
+        ], { duration: 700, easing: "ease-out" });
+        an.onfinish = function () { p.remove(); };
+      }, { passive: true });
+    }
+
+    // ---- Pegatinas arrastrables (vuelven rebotando) ----
+    $$(".floaty").forEach(function (el) {
+      var m = new DOMMatrixReadOnly(getComputedStyle(el).transform === "none" ? undefined : getComputedStyle(el).transform);
+      var ang = Math.atan2(m.b, m.a) * 180 / Math.PI;
+      var sx = 0, sy = 0, dx = 0, dy = 0, moved = false, on = false;
+      function set() { el.style.transform = "translate(" + dx + "px," + dy + "px) rotate(" + (ang + dx * .06) + "deg)"; }
+      el.addEventListener("pointerdown", function (e) {
+        on = true; moved = false; sx = e.clientX - dx; sy = e.clientY - dy;
+        el.classList.remove("back"); el.classList.add("drag");
+        try { el.setPointerCapture(e.pointerId); } catch (x) {}
+      });
+      el.addEventListener("pointermove", function (e) {
+        if (!on) return;
+        dx = e.clientX - sx; dy = e.clientY - sy;
+        if (Math.abs(dx) + Math.abs(dy) > 5) moved = true;
+        set();
+      });
+      function end(e) {
+        if (!on) return;
+        on = false; el.classList.remove("drag"); el.classList.add("back");
+        if (!moved && e) { var r = el.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, HEARTS, 10); }
+        dx = 0; dy = 0;
+        el.style.transform = "translate(0,0) rotate(" + ang + "deg)";
+        setTimeout(function () { el.classList.remove("back"); el.style.transform = ""; }, 650);
+      }
+      el.addEventListener("pointerup", end);
+      el.addEventListener("pointercancel", function () { end(null); });
+    });
+
+    // ---- Onda en botones + ráfagas al tocar cosas ----
+    var RIPPLE = ".gm-tile, .gm-opt, .gm-back, .pill-button, .verse-section button, .quiz-next, .answers button, .book-tab, .music-controls button, .music-controls a, .book-actions a, .book-actions button, .chat-form button, .chat-chips button, .cookie-btn, .fx-top";
+    document.addEventListener("pointerdown", function (e) {
+      var b = e.target.closest && e.target.closest(RIPPLE);
+      if (!b || b.disabled) return;
+      b.classList.add("fx-r");
+      var r = b.getBoundingClientRect(), s = Math.max(r.width, r.height) * 2.2;
+      var rp = document.createElement("span");
+      rp.className = "fx-ripple";
+      rp.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (e.clientX - r.left - s / 2) + "px;top:" + (e.clientY - r.top - s / 2) + "px";
+      b.appendChild(rp);
+      rp.addEventListener("animationend", function () { rp.remove(); });
+    });
+
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest && e.target.closest(".logo, .card, .hero-photo, .sticker, .verse-section button, .hero-actions .pill-button");
+      if (!t) return;
+      if (t.classList.contains("logo")) { rain(["💛", "✨", "🙌", "🎉", "🕊️", "⭐"], 26); return; }
+      if (t.classList.contains("card")) {
+        var em = t.querySelector(".emoji");
+        if (em) { em.classList.remove("spin"); void em.offsetWidth; em.classList.add("spin"); }
+      }
+      burst(e.clientX, e.clientY, HEARTS, t.classList.contains("pill-button") ? 6 : 12);
+    });
+
+    // ---- Versículo palabra por palabra ----
+    var origVerse = window.newVerse;
+    if (typeof origVerse === "function") {
+      window.newVerse = function () {
+        origVerse.apply(this, arguments);
+        var v = document.getElementById("verse");
+        if (!v) return;
+        var words = v.textContent.split(/\s+/).filter(Boolean);
+        v.textContent = "";
+        words.forEach(function (w, i) {
+          var s = document.createElement("span");
+          s.className = "fx-w"; s.style.setProperty("--i", i); s.textContent = w;
+          v.appendChild(s);
+          if (i < words.length - 1) v.appendChild(document.createTextNode(" "));
+        });
+      };
+    }
+
+    // ---- Quiz: flor nueva y florero completo ----
+    var vase = document.getElementById("vase"), vcard = document.getElementById("vase-card");
+    if (vase && "MutationObserver" in window) {
+      var seen = new WeakMap();
+      $$(".fl", vase).forEach(function (g) {
+        new MutationObserver(function () {
+          if (!g.classList.contains("new")) return;
+          var t = performance.now();
+          if (seen.get(g) && t - seen.get(g) < 600) return;
+          seen.set(g, t);
+          var r = g.getBoundingClientRect();
+          burst(r.left + r.width / 2, r.top + r.height * .25, ["🌸", "✨", "💛", "🌷"], 9);
+        }).observe(g, { attributes: true, attributeFilter: ["class"] });
+      });
+      if (vcard) {
+        var wasFull = vcard.classList.contains("full");
+        new MutationObserver(function () {
+          var f = vcard.classList.contains("full");
+          if (f && !wasFull) rain(["🌷", "🌹", "🌻", "🌼", "🌸", "🎉", "💛"], 34);
+          wasFull = f;
+        }).observe(vcard, { attributes: true, attributeFilter: ["class"] });
+      }
+    }
+  })();
+  </script>
+
 </body>
 </html>
