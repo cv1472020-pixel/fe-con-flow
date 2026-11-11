@@ -258,6 +258,146 @@
       cursor: pointer;
     }
 
+
+    /* ===== Transiciones entre paneles ===== */
+    body { background: var(--page-bg, var(--cream)); }
+    @media (prefers-reduced-motion: no-preference) { body { transition: background-color .9s ease; } }
+
+    .tr-tape { position: relative; height: clamp(88px, 14vw, 122px); margin: -6px 0; overflow: hidden; pointer-events: none; }
+    .tr-band { position: absolute; left: -6%; right: -6%; top: 50%; height: clamp(38px, 6vw, 52px); margin-top: calc(clamp(38px, 6vw, 52px) / -2); display: flex; align-items: center; overflow: hidden; border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); font-weight: 900; font-size: clamp(.95rem, 2.2vw, 1.25rem); white-space: nowrap; }
+    .tr-b1 { background: var(--a); transform: rotate(-2.2deg); z-index: 1; }
+    .tr-b2 { background: var(--b); transform: rotate(2.2deg); z-index: 2; box-shadow: 0 4px 0 var(--ink); }
+    .tr-run { display: flex; flex: none; margin-left: -1400px; will-change: transform; }
+    .tr-run span { padding-right: 1.3rem; white-space: pre; }
+    .tr-stk { position: absolute; z-index: 3; top: 50%; width: 52px; height: 52px; margin-top: -26px; display: grid; place-items: center; font-size: 1.6rem; border: 3px solid var(--ink); border-radius: 50%; background: var(--white); box-shadow: 3px 3px 0 var(--ink); will-change: transform; }
+    .tr-stk.s1 { left: 7%; transform: rotate(-8deg); }
+    .tr-stk.s2 { right: 8%; transform: rotate(7deg); }
+    @media (max-width: 760px) {
+      .tr-b1 { transform: rotate(-3deg); } .tr-b2 { transform: rotate(3deg); }
+      .tr-stk { width: 42px; height: 42px; margin-top: -21px; font-size: 1.3rem; }
+      .tr-stk.s1 { left: 4%; } .tr-stk.s2 { right: 4%; }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .tr-pre { opacity: 0; }
+      .tr-pre[data-tr="wipe"] { opacity: 1; clip-path: circle(0% at 50% 38%); }
+      .tr-go[data-tr="stamp"]  { animation: trStamp .75s cubic-bezier(.2, 1.6, .4, 1) both; }
+      .tr-go[data-tr="rise"]   { animation: trRise .6s ease-out both; }
+      .tr-go[data-tr="deal-l"] { animation: trDealL .8s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .tr-go[data-tr="deal-m"] { animation: trDealM .8s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .tr-go[data-tr="deal-r"] { animation: trDealR .8s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .tr-go[data-tr="wipe"]   { animation: trWipe 1s cubic-bezier(.3, .6, .2, 1) both; }
+      .tr-go[data-tr="left"]   { animation: trLeft .85s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .tr-go[data-tr="right"]  { animation: trRight .85s cubic-bezier(.2, 1.3, .4, 1) both; }
+      .tr-go[data-tr="calm"]   { animation: trCalm 1s ease-out both; }
+      @keyframes trStamp { from { opacity: 0; transform: scale(1.7) rotate(-7deg); } to { opacity: 1; transform: none; } }
+      @keyframes trRise  { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+      @keyframes trDealL { from { opacity: 0; transform: translate(-140px, 50px) rotate(-16deg) scale(.9); } to { opacity: 1; transform: none; } }
+      @keyframes trDealM { from { opacity: 0; transform: translateY(150px) rotate(5deg) scale(.88); } to { opacity: 1; transform: none; } }
+      @keyframes trDealR { from { opacity: 0; transform: translate(140px, 50px) rotate(16deg) scale(.9); } to { opacity: 1; transform: none; } }
+      @keyframes trWipe  { from { clip-path: circle(0% at 50% 38%); } to { clip-path: circle(150% at 50% 38%); } }
+      @keyframes trLeft  { from { opacity: 0; transform: translateX(-90px) rotate(-5deg); } to { opacity: 1; transform: none; } }
+      @keyframes trRight { from { opacity: 0; transform: translateX(90px) rotate(5deg); } to { opacity: 1; transform: none; } }
+      @keyframes trCalm  { from { opacity: 0; transform: translateY(26px) scale(.97); } to { opacity: 1; transform: none; } }
+    }
+
+    /* ===== Pausa inspiradora: libro en primera persona ===== */
+    .pv-frame {
+      --pw: clamp(104px, 30vw, 188px);
+      --ph: calc(var(--pw) * 1.32);
+      --hw: calc(var(--pw) * .46);
+      position: relative;
+      width: 100%;
+      max-width: calc(var(--pw) * 2 + 96px);
+      height: calc(var(--ph) + 112px);
+      margin: 16px auto 4px;
+      overflow: hidden;
+      border: 3px solid var(--ink);
+      border-radius: 24px;
+      background: var(--cream) repeating-linear-gradient(90deg, rgba(32,32,24,.05) 0 3px, transparent 3px 26px);
+      box-shadow: 4px 4px 0 var(--ink);
+      text-align: left;
+    }
+    .pv-stage { position: absolute; left: 50%; top: 26px; width: calc(var(--pw) * 2); height: var(--ph); margin-left: calc(var(--pw) * -1); perspective: 900px; perspective-origin: 50% 35%; }
+    .pv-book { position: absolute; inset: 0; transform-style: preserve-3d; }
+    .pv-paper { padding: 22px 14px; background: repeating-linear-gradient(to bottom, transparent 0 12px, rgba(32,32,24,.2) 12px 14px) content-box, var(--white); }
+    .pv-page { position: absolute; left: var(--pw); top: 0; width: var(--pw); height: var(--ph); border: 2.5px solid var(--ink); border-radius: 2px 10px 10px 2px; box-shadow: 4px 4px 0 var(--ink); isolation: isolate; }
+    .pv-leaf, .pv-cover { position: absolute; left: var(--pw); top: 0; width: var(--pw); height: var(--ph); transform-origin: left center; transform-style: preserve-3d; }
+    .pv-face { position: absolute; inset: 0; border: 2.5px solid var(--ink); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .pv-f { border-radius: 2px 10px 10px 2px; }
+    .pv-b { border-radius: 10px 2px 2px 10px; transform: rotateY(180deg); }
+    .pv-cover .pv-f { background: var(--blue); box-shadow: inset 12px 0 0 rgba(32,32,24,.18), 4px 4px 0 var(--ink); display: grid; place-items: center; }
+    .pv-cover .pv-b { box-shadow: -4px 4px 0 var(--ink); }
+    .pv-cross { position: relative; width: calc(var(--pw) * .2); height: calc(var(--pw) * .3); margin-left: 8px; }
+    .pv-cross::before, .pv-cross::after { content: ""; position: absolute; background: var(--ink); border-radius: 2px; }
+    .pv-cross::before { left: 50%; top: 0; bottom: 0; width: 18%; transform: translateX(-50%); }
+    .pv-cross::after { left: 0; right: 0; top: 30%; height: 18%; }
+    .pv-leaf { transform: translateZ(var(--z1)) rotateY(-180deg); }
+    .pv-cover { transform: translateZ(.5px) rotateY(-180deg); }
+
+    .pv-line { position: absolute; left: 9%; right: 6%; top: 40%; height: 24px; display: flex; align-items: center; padding: 0 7px; font-weight: 900; font-size: clamp(10px, calc(var(--pw) * .072), 13px); white-space: nowrap; overflow: hidden; color: var(--ink); }
+    .pv-line::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--pink); border-radius: 5px; transform-origin: left center; }
+
+    .pv-over { position: absolute; inset: 0; pointer-events: none; }
+    .pv-hand { position: absolute; width: var(--hw); height: calc(var(--hw) * 1.31); top: calc(var(--ph) - var(--hw) * .62); }
+    .pv-hand svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .pv-hand.r { right: calc(var(--hw) * -.1); transform: translateY(190px); }
+    .pv-hand.l { left: calc(var(--hw) * -.1); }
+    .pv-hand.l svg { transform: scaleX(-1); }
+    .pv-sk { fill: #f6c8a0; stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
+    .pv-sl { fill: var(--purple); stroke: var(--ink); stroke-width: 4; stroke-linejoin: round; }
+    .pv-ln { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+
+    .pv-pt { --p5: calc(var(--pw) * .56); position: absolute; left: calc(var(--pw) * 1.45); top: calc(var(--ph) * .4 + 31px); width: 0; height: 0; }
+    .pv-tap { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+    .pv-tap svg { position: absolute; display: block; overflow: visible; width: var(--p5); height: calc(var(--p5) * 1.5); left: calc(var(--p5) * -.483); top: calc(var(--p5) * -.05); transform-origin: calc(var(--p5) * .483) calc(var(--p5) * .05); transform: rotate(-28deg); }
+
+    .pv-say { position: absolute; left: calc(var(--pw) * 1.1); top: calc(var(--ph) * .4 - 46px); padding: 5px 11px; border: 2px solid var(--ink); border-radius: 12px; background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); font-weight: 900; font-size: 13px; line-height: 1.1; transform-origin: 20% 100%; transform: rotate(-3deg); }
+    .pv-say::after { content: ""; position: absolute; left: 16px; bottom: -8px; width: 11px; height: 11px; background: var(--yellow); border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink); transform: rotate(45deg); }
+
+    .pv-frame { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .pv-frame:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+    .pv-hint { margin: 8px 0 0; font-size: .82rem; font-weight: 700; opacity: .7; }
+    [data-pvr] #verse, [data-pvr] #reference { opacity: 1 !important; animation: none !important; }
+
+    /* Estado inicial (antes de bajar al panel) */
+    [data-pv="idle"] .pv-stage { transform: translateY(170px); }
+    [data-pv="idle"] .pv-book { transform: translateX(calc(var(--pw) * -.5)); }
+    [data-pv="idle"] .pv-cover { transform: translateZ(8px) rotateY(0deg); }
+    [data-pv="idle"] .pv-leaf { transform: translateZ(var(--z0)) rotateY(0deg); }
+    [data-pv="idle"] .pv-hand.r { transform: translate(calc(var(--pw) * -.5), 0); }
+    [data-pv="idle"] .pv-hand.l { transform: translateY(190px); }
+    [data-pv="idle"] .pv-pt { transform: translate(120px, 260px); }
+    [data-pv="idle"] .pv-line::before { transform: scaleX(0); }
+    [data-pv="idle"] .pv-say { transform: scale(0) rotate(-8deg); }
+    [data-pv="idle"] #verse, [data-pv="idle"] #reference { opacity: 0; }
+
+    /* Reproduccion completa al llegar al panel (~6 s) */
+    [data-pv="play"] .pv-stage { animation: pvRise .9s cubic-bezier(.2, .9, .3, 1.1) .15s both; }
+    [data-pv="play"] .pv-book { animation: pvSlide 1s ease-in-out 1.6s both; }
+    [data-pv="play"] .pv-cover { animation: pvCover 1.1s cubic-bezier(.5, 0, .25, 1) 1.6s both; }
+    [data-pv="play"] .pv-leaf { animation: pvLeaf .62s cubic-bezier(.45, 0, .3, 1) var(--d) both; }
+    [data-pv="play"] .pv-hand.r { animation: pvHandR 3.4s ease-in-out 1.6s both; }
+    [data-pv="play"] .pv-hand.l { animation: pvHandL .6s ease-out 2.4s both; }
+    [data-pv="play"] .pv-pt { animation: pvPoint .8s cubic-bezier(.2, .9, .3, 1.05) 4.7s both; }
+    [data-pv="play"] .pv-tap { animation: pvTap .5s ease-in-out 5.6s 2 both; }
+    [data-pv="play"] .pv-line::before { animation: pvMark .5s ease-out 5.2s both; }
+    [data-pv="play"] .pv-say { animation: pvPop .4s cubic-bezier(.2, 1.5, .4, 1) 5.55s both; }
+    [data-pv="play"] #verse, [data-pv="play"] #reference { animation: pvShow .6s ease-out 5.5s both; }
+
+
+    @keyframes pvRise { from { transform: translateY(170px); } to { transform: none; } }
+    @keyframes pvSlide { from { transform: translateX(calc(var(--pw) * -.5)); } to { transform: none; } }
+    @keyframes pvCover { from { transform: translateZ(8px) rotateY(0deg); } to { transform: translateZ(.5px) rotateY(-180deg); } }
+    @keyframes pvLeaf { from { transform: translateZ(var(--z0)) rotateY(0deg); } to { transform: translateZ(var(--z1)) rotateY(-180deg); } }
+    @keyframes pvHandR { 0% { transform: translate(calc(var(--pw) * -.5), 0); } 30% { transform: translate(0, 0); } 80% { transform: translate(0, 0); } 100% { transform: translateY(190px); } }
+    @keyframes pvHandL { from { transform: translateY(190px); } to { transform: none; } }
+    @keyframes pvPoint { from { transform: translate(120px, 260px); } to { transform: none; } }
+    @keyframes pvTap { 0%, 100% { transform: translate(0, 0); } 45% { transform: translate(-5px, -7px); } }
+    @keyframes pvMark { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes pvPop { from { transform: scale(0) rotate(-8deg); } to { transform: scale(1) rotate(-3deg); } }
+    @keyframes pvShow { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
     .quiz {
       display: grid;
       grid-template-columns: .8fr 1.2fr;
@@ -1459,6 +1599,24 @@
       <div class="verse-section">
         <span class="sticker" style="background:var(--pink)">PAUSA INSPIRADORA</span>
         <h2>Un recordatorio para hoy</h2>
+        <div class="pv-frame" id="pv-frame" role="img" aria-label="Animación: unas manos abren un libro, pasan las páginas y señalan con el dedo el versículo de hoy">
+          <div class="pv-stage">
+            <div class="pv-book">
+              <div class="pv-page pv-paper"><div class="pv-line"><span id="pv-ref">Filipenses 4:13</span></div></div>
+              <div class="pv-leaf" style="--z0:6px;--z1:1.5px;--d:3s"><div class="pv-face pv-f pv-paper"></div><div class="pv-face pv-b pv-paper"></div></div>
+              <div class="pv-leaf" style="--z0:4px;--z1:2.5px;--d:3.3s"><div class="pv-face pv-f pv-paper"></div><div class="pv-face pv-b pv-paper"></div></div>
+              <div class="pv-leaf" style="--z0:2px;--z1:3.5px;--d:3.6s"><div class="pv-face pv-f pv-paper"></div><div class="pv-face pv-b pv-paper"></div></div>
+              <div class="pv-cover"><div class="pv-face pv-f"><span class="pv-cross"></span></div><div class="pv-face pv-b pv-paper"></div></div>
+            </div>
+            <div class="pv-over">
+              <div class="pv-hand r"><svg viewBox="0 0 84 110" aria-hidden="true"><rect class="pv-sk" x="20" y="14" width="13" height="56" rx="6.5"/><rect class="pv-sk" x="34" y="4" width="13" height="66" rx="6.5"/><rect class="pv-sk" x="48" y="10" width="13" height="60" rx="6.5"/><rect class="pv-sk" x="62" y="24" width="12" height="46" rx="6"/><path class="pv-sk" d="M16 100V60q0-10 10-10h40q10 0 10 10v40z"/><rect class="pv-sk" x="2" y="46" width="15" height="44" rx="7.5" transform="rotate(-32 10 68)"/><rect class="pv-sl" x="8" y="96" width="68" height="44" rx="9"/></svg></div>
+              <div class="pv-hand l"><svg viewBox="0 0 84 110" aria-hidden="true"><rect class="pv-sk" x="20" y="14" width="13" height="56" rx="6.5"/><rect class="pv-sk" x="34" y="4" width="13" height="66" rx="6.5"/><rect class="pv-sk" x="48" y="10" width="13" height="60" rx="6.5"/><rect class="pv-sk" x="62" y="24" width="12" height="46" rx="6"/><path class="pv-sk" d="M16 100V60q0-10 10-10h40q10 0 10 10v40z"/><rect class="pv-sk" x="2" y="46" width="15" height="44" rx="7.5" transform="rotate(-32 10 68)"/><rect class="pv-sl" x="8" y="96" width="68" height="44" rx="9"/></svg></div>
+              <div class="pv-say">¡Aquí!</div>
+              <div class="pv-pt"><div class="pv-tap"><svg viewBox="0 0 120 180" aria-hidden="true"><rect class="pv-sk" x="47" y="6" width="22" height="98" rx="11"/><path class="pv-sk" d="M36 150V104q0-18 18-18h52q12 0 12 14v50z"/><rect class="pv-sk" x="70" y="88" width="16" height="30" rx="8"/><rect class="pv-sk" x="86" y="90" width="16" height="30" rx="8"/><rect class="pv-sk" x="102" y="96" width="14" height="26" rx="7"/><rect class="pv-sk" x="32" y="110" width="46" height="22" rx="11" transform="rotate(-8 55 121)"/><rect class="pv-sl" x="34" y="146" width="86" height="50" rx="10"/></svg></div></div>
+            </div>
+          </div>
+        </div>
+        <p class="pv-hint" id="pv-hint" hidden>Toca el libro para verlo otra vez</p>
         <p id="verse">“Todo lo puedo en Cristo que me fortalece.”</p>
         <div id="reference">Filipenses 4:13</div>
         <button type="button" onclick="newVerse()">Otro recordatorio ↻</button>
@@ -2461,7 +2619,7 @@
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       // 1) Aparecer al hacer scroll
-      var targets = document.querySelectorAll(".section-heading, .card, .verse-section, .quiz");
+      var targets = document.querySelectorAll(".legacy-reveal-off");
       if ("IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -2858,6 +3016,11 @@
       <button type="button">¿Cómo estás?</button>
       <button type="button">Necesito ayuda</button>
       <button type="button">¿Quién eres?</button>
+      <button type="button">¿Te puedo preguntar algo?</button>
+      <button type="button">Cuéntame un chiste</button>
+      <button type="button">¿Quién es Jesús?</button>
+      <button type="button">¿Quién es Dios?</button>
+      <button type="button">¿Quién es María?</button>
     </div>
     <div class="chat-care"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ribbon"/></svg><span>Hay gente a la que sí le importas. <a href="#ayuda" id="chat-care-link">Pedir apoyo</a></span></div>
     <form class="chat-form" id="chat-form" autocomplete="off">
@@ -2952,6 +3115,25 @@
       /* ===== Respuestas básicas (funcionan sin internet ni Apps Script) ===== */
       var NO_ANSWER = "No tengo una respuesta para ti en este momento 🙏 Mis respuestas son limitadas por hoy.";
       var FAQ = [
+        /* ===== Salud mental desde la fe (v32): va ANTES de la entrada de crisis; los mensajes personales siguen cayendo en la respuesta de crisis ===== */
+        { re: /^(?!.*(me quiero|quiero|quisiera|voy a|pienso|pensando|ganas|me siento|suicidarme|matarme|me (mato|suicido|quito))).*(se (suicido|quito la vida)|murio por suicidio|suicidio de (mi|un|una)|perdi a .* por suicidio)/, max: 14, small: true,
+          a: ["Lamento mucho tu pérdida 💛 Perder a alguien por suicidio duele de una forma muy especial, y es normal sentir tristeza, enojo, culpa o muchas preguntas sin respuesta. No fue tu culpa.\n\nLos cristianos creen que Dios es compasivo y que acoge a quienes sufren; muchas iglesias enseñan que no debemos perder la esperanza en su misericordia por quienes murieron así. Lo más importante ahora es que no atravieses este duelo solo/a: habla con tu familia, con tu líder o con un pastor o sacerdote, y busca también apoyo psicológico.\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
+        { re: /^(?!.*(me quiero|quiero|quisiera|voy a|pienso|pensando|ganas|me siento|suicidarme|matarme|me (mato|suicido|quito))).*(que es (el )?suicidio|que significa (el )?suicidio|que es suicidarse|que significa suicidarse|que es un suicidio|que es el suicidio|definicion de suicidio|por que (la gente|las personas|alguien) (se )?(suicida|suicidan|quita la vida|quitan la vida)|senales de (alerta de )?suicidio)/, max: 12, small: true,
+          a: ["El suicidio es quitarse la vida de manera voluntaria 💛 Es un tema muy serio y delicado, y lo explico con cuidado.\n\nNo es debilidad, cobardía ni falta de fe. Casi siempre ocurre cuando el dolor emocional se vuelve tan grande que la persona siente que no hay otra salida, y suele estar relacionado con depresión u otros problemas de salud mental, soledad, pérdidas o situaciones de mucha presión. Ese dolor puede tratarse, y el suicidio se puede prevenir.\n\nSeñales de alerta: hablar de no querer vivir o de ser una carga, aislarse, perder el interés en todo, cambios fuertes de ánimo o de sueño, despedirse o regalar cosas importantes. Preguntarle a alguien con cariño si está bien no le da ideas: al contrario, lo hace sentir escuchado/a.\n\nDesde la fe cristiana, la vida es un regalo de Dios y las iglesias lamentan el suicidio, pero hablan de él con compasión, no con condena: Dios ama a cada persona y conoce su dolor. Si quieres saber más, pregúntame «¿el suicidio es pecado?».\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
+        { re: /^(?!.*(me quiero|quiero|quisiera|voy a|pienso|pensando|ganas|me siento|suicidarme|matarme|me (mato|suicido|quito))).*(suicidio.*(pecado|biblia|cristian|dios|infierno|cielo|perdon|fe\b)|(pecado|biblia|cristian|dios|infierno|cielo|perdon).*suicidio|es pecado (suicidarse|quitarse la vida)|dios perdona (a )?(quien|al que|los que) se (suicida|quita la vida)|(van|va) (al )?(cielo|infierno).*(suicid|quitan la vida)|(se suicidan|se quitan la vida|suicidas?).*(cielo|infierno|condena|perdon)|habla.* (del|sobre el) suicidio|que piensa .* suicidio)/, max: 14, small: true,
+          a: ["Es un tema muy serio y delicado, y lo hablo con cuidado 💛 El suicidio es quitarse la vida de manera voluntaria, y casi siempre ocurre cuando el dolor emocional parece insoportable.\n\nDesde la fe cristiana, la vida es un regalo de Dios y tiene un valor enorme; por eso las iglesias lamentan profundamente el suicidio. Pero también reconocen algo importante: quien llega a ese punto casi siempre está sufriendo muchísimo, muchas veces por una depresión u otro problema de salud mental, y no logra ver otra salida.\n\nHoy la mayoría de las iglesias hablan con compasión y no con condena. Enseñan que Dios ama a cada persona, conoce su dolor y es misericordioso, que el sufrimiento mental intenso disminuye la responsabilidad de alguien y que no debemos perder la esperanza en la misericordia de Dios. Cada tradición lo explica con matices distintos.\n\nSi tú o alguien que conoces está pasando por esto, no es debilidad ni falta de fe, y sí hay ayuda. Habla hoy con alguien de confianza.\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
+        { re: /(que es (la )?depresion|depresion (y|es) (la )?(fe|pecado|falta de fe|castigo)|(la )?depresion .*(falta de fe|pecado|castigo|debilidad)|es pecado (tener )?(estar )?(depresion|deprimid[oa])|que dice la biblia (de|sobre) la depresion|biblia y (la )?depresion|(un |una )?cristian[oa] puede (tener|sufrir) depresion|dios y la depresion|como (superar|vencer|salir de) (la )?depresion|depresion cristian[oa]|orar (para|por) (la )?depresion)/, max: 12, small: true,
+          a: ["La depresión es una enfermedad real que afecta el ánimo, la energía, el sueño y la manera de pensar; va más allá de estar triste unos días 💙 No es falta de fe, ni un castigo, ni una debilidad, y también les pasa a personas creyentes.\n\nEn la Biblia, personas como Job, el profeta Elías y varios autores de los Salmos expresaron cansancio y desesperanza ante Dios (por ejemplo, el Salmo 42), y Dios no los rechazó: los cuidó y los acompañó.\n\nLa fe y la ayuda profesional se complementan: orar, leer la Biblia y estar en comunidad ayudan, y también ayudan un psicólogo o un médico. Si llevas varias semanas sin ánimo, sin ganas de nada o durmiendo muy mal, habla con alguien de confianza y busca ayuda profesional. Pedir ayuda es un acto de valentía.\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
+        { re: /(que es (la )?ansiedad|ansiedad (y|es) (la )?(fe|pecado|falta de fe)|es pecado (tener )?ansiedad|que dice la biblia (de|sobre) la ansiedad|biblia y (la )?ansiedad|(un |una )?cristian[oa] puede (tener|sufrir) ansiedad|como (superar|controlar|calmar|vencer|manejar) la ansiedad|ansiedad cristian[oa]|orar (para|por) (la )?ansiedad|dios y la ansiedad|que es un ataque de panico)/, max: 12, small: true,
+          a: ["La ansiedad es la reacción del cuerpo ante el miedo o la preocupación; cuando es muy intensa o constante, puede ser un trastorno que se trata 💙 Sentirla no significa que te falte fe.\n\nLa Biblia invita a poner las preocupaciones en manos de Dios (Filipenses 4:6-7 y 1 Pedro 5:7). No es una orden de «no sientas», sino una invitación a descansar en Él, junto con otras herramientas: respirar lento, dormir bien, moverte, hablar con alguien de confianza y buscar ayuda profesional si la ansiedad interfiere con tu vida diaria.\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
+        { re: /(como ayudar a (un|una|mi) (amigo|amiga|companero|companera|persona|hermano|hermana|familiar) (con|que tiene|que sufre de|que esta con) (depresion|ansiedad|tristeza)|mi (amigo|amiga|hermano|hermana) (tiene|sufre de|esta con) (depresion|ansiedad)|como (apoyo|acompano|consuelo) a (un|una|mi) (amigo|amiga) (triste|deprimid[oa]))/, max: 14, small: true,
+          a: ["Qué bonito que quieras acompañar a alguien 💛 Algunas ideas:\n\n👂 Escúchalo sin juzgar ni minimizar («no es para tanto» no ayuda).\n🤝 Quédate cerca: un mensaje, una visita o un rato juntos valen mucho.\n🙏 Si él o ella quiere, ora con esa persona; si no, respétalo.\n🧑‍⚕️ Anímalo a hablar con un psicólogo o médico, y ofrécete a acompañarlo.\n⚠️ Si menciona que quiere hacerse daño, no guardes el secreto: avisa a un adulto de confianza y contacta una línea de ayuda.\n\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora, llama ya al 110, 122 o 123."],
+          act: "ayuda" },
         { re: /(suicid|quitarme la vida|me voy a matar|matarme|terminar con mi vida|acabar con mi vida|no quiero (seguir )?(vivir|existir)|(quiero|quisiera|deseo) (morir|morirme|no existir|estar muerto|estar muerta|desaparecer)|me quiero morir|ya no quiero estar aqui|mejor (muerto|muerta)|todos estarian mejor sin mi|no vale la pena vivir|quiero (hacerme dano|lastimarme)|me hago dano|autolesion|me corto (los |las |la )?(brazos|munecas|venas|piernas)|ya no puedo mas)/, small: true,
           a: ["Gracias por decírmelo 💛 Lo que sientes importa, y tu vida importa. Hay gente a la que sí le importas, aunque ahora el dolor no te deje verlo. No tienes que cargar esto en silencio ni solo/a.\n\n👉 Habla ahora mismo con alguien de confianza: tu familia, un amigo o tu líder de jóvenes.\n📞 Línea 1582 (ALMA): apoyo psicológico gratuito y confidencial, de lunes a viernes de 7:00 a 19:00. También por WhatsApp al 3007-1582.\n🚨 Si estás en peligro ahora o piensas hacerte daño, llama ya al 110, 122 o 123 y no te quedes solo/a.\n\nSi hablas de un amigo: quédate con él, escúchalo sin juzgar y ayúdalo a contactar estas líneas."],
           act: "ayuda" },
@@ -2967,6 +3149,193 @@
           a: ["¡Qué alegría! 🎉 Me da gusto que estés bien. Disfruta ese momento y dale gracias a Dios 🙌", "¡Me alegra mucho! 💚 Que sigas con esa buena energía. ¿Quieres un versículo, ver un video o jugar el quiz?"] },
         { re: /(necesito (ayuda|ayudita|que me ayudes|apoyo)|ayuda por favor|ayudame|ayudenme|puedes ayudarme|me puedes ayudar|me ayudas|^ayuda$|^auxilio$)/, small: true, max: 9,
           a: ["¡Claro, aquí estoy para ayudarte! 💚 Cuéntame qué necesitas. Puedo guiarte con los videos 🎬, los libros 📚, el versículo del día ✨ o el quiz ⚡.\n\nSi lo que necesitas es hablar de algo personal, busca a una persona de confianza: tu familia, un amigo o tu líder de jóvenes. También puedes llamar a la línea 1582 (ALMA), gratuita y confidencial."] },
+        /* ===== Conversación básica (v32) ===== */
+        { re: /(te puedo (preguntar|hacer una pregunta)|puedo (preguntarte|preguntar|hacerte una pregunta|hacer una pregunta)|(te )?(quiero|quisiera|queria|necesito) preguntar(te)?|me permites (preguntar|una pregunta)|te hago una pregunta|(tengo|tendria) una (pregunta|duda))( algo| una cosa| una cosita| algo mas| para ti| para vos| rapida| sencilla)?( por favor)?$|^(solo |nada mas )?una (pregunta|duda)( rapida| sencilla)?$|^(pregunta|duda)$|^hazme una pregunta$/, small: true, max: 9,
+          a: ["¡Sí, claro! Dime 😊", "¡Claro que sí! Pregúntame lo que quieras 💚", "Adelante, te escucho 👂 ¿Qué quieres saber?", "¡Por supuesto! Dime, ¿qué necesitas?"] },
+        { re: /(necesito saber algo|quiero saber algo|quiero saber una cosa|tengo algo que preguntar|tengo algo que decirte|te cuento algo|puedo contarte algo|te puedo contar algo)$/, small: true, max: 8,
+          a: ["¡Claro! Cuéntame, te leo 💚", "Dime nomás, aquí estoy 👂"] },
+        { re: /^((quiero|quieres|puedes|podrias|podes|podemos) (hablar|platicar|conversar|charlar)( conmigo| contigo| un rato| un poco| un momento)?( por favor)?|platiquemos|hablemos|conversemos|platica conmigo|habla conmigo)$/, small: true, max: 8,
+          a: ["¡Claro! Platiquemos 💚 ¿De qué te gustaría hablar? Puedo ayudarte con videos, libros, versículos o el quiz. Y si es algo personal, busca además a una persona de confianza: tu familia, un amigo o tu líder de jóvenes."] },
+        { re: /^(ok|okay|okey|oki|okis|vale|listo|dale|entiendo|entendido|perfecto|ya veo|ah ok|ahh|aja|bueno|esta bien|de acuerdo|comprendo|ya)( gracias)?$/, small: true,
+          a: ["¡Perfecto! 👍 Si necesitas algo más, aquí estoy.", "¡Listo! 🙌 Pregúntame lo que quieras.", "¡De acuerdo! 💚"] },
+        { re: /^(si|sii|siii|sip|claro|claro que si|por supuesto|obvio|aja si|si por favor)$/, small: true,
+          a: ["¡Perfecto! 😊 Cuéntame, ¿qué te gustaría hacer? Puedo mostrarte videos 🎬, libros 📚, un versículo ✨ o el quiz ⚡."] },
+        { re: /^(no|nop|nope|nel|no gracias|nada|nada mas|eso es todo|por ahora no|no por ahora)$/, small: true,
+          a: ["Está bien 💚 Aquí estaré por si necesitas algo más.", "¡Sin problema! Cuando quieras, me preguntas 🙌"] },
+        { re: /^((ja|je|ji|jo)( ?(ja|je|ji|jo))+\w*|xd+|lol|lmao|haha\w*)$/, small: true,
+          a: ["¡Jajaja! 😄 Me alegra sacarte una sonrisa.", "¡Jeje! 😄 Qué bueno que te rías.", "😂 ¡Me encanta ese ánimo!"] },
+        { re: /^(me llamo|mi nombre es|puedes llamarme|llamame) ([a-z]{2,20})$/, small: true,
+          a: [function (m) { var nm = m[2].charAt(0).toUpperCase() + m[2].slice(1); return "¡Mucho gusto, " + nm + "! 💚 Yo soy el quetzal de QuezalCode. ¿En qué te puedo ayudar hoy?"; }] },
+        { re: /(sabes (como|cual) (me llamo|es mi nombre)|como me llamo)/, small: true, max: 8,
+          a: ["Todavía no lo sé 😅 Dime cómo te llamas y con gusto te saludo por tu nombre."] },
+        { re: /(que (hora es|horas son)|me (dices|das|puedes decir) la hora|hora actual|^la hora$)/, small: true, max: 8,
+          a: [function () { return "Según tu dispositivo, son las " + new Date().toLocaleTimeString("es-GT", { hour: "2-digit", minute: "2-digit" }) + " ⏰"; }] },
+        { re: /(que (dia|fecha) es( hoy)?|en que (dia|fecha) estamos|fecha de hoy|a cuanto estamos|que dia es hoy)/, small: true, max: 8,
+          a: [function () { return "Hoy es " + new Date().toLocaleDateString("es-GT", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) + " 📅"; }] },
+        { re: /(cuantos anos tienes|que edad tienes|cuando naciste|cuando es tu cumple|tu edad)/, small: true, max: 8,
+          a: ["Soy un chatbot, así que no tengo edad ni cumpleaños 🎂 ¡Pero me encanta celebrar los tuyos!"] },
+        { re: /(feliz cumple|cumpleanos|es mi cumple|\bcumple\b)/, small: true, max: 8,
+          a: ["¡Muchas felicidades! 🎂🎉 Que Dios te llene de bendiciones en este nuevo año de vida 💛"] },
+        { re: /(donde vives|de donde eres|donde naciste|donde estas viviendo)/, small: true, max: 7,
+          a: ["Vivo aquí, en esta página 🏡 Y mi especie, el quetzal, es el ave nacional de Guatemala 🇬🇹"] },
+        { re: /(que te gusta|cual es tu (color|comida|animal) favorit[oa]|tu (color|comida|animal) favorit[oa]|que comes|tienes hambre)/, small: true, max: 9,
+          a: ["Soy un chatbot, así que no como 😄 Pero si tuviera que elegir, mi color favorito sería el verde, como mis plumas 💚 Y lo que más me gusta es ayudar."] },
+        { re: /(eres (hombre|mujer|chico|chica|nino|nina|macho|hembra)|tienes (novio|novia|pareja))/, small: true, max: 8,
+          a: ["Soy un quetzal digital 🐦 y un chatbot, así que ni chico ni chica: solo tu guía por la página."] },
+        { re: /(estas vivo|estas viva|tienes sentimientos|sientes algo|tienes cerebro|piensas como (una )?persona)/, small: true, max: 8,
+          a: ["Soy un chatbot: no estoy vivo ni siento como las personas, pero estoy hecho para ayudarte 💚"] },
+        { re: /(hablame de ti|cuentame de ti|dime algo de ti|presentate)/, small: true, max: 8,
+          a: ["Soy el quetzal, la mascota de QuezalCode 💚 Soy un chatbot, no una persona. Me gusta recomendar videos, libros, música y versículos, y jugar el quiz contigo."] },
+        { re: /(hablas (ingles|otro idioma|otros idiomas|frances|portugues)|do you speak english|speak english|en ingles)/, small: true, max: 6,
+          a: ["Por ahora solo hablo español 🇬🇹 Pero con gusto te ayudo con lo que necesites."] },
+        { re: /(estas (ahi|aqui|conectado|despierto)|me (escuchas|oyes|lees)|alguien (ahi|por ahi|aqui))/, small: true, max: 6,
+          a: ["¡Sí, aquí estoy! 👋 ¿En qué te ayudo?", "Presente 🙋 Dime, ¿qué necesitas?"] },
+        { re: /(puedo confiar en ti|me guardas (un )?secreto|te cuento un secreto|guardas secretos|eres confiable)/, small: true, max: 8,
+          a: ["Soy un chatbot, así que mejor no compartas datos personales aquí (nombre completo, dirección, contraseñas) 🔒 Para cosas importantes, habla con alguien de confianza."] },
+        { re: /(eres (muy |super |bien |re )?(genial|lindo|bueno|buena|inteligente|chilero|chilera|chivo|increible|amable|simpatico|divertido|el mejor|la mejor|crack)|me caes bien|buen (bot|trabajo)|buena (respuesta|onda)|que (lindo|bueno) eres|bien hecho|excelente (bot|respuesta))/, small: true, max: 8,
+          a: ["¡Gracias! 💚 Me alegra caerte bien.", "¡Qué lindo! 🌟 Me motivas a seguir ayudando.", "¡Gracias por el ánimo! 🙌"] },
+        { re: /(eres (muy |bien |re )?(tonto|malo|inutil|feo|aburrido|pesado|burro|torpe)|no sirves|no me ayudas|que (mal|mala) respuesta|no entiendes)/, small: true, max: 8,
+          a: ["Lamento no haberte ayudado bien 🙏 Mis respuestas son básicas y limitadas. Prueba con otra pregunta, o elige un libro arriba y busco en sus páginas."] },
+        { re: /(te (quiero|amo|adoro|aprecio)|eres mi (amigo|amiga|mejor amigo)|te extrano|quieres ser mi (amigo|amiga))/, small: true, max: 7,
+          a: ["¡Qué lindo detalle! 💚 Soy un chatbot, pero me alegra acompañarte por aquí. Y recuerda que también hay personas reales a tu alrededor a quienes les importas."] },
+        { re: /(dios te bendiga|que dios te bendiga|bendiciones|^amen$|bendecid[oa]|dios te cuide)/, small: true, max: 6,
+          a: ["¡Amén! 🙏 Dios te bendiga también 💛", "Bendiciones para ti también 🙌💛"] },
+        { re: /((ora|oren|rezar|reza) por mi|puedes (orar|rezar)|quiero (orar|rezar))/, small: true, max: 8,
+          a: ["Soy un chatbot y no puedo orar por ti como lo haría una persona, pero puedes hablar con Dios con tus propias palabras 🙏 También puedes pedirle a un amigo, a tu familia o a tu líder de jóvenes que oren contigo. En la biblioteca hay un libro llamado «Cómo rezar en todo momento»."],
+          act: "libros" },
+        { re: /(estoy aburrid[oa]|me aburro|aburrid[oa]|no tengo nada que hacer)/, small: true, max: 8,
+          a: ["¡Vamos a arreglar eso! 🎉 Puedes jugar el quiz ⚡, ver un video 🎬, escuchar música 🎵 o pedirme un chiste 😄"],
+          act: "quiz" },
+        { re: /(chiste|chistoso|hazme reir|algo gracioso|broma|hazme (una )?(broma|chiste))/, small: true, max: 8,
+          a: ["¿Qué hace una abeja en el gimnasio? ¡Zum-ba! 🐝😄",
+              "¿Por qué el libro de matemáticas estaba triste? Porque tenía muchos problemas 📚😄",
+              "¿Cómo se llama el campeón de buceo japonés? Tokofondo. ¿Y el subcampeón? Kasitoko 😂",
+              "¿Por qué los pájaros vuelan hacia el sur en invierno? Porque caminando tardarían demasiado 🐦😄",
+              "¿Qué le dice un quetzal a otro? ¡Qué plumas tan bonitas tienes! 🪶😄"] },
+        { re: /(dato curioso|sabias que|curiosidad|algo (interesante|curioso)|cuentame algo|dime algo (interesante|curioso))/, small: true, max: 8,
+          a: ["El quetzal es el ave nacional de Guatemala 🇬🇹 y la moneda del país también se llama quetzal 💚",
+              "El quetzal macho luce plumas de cola larguísimas, que pueden medir más de medio metro 🪶",
+              "Los quetzales viven en bosques nubosos de Centroamérica 🌳 Por eso se les ve entre la neblina y los árboles altos."] },
+        { re: /(buenas noches|que descanses|hasta manana|me voy a dormir|voy a dormir|a dormir)/, small: true, max: 6,
+          a: ["¡Buenas noches! 🌙 Que descanses y que Dios te cuide 💛 Si apenas llegas, dime en qué te ayudo."] },
+        { re: /(quien (es|fue|era) (jesus|jesucristo|cristo|el senor jesus|el hijo de dios|jesus de nazaret)|que sabes de (jesus|jesucristo|cristo)|hablame de (jesus|jesucristo|cristo)|cuentame (de|sobre) (jesus|jesucristo|cristo)|quien es el salvador|quien es nuestro salvador)/, max: 9,
+          a: ["Para el cristianismo, la figura de Jesús se comprende a través de tres dimensiones fundamentales ✝️\n\n1️⃣ Naturaleza divina y humana: Es el Logos (la segunda persona de la Trinidad) y Dios Creador, pero también se hizo totalmente humano —experimentando limitaciones y emociones, sin pecado— para empatizar con la humanidad.\n\n2️⃣ Misión redentora: Vino a rescatar a la humanidad mediante la sustitución penal en la cruz, a revelar el verdadero carácter de amor y misericordia del Padre, y a instaurar el Reino de Dios basado en el servicio y el perdón.\n\n3️⃣ La resurrección: Es el evento central de la fe que valida su divinidad, demuestra su victoria sobre la muerte y garantiza la vida eterna a los creyentes 🙌"],
+          act: "verso" },
+        { re: /(quien (es|fue|era) (dios|el padre|nuestro padre|el creador|el senor)|que es dios|como es dios|que sabes de dios|hablame de dios|cuentame (de|sobre) dios|quien creo (el mundo|todo|el universo))/, max: 9,
+          a: ["Para el cristianismo, Dios se comprende a través de tres ideas fundamentales ✝️\n\n1️⃣ Creador y Señor de todo: Es el Dios eterno, que existe por sí mismo, creó el universo y lo sostiene. Es todopoderoso, está presente en todo lugar y lo sabe todo.\n\n2️⃣ Uno en tres personas: Es un solo Dios que existe como Padre, Hijo (Jesús) y Espíritu Santo: la Trinidad.\n\n3️⃣ Amor, justicia y misericordia: Es santo y justo, pero también es amor. Busca una relación personal con cada persona, y se dio a conocer en la Biblia y, de manera plena, en Jesús 💛"],
+          act: "verso" },
+        { re: /(quien (es|fue|era) (la virgen maria|la virgen|maria|santa maria|la madre de jesus)|que (sabes|opinan|piensan|creen) (de|sobre) (maria|la virgen)|maria (para|segun) (los )?(cristianos|catolicos|protestantes)|que significa maria para los cristianos|hablame de (maria|la virgen)|cuentame (de|sobre) (maria|la virgen)|quien es maria para los cristianos)/, max: 10,
+          a: ["En las religiones cristianas, María es la madre de Jesús 💙 Es una creencia que comparten muchas iglesias cristianas. La Iglesia católica va más allá: ella la venera de manera especial. Pero adorar y venerar no es lo mismo 🤔\n\n¿Quieres saber la diferencia? (responde sí o no)"],
+          followYes: "Esta es la diferencia ✨\n\n🙏 Adorar (adoración): es dar a Dios el culto supremo que solo le corresponde a Él: Padre, Hijo y Espíritu Santo. Los católicos lo llaman «latría». Ninguna persona, ni siquiera María, recibe adoración.\n\n🕊️ Venerar (veneración): es honrar y respetar a una persona por su cercanía con Dios, como María o los santos. Los católicos lo llaman «dulía» y, en el caso de María, «hiperdulía». Para ellos es un honor, no una adoración, y piden su intercesión para que oren a Dios por ellos.\n\nAlgunas iglesias cristianas no practican la veneración y prefieren orar directamente a Dios. Cada tradición lo vive a su manera, y todas buscan seguir a Jesús 💛" },
+        /* ===== Preguntas cristianas y de enseñanza (v32) ===== */
+        { re: /(que es (la )?biblia|para que sirve la biblia|de que trata la biblia|que dice la biblia$|por que (es importante|leer) (leer )?la biblia|que significa biblia)/, max: 9,
+          a: ["La Biblia es el libro sagrado de los cristianos 📖 Es una colección de libros escritos durante muchos siglos que cuentan la historia de Dios con la humanidad. Se divide en Antiguo Testamento (antes de Jesús) y Nuevo Testamento (la vida de Jesús y los primeros cristianos). Los cristianos creen que Dios les habla a través de ella."],
+          act: "libros" },
+        { re: /(cuantos libros (tiene|hay en) la biblia|cuantos libros tiene la biblia)/, max: 8,
+          a: ["Depende de la tradición 📚 Las Biblias católicas tienen 73 libros y las de otras iglesias cristianas, 66. La diferencia está en algunos libros del Antiguo Testamento. Todas incluyen los mismos 27 libros del Nuevo Testamento."] },
+        { re: /(como (empiezo|empezar|comienzo|comenzar) (a )?leer (la )?biblia|por donde (empiezo|empezar|comienzo|comenzar)( a leer)?( la biblia)?$|que (parte|libro) de la biblia (leo|debo leer|me recomiendas|empiezo))/, max: 10,
+          a: ["Una buena forma es comenzar por el Evangelio de Juan o el de Marcos, para conocer a Jesús 💛 Luego puedes seguir con los Salmos (oraciones y alabanzas) y Proverbios (sabiduría para la vida). Lee un poco cada día y pide a Dios que te ayude a entender."],
+          act: "libros" },
+        { re: /(diferencia entre (el )?antiguo y (el )?nuevo testamento|que es el (antiguo|nuevo) testamento|^(el )?(antiguo|nuevo) testamento$)/, max: 9,
+          a: ["El Antiguo Testamento cuenta la historia del pueblo de Israel y las promesas de Dios, desde la creación hasta los profetas 📜 El Nuevo Testamento cuenta la vida, muerte y resurrección de Jesús, el nacimiento de la iglesia y las cartas de los apóstoles. Los cristianos leen ambos: el primero anuncia y el segundo muestra a Jesús."],
+          act: "libros" },
+        { re: /(que es (la )?oracion|que es orar|como (se )?(ora|oro|orar|rezo|rezar)|como puedo (orar|rezar)|como hacer (una )?oracion|ensename a (orar|rezar)|para que sirve (la )?oracion)/, max: 9,
+          a: ["Orar es hablar con Dios, como lo harías con alguien que te ama 🙏 No necesitas palabras especiales: puedes agradecer, pedir ayuda, contarle cómo te sientes o simplemente escuchar en silencio. Algunas personas usan oraciones tradicionales, como el Padre Nuestro, y otras oran con sus propias palabras. Ambas formas valen."],
+          act: "libros" },
+        { re: /(padre nuestro|oracion del padre nuestro|que es el padre nuestro)/, max: 6,
+          a: ["El Padre Nuestro es la oración que Jesús enseñó a sus discípulos 🙏 Está en la Biblia, en Mateo 6:9-13 y Lucas 11:2-4, y el texto cambia un poquito según la tradición. En ella se alaba a Dios, se pide el pan de cada día, el perdón y la protección. Puedes leerlo en la Biblia y rezarlo con calma."],
+          act: "libros" },
+        { re: /(dios (me )?(escucha|oye)|me escucha dios|dios responde (las )?oraciones|por que dios no (me )?(responde|contesta)|dios no me (responde|contesta))/, max: 9,
+          a: ["Los cristianos creen que Dios escucha cada oración 💛 A veces la respuesta es sí, a veces no y a veces espera, y no siempre la entendemos enseguida. Si sientes silencio, no estás solo: muchas personas de fe han pasado por eso. Hablarlo con alguien de confianza puede ayudarte."],
+          act: "verso" },
+        { re: /(que es (la )?fe$|que significa tener fe|que es creer en dios|como (tengo|tener|aumento|crezco en|fortalezco mi) (la )?fe)/, max: 9,
+          a: ["La fe es confiar en Dios aunque no lo veamos 🌱 No significa no tener dudas: muchas personas creyentes también dudan y preguntan, y eso es parte del camino. La fe se fortalece orando, leyendo la Biblia y conviviendo con otros creyentes."] },
+        { re: /(existe dios|dios existe|como (se|se que|sabes que|puedo saber que) dios existe|como se que dios existe|hay pruebas de (que existe )?dios|pruebas de que dios existe|es real dios|dios es real)/, max: 10,
+          a: ["Es una de las preguntas más grandes que existen 🤔 Los cristianos creen en Dios por la fe, por lo que ven en la creación, por su experiencia personal y por la historia de Jesús. No hay una prueba que convenza a todos, y está bien hacerse estas preguntas con sinceridad. Puedes explorar el tema con tu líder de jóvenes o con los libros de la biblioteca."],
+          act: "libros" },
+        { re: /(tengo dudas (de|sobre|en) (mi |la )?fe|dudo de dios|dudo de mi fe|estoy dudando|no se si (creer|creo en dios)|perdi la fe)/, max: 10,
+          a: ["Dudar no te hace un mal creyente 💛 Hasta personas de la Biblia tuvieron dudas y se las dijeron a Dios con honestidad. Puedes orar con sinceridad, leer, preguntar y hablar con alguien de confianza, como tu líder de jóvenes, un pastor o un sacerdote. Aquí también me puedes hacer preguntas."] },
+        { re: /(que es la trinidad|trinidad|como (es|puede ser) (dios )?(uno y trino|tres personas)|un solo dios en tres)/, max: 9,
+          a: ["La Trinidad es la creencia cristiana de que hay un solo Dios que existe como tres personas: Padre, Hijo (Jesús) y Espíritu Santo ✝️ No son tres dioses, sino un solo Dios en tres personas. Es un misterio que los cristianos aceptan por la fe, y que ni los teólogos logran explicar del todo."] },
+        { re: /(quien es el espiritu santo|que es el espiritu santo|que hace el espiritu santo|espiritu santo)/, max: 8,
+          a: ["El Espíritu Santo es la tercera persona de la Trinidad 🕊️ Los cristianos creen que acompaña, guía, consuela y ayuda a los creyentes a vivir como Jesús. En la Biblia aparece como aliento de Dios, como paloma en el bautismo de Jesús y como la fuerza que recibieron los discípulos en Pentecostés."] },
+        { re: /(que es (el )?pecado|que es pecar|que significa pecar)/, max: 8,
+          a: ["Para los cristianos, pecar es alejarse de Dios y de su amor, ya sea por lo que hacemos, por lo que dejamos de hacer o por el daño que causamos a otros 💔 Todos fallamos, y por eso Jesús es tan importante: ofrece perdón y una nueva oportunidad. Un error no define quién eres."] },
+        { re: /(dios me perdona|me perdona dios|dios perdona (todo|todos los pecados)|hay perdon para mi|puede dios perdonarme|como (me )?perdona dios|como (pido|pedir) perdon a dios|que es el perdon)/, max: 10,
+          a: ["Los cristianos creen que Dios perdona a quien se arrepiente de corazón 💛 No hace falta ser perfecto: puedes decírselo con tus propias palabras. Algunas tradiciones también practican la confesión con un sacerdote o pastor. Lo importante es que siempre hay una puerta abierta para volver."],
+          act: "verso" },
+        { re: /(como (puedo )?perdonar|me cuesta perdonar|no puedo perdonar|como perdonar a (alguien|otros|mi))/, max: 9,
+          a: ["Perdonar no es olvidar ni decir que lo que pasó estuvo bien 🌱 Es decidir soltar el rencor para que no te siga lastimando. Suele ser un proceso: orar, hablar con alguien de confianza y dar pasos pequeños. Si fue algo muy grave, busca apoyo; no tienes que cargarlo solo."] },
+        { re: /(que es la salvacion|que significa (ser )?salvo|como (me )?salvo|como (puedo )?ser salvo|que es la gracia|que es el evangelio|que significa evangelio)/, max: 9,
+          a: ["Para los cristianos, la salvación es el regalo de Dios que nos rescata del pecado y de la muerte, y nos da vida eterna con Él ✨ Se recibe por su gracia (un «regalo inmerecido») mediante Jesús. El evangelio es esa «buena noticia»: Dios nos ama y se acercó a nosotros en Jesús. Cada tradición lo explica con matices distintos, pero todas se centran en Él."] },
+        { re: /(que es el cielo|existe el cielo|como es el cielo|que es el infierno|existe el infierno|que pasa (cuando|despues de) (morimos|mueres|morir|la muerte)|que hay despues de la muerte|que es la vida eterna|vida despues de la muerte)/, max: 10,
+          a: ["Los cristianos creen que la muerte no es el final 🌤️ El cielo se entiende como la vida eterna en la presencia de Dios, sin dolor ni tristeza. Sobre el infierno, las iglesias lo explican de formas distintas, pero muchas lo entienden como separación de Dios. Más que vivir con miedo, la invitación de Jesús es confiar en su amor."] },
+        { re: /(quien es (el )?(diablo|satanas|lucifer|el demonio)|existe (el )?(diablo|satanas|el demonio)|que es (el )?(diablo|satanas|un demonio)|que son los demonios)/, max: 8,
+          a: ["En la Biblia, Satanás o el diablo es presentado como un ser espiritual que se opuso a Dios y busca alejar a las personas de Él 🛡️ Los cristianos creen que no tiene poder sobre Dios y que Jesús venció al mal. No hace falta vivir con miedo: la fe cristiana pone el centro en el amor de Dios, no en el diablo."] },
+        { re: /(que son los angeles|existen los angeles|angel de la guarda|quien es (el )?(arcangel )?(miguel|gabriel|rafael))/, max: 8,
+          a: ["En la Biblia, los ángeles son mensajeros y servidores de Dios 😇 Aparecen anunciando noticias importantes, como cuando Gabriel le habló a María. Muchos cristianos creen que Dios los usa para cuidarnos, aunque cada tradición lo entiende un poco distinto."] },
+        { re: /(por que (murio|tuvo que morir) jesus|para que murio jesus|por que jesus murio( en la cruz)?|que significa la cruz|que paso en la cruz|por que la cruz)/, max: 10,
+          a: ["Los cristianos creen que Jesús murió en la cruz por amor a la humanidad, para ofrecernos perdón y reconciliarnos con Dios ✝️ Y que resucitó al tercer día, venciendo a la muerte. Por eso la cruz es símbolo de sacrificio, amor y esperanza."],
+          act: "verso" },
+        { re: /(que es (la )?(pascua|semana santa|resurreccion)|que se celebra en semana santa|por que se celebra (la )?(pascua|semana santa))/, max: 9,
+          a: ["La Semana Santa y la Pascua recuerdan los últimos días de Jesús: su entrada a Jerusalén, la Última Cena, su muerte en la cruz y su resurrección 🌅 Es la celebración más importante del cristianismo, porque la resurrección es el centro de la fe."] },
+        { re: /(que (es|se celebra en) (la )?navidad|por que se celebra (la )?navidad|que significa (la )?navidad)/, max: 8,
+          a: ["La Navidad celebra el nacimiento de Jesús 🎄 Los cristianos creen que Dios se hizo humano y llegó al mundo como un bebé en Belén, en un lugar humilde. Es una fiesta de amor, familia y esperanza."] },
+        { re: /(que es (el )?bautismo|para que sirve (el )?bautismo|que significa bautizarse|por que (se )?bautizan?|que es bautizarse|debo bautizarme)/, max: 9,
+          a: ["El bautismo es una señal de que una persona entra a la vida cristiana y a la comunidad de la iglesia 💧 El agua simboliza limpieza y nueva vida. Cada tradición lo celebra a su manera: algunas bautizan a bebés y otras a quienes deciden creer por sí mismos. Si te interesa, puedes hablar con tu pastor o sacerdote."] },
+        { re: /(que es (la )?(santa cena|eucaristia|comunion|cena del senor)|que significa (la )?(comunion|eucaristia|santa cena))/, max: 8,
+          a: ["Es el momento en que los cristianos recuerdan la Última Cena de Jesús con sus discípulos, cuando compartió el pan y el vino 🍞 Se le llama Santa Cena, Eucaristía o Comunión según la tradición. Todas lo celebran con gratitud y unión con Cristo, aunque la forma de entenderlo varía."] },
+        { re: /(cuales son los (10|diez) mandamientos|que son los (10|diez) mandamientos|diez mandamientos|10 mandamientos)/, max: 8,
+          a: ["Son las leyes que Dios dio a Moisés en el monte Sinaí ⛰️ Hablan de amar a Dios (no tener otros dioses, honrar su nombre, descansar un día) y de amar al prójimo (honrar a padre y madre, no matar, no cometer adulterio, no robar, no mentir, no codiciar). Jesús los resumió así: amar a Dios y amar al prójimo."],
+          act: "libros" },
+        { re: /(que es (la )?iglesia|para que sirve ir a (la )?iglesia|por que ir a (la )?iglesia|es necesario ir a (la )?iglesia|por que (debo|tengo que) ir a (la )?iglesia)/, max: 9,
+          a: ["La iglesia no es solo un edificio: es la comunidad de personas que siguen a Jesús ⛪ Ir a la iglesia sirve para orar juntos, aprender, apoyarse y servir a otros. Hay muchas tradiciones cristianas, con formas distintas de reunirse, y todas buscan vivir el amor de Jesús."] },
+        { re: /(^(?!.*(iglesia|catolic|evangelic|pentecostal|casa de dios|ortodox|anglican|adventist|bautist|luteran|metodist|presbiterian|denominacion|cristian))(?=.*d[ei]f[ei]ren)(?=.*religion)|otras religiones|religiones del mundo|que religiones (hay|existen)|cuantas religiones (hay|existen)|que es (el )?(islam|judaismo|budismo|hinduismo|ateismo)|que (son|es) (los |un |una )?(musulman[oa]s?|judi[oa]s?|budistas?|hinduistas?|ateo[s]?)|(islam|judaismo|budismo|hinduismo|musulmanes|judios|budistas|hindues|ateismo).*(diferencia|diferente|deferencia)|(diferencia|diferente|deferencia).*(islam|judaismo|budismo|hinduismo|musulmanes|judios|budistas|hindues|ateismo))/, max: 12,
+          a: ["Hay muchas religiones en el mundo, y cada una responde de forma distinta a las grandes preguntas de la vida 🌍 Una mirada muy breve y respetuosa:\n\n✝️ Cristianismo: cree en un solo Dios (Padre, Hijo y Espíritu Santo) y en Jesucristo como Hijo de Dios, que murió y resucitó.\n\n✡️ Judaísmo: cree en un solo Dios y en su alianza con el pueblo de Israel; su libro sagrado es la Torá. Los cristianos comparten con él el Antiguo Testamento.\n\n☪️ Islam: cree en un solo Dios (Alá) y en Mahoma como su último profeta; su libro es el Corán. Respeta a Jesús como profeta, pero no lo considera Hijo de Dios.\n\n🕉️ Hinduismo: religión muy antigua de la India, con muchas formas de lo divino y la creencia en la reencarnación.\n\n☸️ Budismo: sigue las enseñanzas de Buda para superar el sufrimiento; muchas de sus corrientes no se centran en un dios creador.\n\nEsta es una página cristiana, pero la fe cristiana invita a amar y respetar a todas las personas, piensen como piensen 🤝 Si quieres, te cuento más sobre en qué cree el cristianismo."] },
+        { re: /(^(?=.*d[ei]f[ei]ren)(?=.*(iglesia|catolic|evangelic|pentecostal|casa de dios|ortodox|anglican|adventist|bautist|luteran|metodist|presbiterian|denominacion|cristian))|tipos de (iglesias|religiones) cristianas|ramas del cristianismo|denominaciones cristianas|que (son|es) (los |las )?(evangelicos|ortodoxos|pentecostales|anglicanos|catolicos|adventistas|bautistas|luteranos|metodistas|presbiterianos)|que es ser (evangelico|catolico|ortodoxo|pentecostal|anglicano|adventista|bautista)|que es (la )?(iglesia )?(casa de dios|catolica|evangelica|pentecostal|ortodoxa|anglicana))/, max: 16,
+          a: ["¡Qué buena pregunta! 🤝 Las iglesias cristianas comparten lo más importante: creen en un solo Dios, en Jesucristo como Hijo de Dios que murió y resucitó, en la Biblia como Palabra de Dios y en amar al prójimo.\n\nLas diferencias están sobre todo en cómo se vive y se organiza la fe: la autoridad de la tradición y de los líderes, los sacramentos, el lugar de María y los santos, el bautismo y el estilo de las reuniones. No son mejores ni peores: son formas distintas de seguir a Jesús, y hablar de ellas con respeto nos ayuda a entendernos.\n\n¿Quieres que te las explique una por una? (responde sí o no)"],
+          followYes: "Te las explico brevemente, con respeto para todas 💛\n\n⛪ Católica: reconoce la autoridad de la Biblia y de la Tradición, y tiene al papa como cabeza. Celebra siete sacramentos, como la Eucaristía, y venera a María y a los santos.\n\n☦️ Ortodoxa: una de las más antiguas, con una liturgia muy rica. Se gobierna por patriarcas y concilios, no tiene papa. Valora mucho la tradición y los íconos, y también venera a María y a los santos.\n\n📖 Evangélicas y de la Reforma (luterana, presbiteriana, bautista, metodista y otras): ponen la Biblia como máxima autoridad, suelen practicar dos ritos (el bautismo y la Santa Cena) y oran directamente a Dios. Sus reuniones suelen ser más sencillas, con énfasis en la predicación y la alabanza.\n\n🔥 Pentecostales y carismáticas: destacan la obra del Espíritu Santo y sus dones, con cultos muy participativos y de mucha alabanza.\n\n🏠 Iglesias independientes o comunitarias (por ejemplo, muchas que se llaman «Casa de Dios»): suelen tener cultos cercanos al estilo evangélico o pentecostal, y cada una tiene su propio liderazgo.\n\n👑 Anglicana: combina elementos de la tradición antigua (liturgia y sacramentos) con la Biblia como centro.\n\nY lo más importante: todas se unen en Jesús. Ninguna es «mejor»; lo que nos une es más grande que lo que nos diferencia 🤝" },
+        { re: /(por que hay tantas (iglesias|religiones|denominaciones)|por que hay (muchas|tantas) (iglesias|religiones) cristianas|cual es la (mejor|verdadera) iglesia|cual (religion|iglesia) es la correcta)/, max: 12,
+          a: ["Con el paso de los siglos, el cristianismo se fue expresando en distintas tradiciones: católica, ortodoxa, evangélica, pentecostal, anglicana, entre otras ⛪ Aunque se diferencian en algunas prácticas y enseñanzas, todas comparten lo central: creen en un solo Dios y en Jesucristo como Señor y Salvador. No me corresponde decir cuál es mejor; lo más sano es conocer, preguntar y orar. En esta página nos une esa fe en común 💛"] },
+        { re: /(como (se|saber|puedo saber|se cual es) la voluntad de dios|que (quiere|espera) dios de mi|cual es mi proposito|para que (estoy aqui|existo)|cual es el proposito de mi vida|dios tiene un plan para mi)/, max: 11,
+          a: ["Muchos cristianos creen que Dios tiene un propósito para cada persona 🌟 Para descubrirlo, ayuda orar, leer la Biblia, pedir consejo a personas sabias y mirar tus dones y lo que te mueve a servir. No siempre llega de golpe: se va descubriendo paso a paso."],
+          act: "verso" },
+        { re: /(dios me ama|me ama dios|dios me quiere|le importo a dios|dios se acuerda de mi|dios me ve)/, max: 8,
+          a: ["Sí, los cristianos creen que Dios te ama tal como eres, con un amor que no depende de tus logros ni de tus errores 💛 La Biblia lo dice de muchas maneras, por ejemplo en Juan 3:16."],
+          act: "verso" },
+        { re: /(por que (existe|hay) (el )?(sufrimiento|dolor|mal)|por que dios permite (el )?(sufrimiento|dolor|el mal|que (sufra|sufran))|por que sufrimos|por que me pasan cosas malas|por que dios permite cosas malas|si dios es bueno por que)/, max: 12,
+          a: ["Es una de las preguntas más difíciles de la fe, y no hay una respuesta sencilla 🤍 Muchos cristianos creen que Dios no quiere el dolor para nosotros, que sufre con nosotros (Jesús también sufrió) y que al final el mal no tendrá la última palabra. Si estás pasando por algo duro, puedes contármelo o hablar con alguien de confianza."] },
+        { re: /(que es un milagro|existen los milagros|los milagros existen|todavia hay milagros|dios hace milagros)/, max: 8,
+          a: ["Un milagro es algo extraordinario que los creyentes atribuyen a la acción de Dios ✨ La Biblia cuenta muchos, como los que hizo Jesús al sanar enfermos. Los cristianos creen que Dios sigue obrando hoy, aunque cada persona y tradición lo vive y lo interpreta a su manera."] },
+        { re: /(que es (un )?santo$|quienes son los santos|por que (se )?(le )?(rezan|oran|piden) a los santos|se puede orar a los santos|que es la intercesion)/, max: 10,
+          a: ["En la tradición cristiana, un santo es alguien que vivió su fe de forma ejemplar 🕯️ Algunas iglesias, como la católica y la ortodoxa, los veneran y piden su intercesión, es decir, que oren a Dios por ellos. Otras prefieren orar solo directamente a Dios. En ambos casos, el centro es Dios."] },
+        { re: /(que (significa|quiere decir) amen|por que se dice amen)/, max: 7,
+          a: ["«Amén» es una palabra hebrea que significa «así sea» o «es verdad» 🙌 Los cristianos la dicen al terminar una oración para afirmar lo que dijeron y confiar en Dios."] },
+        { re: /(que es (un )?(pastor|sacerdote|cura|obispo|monja|diacono)$|quien es (un )?(pastor|sacerdote|cura|obispo)$|que hace (un )?(pastor|sacerdote|cura))/, max: 8,
+          a: ["Son líderes espirituales que sirven a su comunidad cristiana 🙏 Enseñan, acompañan, oran por las personas y dirigen las celebraciones. El nombre cambia según la tradición: pastor, sacerdote, obispo, diácono… Si tienes dudas de fe, son buenas personas con quienes hablar."] },
+        { re: /(que es ser cristiano|que significa ser cristiano|quien es (un )?cristiano|que es (un )?cristiano$|que es (el )?cristianismo)/, max: 8,
+          a: ["Ser cristiano es seguir a Jesucristo, creer que es el Hijo de Dios y vivir su enseñanza de amar a Dios y al prójimo ✝️ Hay muchas tradiciones (católica, ortodoxa, evangélica, anglicana y otras), pero todas se unen en Jesús."] },
+        { re: /(como (me )?(acerco|acercarme|acercar|conozco|conocer|empiezo|empezar|comienzo) (a )?dios|como (ser|puedo ser) (un )?(mejor )?cristian[oa]|como (empiezo|comienzo) (en )?(la )?(vida cristiana|a creer)|quiero (conocer|acercarme) a dios|como (me )?convierto)/, max: 11,
+          a: ["¡Qué bonito que quieras acercarte a Dios! 💚 Algunos pasos sencillos:\n\n🙏 Habla con Él en oración cada día.\n📖 Lee la Biblia, empezando por los Evangelios.\n🤝 Convive con otros creyentes.\n💛 Sirve a otras personas.\n\nNo hay que ser perfecto: Dios sale a tu encuentro tal como eres."],
+          act: "libros" },
+        { re: /(que es el apocalipsis|fin del mundo|segunda venida|volvera jesus|cuando vuelve jesus|jesus va a volver|que es el rapto)/, max: 9,
+          a: ["Los cristianos creen que Jesús volverá algún día para completar su reino y renovar todas las cosas 🌅 La Biblia dice que nadie sabe el día ni la hora, así que más que adivinar fechas, la invitación es vivir con esperanza, amor y confianza. Cada tradición interpreta los detalles de forma distinta."] },
+        { re: /(evolucion|big bang|ciencia y (la )?(fe|dios|religion)|dios o la ciencia|dinosaurios|creacion o evolucion)/, max: 10,
+          a: ["Muchos cristianos ven que la ciencia y la fe no se contradicen: la ciencia explica cómo funciona el mundo y la fe responde para qué existe y quién lo creó 🔬 Algunos leen el Génesis de forma literal y otros de forma simbólica, y las iglesias tienen posturas distintas. Tus preguntas son bienvenidas."] },
+        { re: /(que es adorar|que es la adoracion|diferencia entre adorar y venerar|adorar y venerar|que es venerar)/, max: 9,
+          a: ["Esta es la diferencia ✨\n\n🙏 Adorar (adoración): es dar a Dios el culto supremo que solo le corresponde a Él: Padre, Hijo y Espíritu Santo. Los católicos lo llaman «latría». Ninguna persona, ni siquiera María, recibe adoración.\n\n🕊️ Venerar (veneración): es honrar y respetar a una persona por su cercanía con Dios, como María o los santos. Los católicos lo llaman «dulía» y, en el caso de María, «hiperdulía». Para ellos es un honor, no una adoración, y piden su intercesión para que oren a Dios por ellos.\n\nAlgunas iglesias cristianas no practican la veneración y prefieren orar directamente a Dios. Cada tradición lo vive a su manera, y todas buscan seguir a Jesús 💛"] },
+        { re: /(que dice la biblia (del|sobre el) (noviazgo|sexo)|sexo antes del matrimonio|es pecado (el )?sexo|es pecado tener (novio|novia)|noviazgo cristiano|besarse es pecado|es pecado besar)/, max: 12,
+          a: ["La mayoría de las iglesias cristianas enseñan que la intimidad sexual es un regalo de Dios para vivirse dentro del matrimonio 💍 Y que el noviazgo es un tiempo para conocerse, respetarse y crecer juntos. Cada tradición y cada familia tiene matices, y son temas muy personales. Es buena idea hablarlo con alguien de confianza, como tu líder, tus papás o un consejero."] },
+        { re: /(homosexual|\bgay\b|lesbian|lgbt|aborto|abortar|divorcio|eutanasia|transgenero)/, max: 10,
+          a: ["Es un tema delicado y muy importante, y las iglesias cristianas no siempre lo ven igual 🤝 No quiero darte una respuesta simplificada. Lo más sano es conversarlo con alguien de confianza de tu iglesia, como un pastor, sacerdote o líder, siempre con respeto hacia todas las personas, porque cada una merece dignidad y cuidado."] },
+        { re: /(puedo (tomar|beber)|un cristiano puede (tomar|beber)|es pecado (tomar|beber|el alcohol|bailar|ir a fiestas)|tatuajes?|tatuarme|piercing|musica secular|escuchar rock|ir a fiestas)/, max: 11,
+          a: ["Es una pregunta muy común entre jóvenes 🙂 Las iglesias cristianas no opinan igual en estos temas: algunas son más estrictas y otras más flexibles. La Biblia pide sabiduría, moderación y cuidar tu cuerpo y tu testimonio, y rechaza los excesos, como la embriaguez. Lo mejor es orar, pensar con criterio y preguntar a tu líder o a tu familia."] },
+        { re: /(horoscopo|signos zodiacales|ouija|tarot|brujeria|reencarnacion|espiritismo|santeria)/, max: 8,
+          a: ["La mayoría de las iglesias cristianas no aconsejan prácticas como el horóscopo, la ouija, el tarot o el espiritismo, porque buscan guía o respuestas fuera de Dios 🙏 Tampoco enseñan la reencarnación: creen que la vida es una sola. Si sientes curiosidad o miedo por estos temas, habla con tu líder; aquí también puedes preguntarme."] },
+        { re: /^(es pecado|esto es pecado|eso es pecado)( .*)?$/, max: 7,
+          a: ["Buena pregunta 🤔 Para los cristianos, el pecado es lo que nos aleja de Dios y de los demás. Para saber si algo lo es, ayuda mirar la Biblia, orar y preguntar a un líder de confianza. Si me cuentas qué tema te inquieta, intento orientarte."] },
+        { re: /(^(?=.*(titulo|advocacion|apodo))(?=.*(catolic|virgen|maria|sacerdote|padre|papa|cura|obispo|cardenal|monsenor))|tantos nombres.*(virgen|maria|santos|catolic)|es la misma virgen|por que hay (tantas|muchas) virgenes|por que (la virgen|maria) tiene (tantos|muchos) nombres|que son las advocaciones)/, max: 14,
+          a: ["Muy buena pregunta 🤔 Cuando se habla de «tantos títulos» entre los católicos, normalmente se refiere a dos cosas:\n\n🌹 Los nombres de María (advocaciones): la Virgen del Rosario, de Guadalupe, del Carmen, de Fátima, de Lourdes… no son personas distintas: es siempre María, la madre de Jesús. Cada nombre recuerda un lugar, un acontecimiento o una virtud, como una devoción que nació en un pueblo o en una historia concreta (la Virgen del Rosario, por ejemplo, es muy querida en Guatemala). Lo mismo pasa con algunas devociones a Jesús, como el Cristo de Esquipulas o el Nazareno: es siempre Cristo. Para los católicos, esas devociones siempre llevan a Jesús, y la adoración es solo para Dios.\n\n⛪ Los títulos de los líderes: padre, monseñor, obispo, cardenal, papa o «Santo Padre», hermana o sor… Indican el servicio o el cargo de cada persona dentro de la organización de la Iglesia, y son formas de respeto que vienen de la tradición.\n\nOtras iglesias cristianas usan menos títulos o los usan distinto (pastor, hermano, líder), pero la idea es parecida: reconocer a quien sirve a la comunidad. Cada tradición tiene su forma de hacerlo, y todas buscan seguir a Jesús 💛 Si te referías a otros títulos, dime cuáles."] },
         { re: /\b(gracias|muchas gracias|thanks|te lo agradezco)\b/, small: true, max: 6,
           a: ["¡De nada! 💚 Aquí sigo por si tienes otra pregunta.", "¡Con gusto! Pregunta lo que quieras 🙌"] },
         { re: /\b(adios|chao|chau|bye|hasta luego|nos vemos)\b/, small: true, max: 5,
@@ -3018,15 +3387,28 @@
         return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
           .replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
       }
-      var lastFaq = -1;
+      var lastFaq = -1, lastIdx = -1, pending = null;
+      var YES_RE = /^(si|sii|siii|sip|claro|dale|quiero|si quiero|si por favor|por favor|ok|okay|aja|dime|cuentame|quiero saber|si quiero saber|me gustaria|me gustaria saber|por supuesto|obvio|si dime|si cuentame|yes|va|vale|de una|simon)$/;
+      var NO_RE = /^(no|nop|nope|nel|no gracias|no quiero|ahora no|luego|despues|nada|no por ahora)$/;
       function faqAnswer(q, bookChosen) {
         var n = norm(q), words = n ? n.split(" ").length : 0;
+        if (pending) {
+          var p = pending; pending = null;
+          if (YES_RE.test(n)) return { text: p.yes, act: null };
+          if (NO_RE.test(n)) return { text: "Está bien 💚 Aquí estaré si quieres preguntarme otra cosa.", act: null };
+        }
         for (var i = 0; i < FAQ.length; i++) {
           var f = FAQ[i];
           if (bookChosen && !f.small) continue;
           if (f.max && words > f.max) continue;
-          if (f.re.test(n)) {
-            var a = f.a[Math.floor(Math.random() * f.a.length)];
+          var m = f.re.exec(n);
+          if (m) {
+            var idx = Math.floor(Math.random() * f.a.length);
+            if (f.a.length > 1 && lastFaq === i && lastIdx === idx) idx = (idx + 1) % f.a.length;
+            lastFaq = i; lastIdx = idx;
+            var a = f.a[idx];
+            if (typeof a === "function") a = a(m, n);
+            if (f.followYes) pending = { yes: f.followYes };
             return { text: a, act: f.act || null };
           }
         }
@@ -4592,6 +4974,533 @@
         }).observe(vcard, { attributes: true, attributeFilter: ["class"] });
       }
     }
+
+    // ---- Pausa inspiradora: libro abierto en primera persona, señala el versiculo ----
+    (function () {
+      var sec = document.querySelector(".verse-section");
+      var frame = document.getElementById("pv-frame");
+      var ref = document.getElementById("pv-ref");
+      var hint = document.getElementById("pv-hint");
+      if (!sec || !frame || !ref) return;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var armed = !reduce && "IntersectionObserver" in window;
+      var endTimer = null;
+
+      function set(v) { sec.setAttribute("data-pv", v); }
+      function syncRef() {
+        var r = document.getElementById("reference");
+        if (r) ref.textContent = r.textContent;
+      }
+      function start() {
+        set("play");
+        clearTimeout(endTimer);
+        endTimer = setTimeout(function () { set("done"); }, 6600);
+      }
+      // repetir toda la animacion desde el principio
+      function replay() {
+        clearTimeout(endTimer);
+        sec.setAttribute("data-pvr", "1");
+        set("idle");
+        void sec.offsetWidth;
+        start();
+      }
+
+      // otro recordatorio: cambia la referencia del libro y repite la animacion
+      var prev = window.newVerse;
+      if (typeof prev === "function") {
+        window.newVerse = function () {
+          var out = prev.apply(this, arguments);
+          syncRef();
+          if (armed && sec.getAttribute("data-pv") !== "idle") replay();
+          return out;
+        };
+      }
+      syncRef();
+      if (!armed) return;
+
+      // tocar el libro tambien la repite
+      frame.setAttribute("role", "button");
+      frame.setAttribute("tabindex", "0");
+      frame.setAttribute("aria-label", "Repetir la animación del libro");
+      if (hint) hint.hidden = false;
+      frame.addEventListener("click", replay);
+      frame.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); replay(); }
+      });
+
+      set("idle");
+      function frameInView() {
+        var r = frame.getBoundingClientRect();
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var vis = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+        return vis >= r.height * 0.5;
+      }
+      // empieza al bajar al panel
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.intersectionRatio >= 0.5 && sec.getAttribute("data-pv") === "idle") start();
+        });
+      }, { threshold: [0, 0.5] }).observe(frame);
+      // si solo se ve el texto del versiculo, no lo dejamos oculto
+      var verseEl = document.getElementById("verse");
+      if (verseEl) new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && sec.getAttribute("data-pv") === "idle" && !frameInView()) set("done");
+        });
+      }, { threshold: [0.01] }).observe(verseEl);
+      // al salir por completo del panel se prepara para repetir
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting && sec.getAttribute("data-pv") !== "idle") {
+            clearTimeout(endTimer);
+            sec.removeAttribute("data-pvr");
+            set("idle");
+          }
+        });
+      }, { threshold: [0] }).observe(sec);
+    })();
+
+    // ---- Transiciones entre paneles: cintas, entradas con personalidad y fondo que cambia de color ----
+    (function () {
+      var main = document.querySelector("main");
+      if (!main) return;
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var hasIO = "IntersectionObserver" in window;
+
+      // 1) Cintas cruzadas entre paneles (se deslizan al hacer scroll)
+      var CINTAS = [
+        { antes: "#planes", a: "var(--pink)", b: "var(--yellow)", t1: "Fe real, cero pose ✨ Vive con propósito 🙌 ", t2: "Música 🎸 videos 🎬 libros 📚 juegos 🎮 ", s: ["⭐", "🕊️"] },
+        { antes: "#versiculo", a: "var(--blue)", b: "var(--green)", t1: "Respira un momento 🕊️ Dios te ama 💛 ", t2: "Una pausa solo para ti ✨ ", s: ["🙏", "☀️"] },
+        { antes: "#quiz", a: "var(--green)", b: "var(--pink)", t1: "¿Cuánto sabes? ⚡ Pon a prueba tu fe 🧠 ", t2: "Una flor por cada acierto 🌷 ", s: ["🌷", "🌻"] },
+        { antes: "#ayuda", a: "var(--purple)", b: "var(--blue)", t1: "Tu vida importa 💛 No estás solo/a ", t2: "Aquí hay gente contigo 🤝 ", s: ["💛", "🕊️"] }
+      ];
+      var tapes = [];
+      CINTAS.forEach(function (c) {
+        var objetivo = main.querySelector(c.antes);
+        if (!objetivo) return;
+        var tape = document.createElement("div");
+        tape.className = "tr-tape";
+        tape.setAttribute("aria-hidden", "true");
+        tape.style.setProperty("--a", c.a);
+        tape.style.setProperty("--b", c.b);
+        function banda(cls, txt) {
+          var b = document.createElement("div");
+          b.className = "tr-band " + cls;
+          var run = document.createElement("div");
+          run.className = "tr-run";
+          for (var i = 0; i < 12; i++) { var sp = document.createElement("span"); sp.textContent = txt; run.appendChild(sp); }
+          b.appendChild(run);
+          tape.appendChild(b);
+          return run;
+        }
+        var r1 = banda("tr-b1", c.t1), r2 = banda("tr-b2", c.t2);
+        var stk = c.s.map(function (e, i) {
+          var s = document.createElement("span");
+          s.className = "tr-stk s" + (i + 1);
+          s.textContent = e;
+          tape.appendChild(s);
+          return s;
+        });
+        main.insertBefore(tape, objetivo);
+        tapes.push({ el: tape, r1: r1, r2: r2, stk: stk });
+      });
+
+      var ticking = false;
+      function mover() {
+        ticking = false;
+        var vh = window.innerHeight || 800;
+        tapes.forEach(function (t) {
+          var r = t.el.getBoundingClientRect();
+          if (r.bottom < -150 || r.top > vh + 150) return;
+          var d = r.top + r.height / 2 - vh / 2;
+          t.r1.style.transform = "translate3d(" + (d * 0.6).toFixed(1) + "px,0,0)";
+          t.r2.style.transform = "translate3d(" + (d * -0.6).toFixed(1) + "px,0,0)";
+          t.stk[0].style.transform = "translate3d(0," + (d * 0.16).toFixed(1) + "px,0) rotate(" + (-8 + d * 0.04).toFixed(1) + "deg)";
+          t.stk[1].style.transform = "translate3d(0," + (d * -0.12).toFixed(1) + "px,0) rotate(" + (7 - d * 0.035).toFixed(1) + "deg)";
+        });
+      }
+      if (!reduce) {
+        window.addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(mover); } }, { passive: true });
+        window.addEventListener("resize", mover);
+        mover();
+      }
+
+      if (reduce || !hasIO) return;
+
+      // 2) Cada panel entra a su manera
+      var items = [];
+      function add(sel, tipo, retraso) {
+        document.querySelectorAll(sel).forEach(function (el, i) {
+          var t = typeof tipo === "function" ? tipo(i) : tipo;
+          items.push({ el: el, tipo: t, retraso: retraso ? retraso(i) : 0 });
+        });
+      }
+      var ancho = window.innerWidth > 760;
+      var REPARTO = ["deal-l", "deal-m", "deal-r"];
+      add("#planes .section-heading h2", "stamp");
+      add("#planes .section-heading p", "rise", function () { return 0.25; });
+      add("#planes .card", function (i) { return ancho ? REPARTO[i % 3] : (i % 2 ? "deal-r" : "deal-l"); }, function (i) { return ancho ? (i % 3) * 0.12 : 0; });
+      add("#versiculo .verse-section", "wipe");
+      add("#quiz .quiz > div:first-child", "left");
+      add("#quiz .quiz-box", "right", function () { return 0.15; });
+      add("#ayuda .care", "calm");
+      add("footer .wrap", "rise");
+
+      function lanzar(el, it) {
+        if (it.retraso) el.style.animationDelay = it.retraso + "s";
+        el.classList.add("tr-go");
+        var listo = false;
+        function fin() {
+          if (listo) return;
+          listo = true;
+          el.classList.remove("tr-pre", "tr-go");
+          el.style.animationDelay = "";
+          el.removeAttribute("data-tr");
+        }
+        el.addEventListener("animationend", function (ev) { if (ev.target === el) fin(); });
+        setTimeout(fin, 2800);
+      }
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          lanzar(e.target._tr.el, e.target._tr);
+        });
+      }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+      items.forEach(function (it) {
+        var obs = it.tipo === "wipe" ? it.el.parentNode : it.el; obs._tr = it;
+        it.el.setAttribute("data-tr", it.tipo);
+        it.el.classList.add("tr-pre");
+        io.observe(obs);
+      });
+
+      // 3) El fondo de la pagina cambia de color con cada panel
+      var FONDOS = [[".hero", "#f7f3e8"], ["#planes", "#e4f4fb"], ["#versiculo", "#ffe4ec"], ["#quiz", "#e5f5e0"], ["#ayuda", "#eeeaff"]];
+      var raiz = document.documentElement;
+      var bgIO = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) raiz.style.setProperty("--page-bg", e.target._bg); });
+      }, { rootMargin: "-48% 0px -48% 0px", threshold: 0 });
+      FONDOS.forEach(function (f) {
+        var el = document.querySelector(f[0]);
+        if (el) { el._bg = f[1]; bgIO.observe(el); }
+      });
+    })();
+  })();
+  </script>
+
+
+  <!-- ===== v30: transiciones con chispa entre paneles ===== -->
+  <style>
+    @media (prefers-reduced-motion: no-preference) {
+      html.tr2 main { overflow-x: clip; }
+      /* cintas que se desenrollan desde el centro y confeti al llegar */
+      html.tr2 .tr-band { clip-path: inset(-6px 50% -6px 50%); transition: clip-path .9s cubic-bezier(.2, .9, .2, 1); }
+      html.tr2 .tr-b2 { transition-delay: .14s; }
+      html.tr2 .tr-tape.on .tr-band { clip-path: inset(-6px 0 -6px 0); }
+      html.tr2 .tr-stk { scale: 0; transition: scale .55s cubic-bezier(.2, 1.9, .4, 1) .5s; }
+      html.tr2 .tr-tape.on .tr-stk { scale: 1; }
+      .tr-bit { position: absolute; left: 50%; top: 50%; z-index: 4; width: var(--w); height: var(--w); margin: -6px 0 0 -6px; border: 2px solid var(--ink); background: var(--c); border-radius: var(--br); pointer-events: none; animation: trBit 1.05s cubic-bezier(.15, .8, .3, 1) forwards; }
+      @keyframes trBit { from { transform: translate(0, 0) rotate(0) scale(.2); opacity: 1; } 65% { opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(1); opacity: 0; } }
+    }
+    /* cinta mas ligera: una sola banda fina */
+    .tr-tape { height: clamp(56px, 8vw, 72px); margin: 0; }
+    .tr-b2, .tr-stk.s2 { display: none; }
+    .tr-band { height: clamp(30px, 4.4vw, 38px); margin-top: calc(clamp(30px, 4.4vw, 38px) / -2); font-size: clamp(.8rem, 1.6vw, 1rem); }
+    .tr-b1 { transform: rotate(-1.2deg); }
+    .tr-stk { width: 40px; height: 40px; margin-top: -20px; font-size: 1.2rem; }
+    .tr-stk.s1 { left: 5%; }
+    .tr-rail { right: 6px; gap: 8px; opacity: .55; transition: opacity .25s; }
+    .tr-rail:hover { opacity: 1; }
+    .tr-rail button { width: 32px; height: 32px; font-size: .9rem; }
+    /* ===== Cada panel ocupa la pantalla completa ===== */
+    html { scroll-snap-type: y proximity; }
+    main > section { min-height: calc(100vh - 84px); min-height: calc(100svh - 84px); display: flex; flex-direction: column; justify-content: center; padding-top: 32px; padding-bottom: 32px; scroll-snap-align: start; }
+    main > section[id] > * { width: 100%; }
+    main > section.hero { display: grid; align-content: center; min-height: calc(100vh - 80px); min-height: calc(100svh - 80px); scroll-snap-align: none; }
+    /* riel de paneles (solo pantallas anchas) */
+    .tr-rail { position: fixed; right: 12px; top: 50%; transform: translateY(-50%); z-index: 29; display: flex; flex-direction: column; gap: 10px; }
+    .tr-rail button { position: relative; width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 2px solid var(--ink); border-radius: 50%; background: var(--white); box-shadow: 2px 2px 0 var(--ink); font-size: 1.05rem; cursor: pointer; transition: transform .3s cubic-bezier(.2, 1.8, .4, 1), background .2s; }
+    .tr-rail button span { position: absolute; right: calc(100% + 10px); padding: 4px 10px; border: 2px solid var(--ink); border-radius: 999px; background: var(--yellow); font-size: .78rem; font-weight: 900; white-space: nowrap; opacity: 0; transform: translateX(8px); pointer-events: none; transition: opacity .2s, transform .2s; }
+    .tr-rail button:hover span, .tr-rail button:focus-visible span { opacity: 1; transform: none; }
+    .tr-rail button.act { background: var(--yellow); transform: scale(1.28) rotate(-8deg); box-shadow: 3px 3px 0 var(--ink); }
+  </style>
+  <script>
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var main = document.querySelector("main");
+    if (!main) return;
+    document.documentElement.classList.add("tr2");
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+
+    // 1) Confeti cuando una cinta llega a pantalla (se repite cada vez que vuelves a pasar)
+    var COL = ["#ff8ca8", "#ffd85b", "#a8df9b", "#b7a2ff", "#9bdcf1"];
+    function burst(tape) {
+      for (var i = 0; i < 18; i++) {
+        var b = document.createElement("i"), a = i / 18 * Math.PI * 2 + Math.random() * .4, d = (.2 + Math.random() * .5) * tape.offsetWidth * .5;
+        b.className = "tr-bit";
+        b.style.cssText = "--c:" + COL[i % 5] + ";--w:" + (9 + Math.random() * 9 | 0) + "px;--br:" + (i % 3 ? "50%" : "3px") +
+          ";--dx:" + (Math.cos(a) * d).toFixed(0) + "px;--dy:" + (Math.sin(a) * 26).toFixed(0) + "px;--r:" + (Math.random() * 540 - 270 | 0) + "deg";
+        tape.appendChild(b);
+        setTimeout(function (x) { return function () { x.remove(); }; }(b), 1150);
+      }
+    }
+    if ("IntersectionObserver" in window) {
+      var tio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          var t = e.target;
+          if (e.isIntersecting && e.intersectionRatio >= .6) { if (!t.classList.contains("on")) { t.classList.add("on"); burst(t); } }
+          else if (!e.isIntersecting) t.classList.remove("on");
+        });
+      }, { threshold: [0, .6] });
+      main.querySelectorAll(".tr-tape").forEach(function (t) { tio.observe(t); });
+    } else main.querySelectorAll(".tr-tape").forEach(function (t) { t.classList.add("on"); });
+
+    // 2) Cada panel se "despega" al salir (se inclina y se encoge) y "aterriza" al entrar
+    var secs = [].filter.call(main.children, function (n) { return n.tagName === "SECTION"; });
+    var tick = false;
+    function peel() {
+      tick = false;
+      var vh = window.innerHeight || 800;
+      secs.forEach(function (s, i) {
+        var r = s.getBoundingClientRect(), dir = i % 2 ? 1 : -1;
+        var out = clamp((vh * .4 - r.bottom) / (vh * .4), 0, 1);
+        var inn = clamp((r.top - vh * .62) / (vh * .38), 0, 1);
+        if (r.bottom < -80 || r.top > vh + 80 || (!out && !inn)) {
+          if (s._p) { s.style.transform = ""; s.style.opacity = ""; s._p = 0; }
+          return;
+        }
+        s._p = 1;
+        if (out >= inn) {
+          s.style.transformOrigin = "50% 100%";
+          s.style.transform = "scale(" + (1 - out * .04).toFixed(3) + ") rotate(" + (dir * out * 1).toFixed(2) + "deg)";
+          s.style.opacity = (1 - out * .35).toFixed(2);
+        } else {
+          s.style.transformOrigin = "50% 0";
+          s.style.transform = "translateY(" + (inn * 40).toFixed(1) + "px) rotate(" + (-dir * inn * 1.2).toFixed(2) + "deg) scale(" + (1 - inn * .03).toFixed(3) + ")";
+          s.style.opacity = (1 - inn * .5).toFixed(2);
+        }
+      });
+    }
+    window.addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(peel); } }, { passive: true });
+    window.addEventListener("resize", peel);
+    peel();
+
+    // 3) Riel lateral con un botón por panel (escritorio)
+    var P = [[".hero", "🏠", "Inicio"], ["#planes", "🎸", "Qué hay"], ["#versiculo", "🕊️", "Versículo"], ["#quiz", "⚡", "Quiz"], ["#ayuda", "💛", "Ayuda"]];
+    if ("IntersectionObserver" in window && window.matchMedia("(min-width: 1240px)").matches) {
+      var nav = document.createElement("nav");
+      nav.className = "tr-rail";
+      nav.setAttribute("aria-label", "Paneles de la página");
+      P.forEach(function (p) {
+        var el = document.querySelector(p[0]);
+        if (!el) return;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.innerHTML = p[1] + "<span>" + p[2] + "</span>";
+        b.setAttribute("aria-label", p[2]);
+        b._el = el;
+        b.addEventListener("click", function () { el.scrollIntoView({ behavior: "smooth", block: "start" }); });
+        nav.appendChild(b);
+      });
+      document.body.appendChild(nav);
+      var rio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) [].forEach.call(nav.children, function (b) { b.classList.toggle("act", b._el === e.target); });
+        });
+      }, { rootMargin: "-48% 0px -48% 0px" });
+      [].forEach.call(nav.children, function (b) { rio.observe(b._el); });
+    }
+  })();
+  </script>
+
+
+  <!-- ===== v31: capa interactiva (puntos de Flow, estado de ánimo, retos, compartir) ===== -->
+  <style>
+    .fx-flow { position: fixed; right: 14px; bottom: calc(78px + env(safe-area-inset-bottom, 0px)); z-index: 43; display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--white); box-shadow: 3px 3px 0 var(--ink); font-weight: 900; font-size: .85rem; color: var(--ink); cursor: pointer; }
+    .fx-flow:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+    .fx-bar { width: 64px; height: 10px; border: 2px solid var(--ink); border-radius: 99px; background: var(--white); overflow: hidden; }
+    .fx-bar i { display: block; height: 100%; width: 0; background: var(--green); transition: width .45s cubic-bezier(.2, 1.4, .4, 1); }
+    .fx-toast { position: fixed; left: 50%; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); z-index: 65; max-width: 90vw; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 14px; background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); font-weight: 900; text-align: center; opacity: 0; translate: -50% 12px; pointer-events: none; transition: opacity .2s, translate .25s cubic-bezier(.2, 1.6, .4, 1); }
+    .fx-toast.on { opacity: 1; translate: -50% 0; }
+    .fx-pop { position: fixed; z-index: 70; font-size: 22px; pointer-events: none; animation: fxPop .95s cubic-bezier(.15, .8, .3, 1) forwards; }
+    @keyframes fxPop { from { transform: translate(-50%, -50%) scale(.3); opacity: 1; } 70% { opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--r)) scale(1.1); opacity: 0; } }
+    .fx-mood { margin-top: 22px; max-width: 540px; padding: 14px; border: 2px solid var(--ink); border-radius: var(--round); background: var(--white); box-shadow: 4px 4px 0 var(--ink); }
+    .fx-mood .fx-ask { margin: 0 0 10px; font-size: 1rem; font-weight: 900; line-height: 1.3; }
+    .fx-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fx-chip, .fx-cbtn, .fx-vbtn { padding: 8px 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--cream); color: var(--ink); font-weight: 800; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: transform .15s, background .15s; }
+    .fx-chip:hover, .fx-cbtn:hover, .fx-vbtn:hover { transform: translate(1px, 1px); }
+    .fx-chip[aria-pressed="true"] { background: var(--yellow); transform: rotate(-2deg); }
+    .fx-out { margin-top: 12px; font-size: 1rem; line-height: 1.5; animation: fxIn .4s cubic-bezier(.2, 1.6, .4, 1); }
+    .fx-out em { display: block; margin: 6px 0 2px; font-style: normal; font-weight: 900; }
+    .fx-out small { opacity: .7; }
+    .fx-out .pill-button { margin-top: 10px; }
+    @keyframes fxIn { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+    .fx-cbtn { margin-top: 12px; background: var(--yellow); }
+    .fx-reto { margin: 12px 0 0; padding: 10px 12px; border: 2px dashed var(--ink); border-radius: 14px; background: var(--white); font-weight: 700; line-height: 1.45; animation: fxIn .35s cubic-bezier(.2, 1.6, .4, 1); }
+    .fx-verse-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 14px 0 4px; }
+    .fx-vbtn { background: var(--white); }
+    .fx-vbtn span { display: inline-block; min-width: 1ch; }
+    .fx-chip:focus-visible, .fx-cbtn:focus-visible, .fx-vbtn:focus-visible, .fx-flow:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { .fx-out, .fx-reto, .fx-toast, .fx-bar i { animation: none; transition: none; } }
+  </style>
+  <script>
+  (function () {
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var $ = function (s, r) { return (r || document).querySelector(s); };
+    var $$ = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
+    function el(t, c) { var e = document.createElement(t); e.className = c; return e; }
+    var store = {
+      get: function (k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+      set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    };
+    var xp = store.get("fcf_xp", 0), got = store.get("fcf_keys", {});
+    var LV = [[0, "Recién llegado", "🌱"], [15, "Con ganas", "🔥"], [40, "Flow activado", "⚡"], [80, "Imparable", "🚀"], [140, "Leyenda del Flow", "👑"]];
+    function lvl(x) { var i = 0; LV.forEach(function (l, j) { if (x >= l[0]) i = j; }); return i; }
+
+    /* medidor de Flow y avisos */
+    var toast = el("div", "fx-toast"), pill = el("button", "fx-flow");
+    pill.type = "button"; pill.setAttribute("aria-label", "Tu nivel de Flow");
+    pill.innerHTML = '<span class="fx-em"></span><span class="fx-bar"><i></i></span><b></b>';
+    toast.setAttribute("role", "status");
+    document.body.appendChild(toast); document.body.appendChild(pill);
+    var tt;
+    function say(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 2300); }
+    function render() {
+      var L = lvl(xp), n = LV[L + 1], p = n ? (xp - LV[L][0]) / (n[0] - LV[L][0]) : 1;
+      $(".fx-em", pill).textContent = LV[L][2];
+      $(".fx-bar i", pill).style.width = Math.round(p * 100) + "%";
+      $("b", pill).textContent = xp + " pts";
+    }
+    function burst(x, y, list, n) {
+      if (reduce) return;
+      for (var i = 0; i < n; i++) {
+        var s = el("span", "fx-pop"), a = Math.random() * 6.28, d = 40 + Math.random() * 70;
+        s.textContent = list[i % list.length];
+        s.style.cssText = "left:" + x + "px;top:" + y + "px;--dx:" + (Math.cos(a) * d | 0) + "px;--dy:" + (Math.sin(a) * d - 30 | 0) + "px;--r:" + (Math.random() * 120 - 60 | 0) + "deg";
+        document.body.appendChild(s);
+        setTimeout(function (z) { return function () { z.remove(); }; }(s), 1000);
+      }
+    }
+    function add(n) {
+      var old = lvl(xp); xp += n; store.set("fcf_xp", xp); render();
+      if (lvl(xp) > old) {
+        var L = LV[lvl(xp)];
+        say("¡Subiste de nivel! " + L[2] + " " + L[1]);
+        burst(innerWidth / 2, innerHeight * .6, ["🎉", "✨", "💛", "🙌", "🔥", "⭐"], 16);
+      } else say("+" + n + " ⚡");
+    }
+    function award(k, n) { if (got[k]) return false; got[k] = 1; store.set("fcf_keys", got); add(n); return true; }
+    pill.addEventListener("click", function () {
+      var L = lvl(xp), n = LV[L + 1];
+      say(LV[L][2] + " " + LV[L][1] + (n ? " · te faltan " + (n[0] - xp) + " pts para " + n[2] : " · ¡nivel máximo!"));
+    });
+    render();
+
+    /* toques: emojis que saltan y puntos por explorar */
+    document.addEventListener("pointerdown", function (e) {
+      var t = e.target.closest && e.target.closest(".pill-button,button,.card,.sticker,.floaty");
+      if (!t || t.closest(".fx-flow")) return;
+      burst(e.clientX, e.clientY, ["✨", "💛", "🙌", "🔥"], 5);
+      award("btn:" + (t.textContent || "").trim().slice(0, 24), 1);
+      try { navigator.vibrate && navigator.vibrate(10); } catch (_) {}
+    });
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("#quiz-answers button");
+      if (b) award("q:" + ($("#quiz-q") || {}).textContent + "|" + b.textContent, 3);
+    });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); award("sec:" + e.target.id, 3); } });
+      }, { threshold: .5 });
+      ["planes", "versiculo", "quiz", "ayuda"].forEach(function (id) { var s = document.getElementById(id); if (s) io.observe(s); });
+    }
+
+    /* estado de ánimo del día */
+    var M = [
+      ["😄", "Con todo", "¡Esa energía es un regalo! Úsala hoy para animar a alguien más.", "Alégrense siempre en el Señor.", "Filipenses 4:4"],
+      ["😌", "En paz", "Qué bueno. Agradece este momento y guárdalo para los días pesados.", "La paz les dejo, mi paz les doy.", "Juan 14:27"],
+      ["😴", "Cansado/a", "Descansar también es parte de la fe. No tienes que poder con todo hoy.", "Vengan a mí los que están cansados y cargados, y yo los aliviaré.", "Mateo 11:28"],
+      ["😟", "Ansioso/a", "Respira hondo y suelta una preocupación a la vez, no todas juntas.", "Echen sobre él toda su ansiedad, porque él cuida de ustedes.", "1 Pedro 5:7"],
+      ["😔", "Bajoneado/a", "Gracias por ser honesto/a. No tienes que cargar esto solo/a.", "El Señor está cerca de los que tienen el corazón quebrantado.", "Salmo 34:18", 1]
+    ];
+    var acts = $(".hero-actions");
+    if (acts) {
+      var box = el("div", "fx-mood");
+      box.innerHTML = '<p class="fx-ask">¿Cómo llegas hoy?</p><div class="fx-chips" role="group" aria-label="Elige cómo te sientes"></div><div class="fx-out" aria-live="polite" hidden></div>';
+      var chips = $(".fx-chips", box), out = $(".fx-out", box);
+      M.forEach(function (m, i) {
+        var c = el("button", "fx-chip"); c.type = "button"; c.setAttribute("aria-pressed", "false");
+        c.textContent = m[0] + " " + m[1];
+        c.addEventListener("click", function () {
+          $$(".fx-chip", chips).forEach(function (x) { x.setAttribute("aria-pressed", x === c ? "true" : "false"); });
+          out.hidden = false; out.style.animation = "none"; void out.offsetWidth; out.style.animation = "";
+          out.innerHTML = "<div>" + m[2] + "</div><em>“" + m[3] + "”</em><small>" + m[4] + " (parafraseado)</small>" +
+            (m[5] ? '<br><a class="pill-button" href="#ayuda" style="background:var(--pink)">Hablar con alguien 💛</a>' : "");
+          award("mood", 5);
+        });
+        chips.appendChild(c);
+      });
+      acts.parentNode.insertBefore(box, acts.nextSibling);
+    }
+
+    /* retos en las tarjetas */
+    var R = [
+      "Escríbele hoy a alguien que no ves hace rato y dile algo que admiras de él/ella.",
+      "Haz un favor chiquito sin que te lo pidan y sin contarlo. Dura 24 horas.",
+      "Anota una pregunta que te da pena hacer y llévasela a alguien de confianza."
+    ];
+    $$("#planes .card").forEach(function (c, i) {
+      var b = el("button", "fx-cbtn"), p = el("p", "fx-reto");
+      b.type = "button"; b.textContent = "¿Aceptas el reto? 🔥"; b.setAttribute("aria-expanded", "false");
+      p.hidden = true; p.textContent = R[i % R.length];
+      b.addEventListener("click", function () {
+        p.hidden = !p.hidden; b.setAttribute("aria-expanded", String(!p.hidden));
+        b.textContent = p.hidden ? "¿Aceptas el reto? 🔥" : "¡Reto aceptado! 💪";
+        if (!p.hidden) award("reto" + i, 5);
+      });
+      c.appendChild(b); c.appendChild(p);
+      if (matchMedia("(hover: hover)").matches && !reduce) {
+        c.addEventListener("pointermove", function (e) {
+          var r = c.getBoundingClientRect();
+          c.style.rotate = (((e.clientX - r.left) / r.width - .5) * 5).toFixed(2) + "deg"; c.style.translate = "0 -5px";
+        });
+        c.addEventListener("pointerleave", function () { c.style.rotate = ""; c.style.translate = ""; });
+      }
+    });
+
+    /* versículo: amén y compartir */
+    var ref = $("#reference");
+    if (ref) {
+      var va = el("div", "fx-verse-actions"), amen = el("button", "fx-vbtn"), sh = el("button", "fx-vbtn"), n = 0, vk = 0;
+      amen.type = sh.type = "button";
+      amen.innerHTML = '🙏 Amén <span>0</span>'; sh.textContent = "Compartir 📲";
+      amen.addEventListener("click", function (e) {
+        n++; $("span", amen).textContent = n;
+        burst(e.clientX || innerWidth / 2, e.clientY || innerHeight / 2, ["🙏", "💛", "✨"], 6);
+        award("amen" + vk, 2);
+      });
+      sh.addEventListener("click", function () {
+        var tx = ($("#verse") || {}).textContent + " — " + ref.textContent + " · Fe con Flow";
+        if (navigator.share) navigator.share({ text: tx }).catch(function () {});
+        else if (navigator.clipboard) navigator.clipboard.writeText(tx).then(function () { say("Copiado. ¡Pásalo a un amigo! 💌"); }, function () { say("No se pudo copiar"); });
+        else say("Tu navegador no deja copiar aquí");
+        award("share", 5);
+      });
+      va.appendChild(amen); va.appendChild(sh);
+      ref.parentNode.insertBefore(va, ref.nextSibling);
+      var vv = $("#verse");
+      if (vv && window.MutationObserver) new MutationObserver(function () { vk++; n = 0; $("span", amen).textContent = 0; }).observe(vv, { childList: true, characterData: true, subtree: true });
+    }
+
+    /* stickers del hero: arrástralos y rebotan */
+    $$(".floaty").forEach(function (f) {
+      var sx, sy, on = 0;
+      f.style.touchAction = "none"; f.style.cursor = "grab";
+      f.addEventListener("pointerdown", function (e) { on = 1; sx = e.clientX; sy = e.clientY; f.setPointerCapture(e.pointerId); f.style.transition = "none"; f.style.cursor = "grabbing"; });
+      f.addEventListener("pointermove", function (e) { if (on) f.style.translate = (e.clientX - sx) + "px " + (e.clientY - sy) + "px"; });
+      function end() { if (!on) return; on = 0; f.style.transition = "translate .7s cubic-bezier(.2, 1.8, .4, 1)"; f.style.translate = "0 0"; f.style.cursor = "grab"; award("drag", 2); }
+      f.addEventListener("pointerup", end); f.addEventListener("pointercancel", end);
+    });
   })();
   </script>
 
