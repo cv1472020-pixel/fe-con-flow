@@ -1572,14 +1572,14 @@
 
     <section id="companero" class="wrap">
       <div class="section-heading nw-head">
-        <span class="sticker" style="background:var(--purple)">TU COMPAÑERO 🧭</span>
-        <h2>Elige quién te acompaña</h2>
-        <p>Un personaje de la Biblia te acompañará mientras navegas. Puedes cambiarlo cuando quieras.</p>
+        <span class="sticker" style="background:var(--purple)">COLECCIÓN</span>
+        <h2>Elige tu personaje</h2>
+        <p>Cada carta es un personaje de la Biblia. Muévela con el mouse o con el dedo. Muchas cartas son un regalo (incluidas las 3 celestiales); las legendarias se desbloquean al explorar, agradecer y cumplir retos. Usa los filtros y las flechas para ver más cartas.</p>
       </div>
-      <div class="cp-grid" id="cp-grid" role="group" aria-label="Personajes bíblicos"></div>
-      <p class="cp-bio" id="cp-bio" aria-live="polite">Toca un personaje para conocerlo.</p>
+      <div class="cp-stage"><div class="cp-grid" id="cp-grid" role="group" aria-label="Personajes bíblicos"></div></div>
+      <p class="cp-bio" id="cp-bio" aria-live="polite">Toca una carta para conocerlo.</p>
       <button type="button" class="nw-link" id="cp-off" hidden>Navegar sin compañero</button>
-      <p class="nw-note">Personajes inspirados en la Biblia. Sus frases son una guía creativa, no citas bíblicas.</p>
+      <p class="nw-note">Personajes inspirados en la Biblia. Estadísticas, poderes y frases son un juego creativo, no citas bíblicas.</p>
     </section>
 
     <section id="planes" class="wrap">
@@ -5784,6 +5784,129 @@
       .cp-av.waving .cp-wave { animation: cpWave .45s ease-in-out infinite alternate; }
       @keyframes cpWave { from { transform: rotate(-22deg); } to { transform: rotate(26deg); } }
     }
+
+    /* ===== v37: cartas coleccionables holográficas ===== */
+    .cp-stage { position: relative; max-width: 1000px; margin: 0 auto; padding: clamp(16px, 3vw, 28px) clamp(10px, 2vw, 22px) clamp(18px, 3vw, 30px); border: 3px solid var(--ink); border-radius: 30px; background: radial-gradient(120% 90% at 50% 0%, #3d2b95 0%, #1c1552 46%, #0d0a2b 100%); box-shadow: 6px 6px 0 var(--ink); overflow: hidden; isolation: isolate; }
+    .cp-stage::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5; background-image: radial-gradient(#fff 1px, transparent 1.6px), radial-gradient(#ffd85b 1px, transparent 1.6px), radial-gradient(#7fe9ff 1px, transparent 1.6px); background-size: 90px 90px, 140px 140px, 200px 200px; background-position: 0 0, 37px 61px, 83px 23px; }
+    .cp-stage::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -60px; z-index: -1; height: 120px; background: radial-gradient(closest-side, rgba(255, 95, 162, .55), rgba(95, 255, 201, .25) 60%, transparent); filter: blur(10px); }
+    .cp-grid { display: flex; grid-template-columns: none; gap: 14px; max-width: none; margin: 0 auto; padding: 14px 8px 20px; overflow-x: auto; scroll-snap-type: x mandatory; }
+    @media (min-width: 900px) { .cp-grid { display: grid; grid-template-columns: repeat(5, 1fr); overflow: visible; padding: 14px 0 20px; } }
+    .cp-grid .cp-card { position: relative; flex: 0 0 min(64vw, 210px); scroll-snap-align: center; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 8px; border: 3px solid transparent; border-radius: 20px; background: linear-gradient(#17123f, #17123f) padding-box, linear-gradient(135deg, #ff5fa2, #ffd85b, #5fffc9, #6aa8ff, #b77bff) border-box; box-shadow: 0 10px 24px rgba(0, 0, 0, .45); color: #fff; font: inherit; text-align: left; cursor: pointer; transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .15s ease-out, box-shadow .25s ease; will-change: transform; }
+    .cp-grid .cp-card:hover, .cp-grid .cp-card:focus-visible { box-shadow: 0 14px 34px rgba(0, 0, 0, .55), 0 0 22px rgba(255, 255, 255, .25); }
+    .cp-grid .cp-card[aria-pressed="true"] { background: linear-gradient(#17123f, #17123f) padding-box, linear-gradient(135deg, #ff5fa2, #ffd85b, #5fffc9, #6aa8ff, #b77bff) border-box; box-shadow: 0 0 0 3px #fff, 0 0 28px 6px rgba(255, 95, 162, .65); }
+    .cp-grid .cp-card[aria-pressed="true"]::after { content: "EQUIPADO ✓"; position: absolute; top: -10px; right: -8px; z-index: 4; padding: 3px 9px; border: 2px solid #202018; border-radius: 7px; background: #ffd85b; color: #202018; font-size: .62rem; font-weight: 900; transform: rotate(6deg); }
+    .cp-grid .cp-card:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    .cp-fx { position: absolute; inset: 0; z-index: 3; border-radius: inherit; pointer-events: none; mix-blend-mode: color-dodge; opacity: .35; background: radial-gradient(circle at calc(var(--px, .3) * 100%) calc(var(--py, .2) * 100%), rgba(255, 255, 255, .55), transparent 42%), linear-gradient(115deg, transparent 15%, rgba(255, 0, 150, .4) 30%, rgba(0, 255, 230, .4) 45%, rgba(255, 235, 0, .4) 60%, rgba(120, 80, 255, .4) 75%, transparent 90%); background-size: 100% 100%, 260% 260%; background-position: 0 0, calc(var(--px, .5) * 100%) calc(var(--py, .5) * 100%); }
+    .cp-card:hover .cp-fx, .cp-card:focus-visible .cp-fx { opacity: .9; }
+    .cp-top { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 6px; font-size: .62rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
+    .cp-top b { color: #ffd85b; } .cp-top em { font-style: normal; opacity: .85; }
+    .cp-art { position: relative; display: block; aspect-ratio: 1 / .92; border-radius: 12px; overflow: hidden; background: linear-gradient(160deg, var(--g1), var(--g2)); }
+    .cp-art::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, .4) 1.4px, transparent 1.6px); background-size: 9px 9px; -webkit-mask-image: linear-gradient(#000, transparent 75%); mask-image: linear-gradient(#000, transparent 75%); }
+    .cp-rays { position: absolute; left: -50%; top: -40%; width: 200%; height: 200%; background: repeating-conic-gradient(from 0deg at 50% 62%, rgba(255, 255, 255, .22) 0 9deg, transparent 9deg 18deg); }
+    .cp-art svg { position: absolute; left: 0; right: 0; top: 6%; bottom: -4%; width: 100%; height: auto; filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 5px 6px rgba(0, 0, 0, .35)); }
+    .cp-name { display: block; padding: 8px 4px 2px; color: #fff; font-size: 1.05rem; font-weight: 900; text-shadow: 0 0 12px rgba(255, 255, 255, .35); }
+    .cp-stats { display: grid; gap: 3px; padding: 4px 4px 0; }
+    .cp-stat { display: grid; grid-template-columns: 58px 1fr; align-items: center; font-size: .6rem; font-weight: 800; opacity: .92; }
+    .cp-stat u { text-decoration: none; }
+    .cp-bar { display: flex; gap: 2px; }
+    .cp-bar s { display: block; flex: 1; height: 6px; border-radius: 2px; background: rgba(255, 255, 255, .18); text-decoration: none; }
+    .cp-bar s.on { background: linear-gradient(90deg, var(--g1), var(--g2)); box-shadow: 0 0 3px var(--g1); }
+    .cp-power { display: block; margin: 7px 4px 0; padding: 6px 8px; border-radius: 8px; background: rgba(255, 255, 255, .1); color: #ffe9a8; font-size: .66rem; font-weight: 800; line-height: 1.3; }
+    .cp-foot { display: block; padding: 7px 4px 2px; font-size: .62rem; font-weight: 800; opacity: .75; }
+    .cp-bio { min-height: 3.4em; margin-top: 18px; }
+
+    /* cartas bloqueables */
+    .cp-tag { position: absolute; left: 6px; top: 6px; z-index: 2; padding: 2px 7px; border: 2px solid #202018; border-radius: 7px; background: #ffd85b; color: #202018; font-size: .58rem; font-weight: 900; font-style: normal; }
+    .cp-lock { position: absolute; inset: 0; z-index: 2; display: none; place-items: center; font-size: 2.6rem; font-style: normal; }
+    .cp-locked .cp-lock { display: grid; }
+    .cp-locked .cp-art { filter: grayscale(1) brightness(.5); }
+    .cp-locked .cp-art svg { filter: brightness(0) opacity(.45); }
+    .cp-locked .cp-fx, .cp-locked .cp-stats { display: none; }
+    .cp-locked .cp-tag { background: #b9b4e0; }
+    .cp-locked .cp-power { min-height: 4.2em; color: #d9d3ff; }
+    .cp-count { margin: 6px 0 0; text-align: center; color: #ffe9a8; font-weight: 900; }
+    @media (prefers-reduced-motion: no-preference) { .cp-new { animation: cpNew 1.2s ease-out 2; } @keyframes cpNew { 50% { box-shadow: 0 0 0 4px #fff, 0 0 34px 10px rgba(255, 216, 91, .9); } } }
+
+    /* la carta que vuela a la esquina */
+    .cp-fly { position: fixed; z-index: 90; overflow: hidden; border-radius: 12px; background: linear-gradient(160deg, var(--g1), var(--g2)); pointer-events: none; transform-origin: center; box-shadow: 0 0 24px rgba(255, 255, 255, .6); }
+    .cp-fly svg { display: block; width: 100%; height: 100%; }
+
+    /* el compañero con aro holográfico */
+    .cp-av { isolation: isolate; }
+    .cp-av::before { content: ""; position: absolute; inset: -5px; z-index: -1; border-radius: 50%; background: conic-gradient(#ff5fa2, #ffd85b, #5fffc9, #6aa8ff, #b77bff, #ff5fa2); }
+    .cp-av small { background: linear-gradient(90deg, #ffd85b, #ff9ed2); }
+    @media (prefers-reduced-motion: no-preference) {
+      .cp-stage::before { animation: cpTwinkle 4s ease-in-out infinite alternate; }
+      @keyframes cpTwinkle { from { opacity: .25; } to { opacity: .65; } }
+      .cp-grid .cp-card { animation: cpFloat 4.4s ease-in-out infinite; }
+      @keyframes cpFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+      .cp-fx { animation: cpSweep 5.5s ease-in-out infinite; }
+      @keyframes cpSweep { 0%, 100% { background-position: 0 0, 0% 30%; } 50% { background-position: 0 0, 100% 70%; } }
+      .cp-card:hover .cp-fx, .cp-card:focus-visible .cp-fx { animation: none; }
+      .cp-rays { animation: cpRays 18s linear infinite; transform-origin: 50% 62%; }
+      @keyframes cpRays { to { transform: rotate(360deg); } }
+      .cp-av::before { animation: cpSpin 4s linear infinite; }
+      @keyframes cpSpin { to { transform: rotate(360deg); } }
+    }
+    @media (prefers-reduced-motion: reduce) { .cp-grid .cp-card { transition: box-shadow .25s ease; } }
+
+    /* ===== v38: el panel de cartas completo en modo futurista (solo este panel) ===== */
+    #companero { position: relative; isolation: isolate; }
+    #companero::before { content: ""; position: absolute; z-index: -2; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+      border-top: 3px solid transparent; border-bottom: 3px solid transparent;
+      border-image: linear-gradient(90deg, #ff5fa2, #ffd85b, #5fffc9, #6aa8ff, #b77bff) 1;
+      background:
+        radial-gradient(60% 50% at 16% 22%, rgba(255, 95, 162, .30), transparent 70%),
+        radial-gradient(55% 45% at 86% 80%, rgba(95, 255, 201, .24), transparent 70%),
+        radial-gradient(120% 90% at 50% 0%, #3d2b95 0%, #1c1552 46%, #0d0a2b 100%); }
+    #companero::after { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; width: 100vw; transform: translateX(-50%); pointer-events: none; opacity: .65;
+      background-image: radial-gradient(#fff 1px, transparent 1.6px), radial-gradient(#ffd85b 1px, transparent 1.6px), radial-gradient(#7fe9ff 1px, transparent 1.6px), linear-gradient(rgba(127, 233, 255, .10) 1px, transparent 1px), linear-gradient(90deg, rgba(127, 233, 255, .10) 1px, transparent 1px);
+      background-size: 90px 90px, 140px 140px, 200px 200px, 56px 56px, 56px 56px;
+      background-position: 0 0, 37px 61px, 83px 23px, 0 0, 0 0;
+      -webkit-mask-image: linear-gradient(#000 0%, #000 55%, rgba(0, 0, 0, .3) 100%); mask-image: linear-gradient(#000 0%, #000 55%, rgba(0, 0, 0, .3) 100%); }
+    /* el recuadro oscuro de antes ya no hace falta: ahora todo el panel es el escenario */
+    #companero .cp-stage { background: none; border: 0; box-shadow: none; overflow: visible; padding-left: 0; padding-right: 0; }
+    #companero .cp-stage::before, #companero .cp-stage::after { display: none; }
+    /* textos con brillo neón */
+    #companero .nw-head h2 { color: #fff; text-shadow: 0 0 18px rgba(127, 233, 255, .6), 0 0 42px rgba(255, 95, 162, .4); }
+    #companero .nw-head p { color: #d9d3ff; }
+    #companero .nw-head .sticker { border-color: #fff; box-shadow: 0 0 18px rgba(183, 123, 255, .8); }
+    #companero .cp-bio { color: #fff; text-shadow: 0 0 14px rgba(127, 233, 255, .35); }
+    #companero .nw-link { color: #cfc8ff; opacity: .9; }
+    #companero .nw-note { color: #b9b2ee; opacity: .85; }
+    #companero .nw-link:focus-visible { outline-color: #fff; }
+    @media (prefers-reduced-motion: no-preference) {
+      #companero::after { animation: futTwinkle 5s ease-in-out infinite alternate; }
+      @keyframes futTwinkle { from { opacity: .4; } to { opacity: .8; } }
+      #companero .nw-head h2 { animation: futGlow 3.6s ease-in-out infinite alternate; }
+      @keyframes futGlow { from { text-shadow: 0 0 14px rgba(127, 233, 255, .45), 0 0 34px rgba(255, 95, 162, .3); } to { text-shadow: 0 0 24px rgba(127, 233, 255, .85), 0 0 56px rgba(255, 95, 162, .55); } }
+    }
+
+    /* ===== v39: filtros y páginas para el panel de cartas ===== */
+    .cp-card[hidden] { display: none !important; }
+    .cp-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 760px; margin: 14px auto 2px; }
+    .cp-chip { min-height: 42px; padding: 8px 16px; border: 2px solid rgba(255, 255, 255, .35); border-radius: 99px; background: rgba(255, 255, 255, .08); color: #fff; font: inherit; font-size: .88rem; font-weight: 800; cursor: pointer; transition: background .2s ease, box-shadow .2s ease, border-color .2s ease; }
+    .cp-chip:hover { border-color: #fff; background: rgba(255, 255, 255, .16); }
+    .cp-chip[aria-pressed="true"] { border-color: #fff; background: linear-gradient(135deg, #ff5fa2, #b77bff); box-shadow: 0 0 16px rgba(183, 123, 255, .7); }
+    .cp-pager { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px; margin: 4px auto 0; }
+    .cp-pager[hidden] { display: none; }
+    .cp-pbtn { width: 46px; height: 46px; padding: 0 0 4px; border: 2px solid #fff; border-radius: 50%; background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: 1.7rem; font-weight: 900; line-height: 1; cursor: pointer; transition: background .2s ease, opacity .2s ease; }
+    .cp-pbtn:hover:not(:disabled) { background: rgba(255, 255, 255, .25); }
+    .cp-pbtn:disabled { opacity: .3; cursor: default; }
+    .cp-dots { display: flex; align-items: center; gap: 10px; }
+    .cp-dot { position: relative; width: 12px; height: 12px; padding: 0; border: 2px solid #fff; border-radius: 50%; background: transparent; cursor: pointer; }
+    .cp-dot::after { content: ""; position: absolute; inset: -12px -6px; }
+    .cp-dot[aria-current="true"] { border-color: #ffd85b; background: #ffd85b; box-shadow: 0 0 10px #ffd85b; }
+    .cp-info { flex: 1 0 100%; margin: 0; text-align: center; color: #d9d3ff; font-size: .82rem; font-weight: 700; }
+    .cp-chip:focus-visible, .cp-pbtn:focus-visible, .cp-dot:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    @media (prefers-reduced-motion: no-preference) {
+      .cp-grid.cp-swap { animation: cpPage .35s ease-out; }
+      @keyframes cpPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    }
+    /* ===== v40: cartas celestiales ===== */
+    .cp-cel .cp-verse { display: block; padding: 6px 4px 0; color: #fff3c4; font-size: .72rem; font-weight: 800; line-height: 1.35; text-align: center; }
+    .cp-cel .cp-tag { background: linear-gradient(90deg, #fff3a8, #ffd0f0); }
+    .cp-cel .cp-art { box-shadow: inset 0 0 22px rgba(255, 255, 255, .55); }
   </style>
   <script>
   (function () {
@@ -6024,6 +6147,54 @@
           ]
         }
       };
+      /* ---- cartas nuevas: se desbloquean con el progreso (las 5 primeras son de regalo) ---- */
+      var RAR = ["", "RARA", "ÉPICA", "LEGENDARIA"];
+      var NEW = [
+        ["noe", "Noé", "🕊️", "--green", "Obediencia y paciencia", "Construyó un arca siguiendo las indicaciones de Dios y cuidó de su familia y de los animales durante el diluvio. Después, el arcoíris fue la señal de la promesa de Dios. (Génesis 6–9)", "¡Hola! Soy Noé. Construí un arca cuando nadie lo entendía, y aprendí a confiar y a esperar 🕊️", ["Noé construyó el arca siguiendo las medidas que Dios le indicó (Génesis 6:14-16).", "El arcoíris es la señal de la promesa de Dios de no volver a destruir la tierra con un diluvio (Génesis 9:13-15)."], "#9be37b", "#3fa86b", "El Constructor", [3, 5, 4, 5], "Paciencia que construye", "Génesis 6–9", 1, null],
+        ["jonas", "Jonás", "🐋", "--blue", "Segundas oportunidades", "Intentó huir de la misión que Dios le dio, pasó tres días dentro de un gran pez y al final fue a Nínive. Su historia habla de compasión y de empezar de nuevo. (Libro de Jonás)", "¡Hola! Soy Jonás. Salí corriendo, pero Dios me dio otra oportunidad 🐋", ["Jonás estuvo tres días y tres noches dentro de un gran pez (Jonás 1:17).", "Los habitantes de Nínive se arrepintieron y Dios tuvo compasión de ellos (Jonás 3)."], "#7fe0e8", "#2a8fb8", "El Viajero", [3, 3, 4, 5], "Volver a empezar", "Jonás 3", 1, null],
+        ["samuel", "Samuel", "🕯️", "--yellow", "Escuchar a Dios", "De niño sirvió en el santuario junto al sacerdote Elí y escuchó que Dios lo llamaba por su nombre. Más tarde fue profeta y ungió a David como rey. (1 Samuel 1–3; 16)", "¡Hola! Soy Samuel. De niño aprendí a decir: «Habla, que te escucho» 🕯️", ["Samuel era hijo de Ana, que había orado mucho por tener un hijo (1 Samuel 1).", "Dios llamó a Samuel por su nombre de noche, y al principio él creyó que era Elí (1 Samuel 3)."], "#ffe9a8", "#f0b54a", "El Oyente", [3, 5, 4, 5], "Escuchar con atención", "1 Samuel 3", 1, null],
+        ["moises", "Moisés", "📜", "--purple", "Liderazgo y paciencia", "Criado en Egipto, guió al pueblo de Israel fuera de la esclavitud. Según el libro de Éxodo, recibió los Diez Mandamientos en el monte Sinaí. (Éxodo)", "Soy Moisés. Me sentía poca cosa para liderar, pero Dios me acompañó. Camino contigo 📜", ["De bebé, Moisés fue puesto en una canasta en el río Nilo y lo rescató la hija del faraón (Éxodo 2).", "Moisés guió al pueblo durante cuarenta años por el desierto."], "#ffd27a", "#e08a3c", "El Guía", [5, 5, 5, 3], "Guiar sin rendirse", "Éxodo 3", 2, null],
+        ["debora", "Débora", "🌴", "--pink", "Sabiduría y valentía", "Profeta y jueza de Israel. Resolvía conflictos bajo una palmera y animó a Barac a ir a la batalla. (Jueces 4–5)", "Soy Débora. Juzgaba bajo una palmera y animé a otros a ser valientes 🌴", ["Débora era jueza de Israel y la gente acudía a ella bajo una palmera (Jueces 4:4-5).", "El capítulo 5 de Jueces recoge un cántico de Débora y Barac."], "#ff9a9a", "#d94f6b", "La Jueza", [5, 4, 5, 4], "Decidir con sabiduría", "Jueces 4", 2, null],
+        ["josue", "Josué", "🎺", "--yellow", "Valentía y liderazgo", "Sucesor de Moisés. Guió al pueblo hacia la tierra prometida; según el libro, las murallas de Jericó cayeron tras marchar alrededor de la ciudad. (Josué 1–6)", "Soy Josué. Me tocó liderar después de Moisés, y Dios me recordó: sé fuerte y valiente 🎺", ["Dios animó a Josué a ser fuerte y valiente porque estaría con él (Josué 1:9).", "El pueblo marchó siete días alrededor de Jericó antes de que cayeran sus muros (Josué 6)."], "#ff8f7a", "#b03a2e", "El Líder", [5, 5, 4, 4], "Ser fuerte y valiente", "Josué 1:9", 2, null],
+        ["ana", "Ana", "🙏", "--blue", "Oración y gratitud", "Anhelaba tener un hijo y oró con todo su corazón en el santuario. Nació Samuel y ella respondió con un cántico de gratitud. (1 Samuel 1–2)", "Soy Ana. Oré con el corazón abierto y aprendí a dar gracias 🙏", ["Ana oraba tan en silencio que el sacerdote Elí pensó que algo le pasaba (1 Samuel 1:12-13).", "Cuando nació Samuel, Ana expresó su gratitud con un cántico (1 Samuel 2:1-10)."], "#a7d3ff", "#5c7fd6", "La Orante", [3, 5, 3, 5], "Orar con el corazón", "1 Samuel 1", 2, null],
+        ["elias", "Elías", "🔥", "--pink", "Confianza en Dios", "Profeta que confió en Dios en tiempos difíciles. En el monte Carmelo retó a los profetas de Baal y, más tarde, Dios le habló en un susurro suave. (1 Reyes 17–19)", "Soy Elías. Hasta los valientes se cansan; a mí Dios me habló en voz suave 🔥", ["Durante una sequía, unos cuervos le llevaban comida a Elías junto al arroyo (1 Reyes 17:6).", "En el monte Horeb, Dios no estaba en el viento ni en el fuego, sino en un susurro suave (1 Reyes 19:11-12)."], "#ffb36b", "#e2452f", "El Profeta", [5, 5, 4, 3], "Confiar en lo pequeño", "1 Reyes 19", 3, ["rt", 5, "Marca 5 días del reto de 7 días"]],
+        ["pedro", "Pedro", "🎣", "--green", "Segundas oportunidades", "Pescador de Galilea y uno de los doce discípulos de Jesús. Falló en un momento difícil, pero volvió a levantarse y fue líder de la primera iglesia. (Evangelios; Hechos)", "Soy Pedro. Fui pescador, me equivoqué feo y aun así me levanté 🎣", ["Pedro y su hermano Andrés eran pescadores en el mar de Galilea (Mateo 4:18).", "En Pentecostés, Pedro habló ante una multitud (Hechos 2)."], "#8fd0ff", "#2f6fb5", "El Pescador", [5, 4, 3, 5], "Levantarse otra vez", "Hechos 2", 3, ["xp", 80, "Gana 80 pts de Flow"]],
+        ["pablo", "Pablo", "✉️", "--purple", "Cambio y perseverancia", "Antes perseguía a los cristianos; tras un encuentro con Jesús camino a Damasco cambió de rumbo y escribió cartas a las iglesias. (Hechos 9; cartas)", "Soy Pablo. Mi vida dio un giro total y escribí cartas para animar a otros ✉️", ["Pablo hacía tiendas de campaña y trabajaba con sus manos (Hechos 18:3).", "Escribió cartas como Romanos, Filipenses y Gálatas, que forman parte del Nuevo Testamento."], "#d2a8ff", "#7a4fd1", "El Mensajero", [5, 5, 5, 4], "Cambiar de rumbo", "Hechos 9", 3, ["rt", 7, "Completa los 7 días del reto"]],
+        ["gedeon", "Gedeón", "🏺", "--blue", "Valentía con dudas", "Un joven que se sentía el más pequeño de su familia. Dios lo llamó a liderar y, con solo trescientos hombres, el pueblo fue librado. (Jueces 6–7)", "Soy Gedeón. Me sentía el menor de todos, pero Dios contó conmigo 🏺", ["Gedeón pidió señales a Dios con un vellón de lana para estar seguro (Jueces 6:36-40).", "Dios redujo el ejército de Gedeón a trescientos hombres (Jueces 7:7)."], "#b6f0ff", "#4a9bd9", "El Estratega", [5, 4, 4, 3], "Valentía aunque dudes", "Jueces 7", 2, null],
+        ["sara", "Sara", "✨", "--pink", "Esperanza", "Esposa de Abraham. Esperó mucho tiempo la promesa de un hijo y, ya mayor, tuvo a Isaac. (Génesis 17–21)", "Soy Sara. Esperé muchísimo, y al final la promesa llegó con risas ✨", ["Sara fue esposa de Abraham y madre de Isaac (Génesis 21:1-3).", "Isaac significa «él ríe», y Sara habló de la risa que Dios le dio (Génesis 21:6)."], "#ffc2e2", "#c76bd6", "La Esperanzada", [3, 5, 4, 5], "Esperar con alegría", "Génesis 21", 2, null],
+        ["lidia", "Lidia", "🧵", "--purple", "Generosidad", "Comerciante de telas de púrpura en Filipos. Escuchó a Pablo, creyó y abrió su casa para hospedar a los misioneros. (Hechos 16)", "Soy Lidia. Vendía telas finas y aprendí que abrir la casa también es servir 🧵", ["Lidia vendía telas de púrpura, un producto de lujo (Hechos 16:14).", "Después de creer, Lidia invitó a Pablo y sus compañeros a quedarse en su casa (Hechos 16:15)."], "#e7b8ff", "#8a4fd1", "La Anfitriona", [4, 4, 4, 5], "Abrir la puerta de casa", "Hechos 16", 2, null],
+        ["abraham", "Abraham", "🌟", "--yellow", "Fe y confianza", "Dios lo llamó a dejar su tierra y le prometió una gran descendencia. Confió y se puso en camino sin saber el destino. (Génesis 12–22)", "Soy Abraham. Salí de mi tierra sin saber a dónde iba, confiando en la promesa de Dios 🌟", ["Dios le prometió a Abraham descendientes tan numerosos como las estrellas (Génesis 15:5).", "Abraham y Sara tuvieron a su hijo Isaac ya mayores (Génesis 21)."], "#ffe14d", "#c9822b", "El Caminante", [4, 5, 4, 4], "Confiar en la promesa", "Génesis 12", 3, ["xp", 110, "Gana 110 pts de Flow"]],
+        ["salomon", "Salomón", "🏛️", "--yellow", "Sabiduría", "Hijo de David y rey de Israel. Pidió a Dios sabiduría para gobernar bien y construyó el templo en Jerusalén. (1 Reyes 3–8)", "Soy Salomón. Cuando pude pedir lo que quisiera, pedí sabiduría 🏛️", ["Salomón pidió a Dios un corazón entendido para gobernar (1 Reyes 3:9).", "A Salomón se le atribuyen muchos proverbios (1 Reyes 4:32)."], "#ffe9a8", "#d99a2b", "El Sabio", [3, 5, 5, 4], "Pedir sabiduría", "1 Reyes 3", 3, ["xp", 140, "Gana 140 pts de Flow"]],
+        ["miriam", "Miriam", "🥁", "--green", "Alegría y gratitud", "Hermana mayor de Moisés. Cuidó de lejos la canasta del bebé en el río Nilo y, tras cruzar el mar, tomó un pandero y guio a las mujeres en un canto de celebración. (Éxodo 2 y 15)", "¡Hola! Soy Miriam. Vigilé la canasta de mi hermano y después canté con todo el pueblo 🥁", ["Miriam vigiló desde lejos la canasta de Moisés en el Nilo (Éxodo 2:4).", "Después de cruzar el mar, Miriam tomó un pandero y las mujeres salieron tras ella cantando y bailando (Éxodo 15:20-21)."], "#9be8d8", "#3fb7a8", "La Cantora", [4, 5, 3, 5], "Celebrar con alegría", "Éxodo 15", 1, null],
+        ["zaqueo", "Zaqueo", "🌳", "--green", "Cambio y generosidad", "Jefe de cobradores de impuestos en Jericó. Era de baja estatura, se subió a un árbol para ver a Jesús y terminó recibiéndolo en su casa. Decidió compartir sus bienes y reparar lo que había hecho mal. (Lucas 19:1-10)", "¡Hola! Soy Zaqueo. Me subí a un árbol para ver a Jesús y mi vida cambió 🌳", ["Zaqueo se subió a un sicómoro porque era de baja estatura y no alcanzaba a ver (Lucas 19:3-4).", "Zaqueo prometió dar la mitad de sus bienes a los pobres y devolver cuatro veces lo que hubiera cobrado de más (Lucas 19:8)."], "#c9f27a", "#4aa23a", "El Generoso", [3, 4, 4, 5], "Cambiar y compartir", "Lucas 19", 1, null],
+        ["timoteo", "Timoteo", "🌱", "--green", "Crecer siendo joven", "Joven colaborador de Pablo. Creció con la fe de su abuela Loida y de su madre Eunice, y Pablo le escribió dos cartas para animarlo a seguir adelante. (Hechos 16; 2 Timoteo 1)", "¡Hola! Soy Timoteo. Era joven, pero Pablo confió en mí y aprendí mucho en el camino 🌱", ["La fe de Timoteo vino primero de su abuela Loida y de su madre Eunice (2 Timoteo 1:5).", "Pablo animó a Timoteo a ser ejemplo en su manera de hablar, de vivir y de amar, sin importar su juventud (1 Timoteo 4:12)."], "#d6ffb0", "#52b26a", "El Aprendiz", [3, 4, 4, 5], "Crecer sin importar la edad", "1 Timoteo 4", 1, null],
+        ["marta", "Marta", "🍞", "--pink", "Servicio y confianza", "Vivía en Betania con su hermana María y su hermano Lázaro. Recibió a Jesús en su casa y, en un momento muy triste, expresó con sinceridad su fe en él. (Lucas 10:38-42; Juan 11)", "Soy Marta. Me gusta servir, y aprendí que también es importante parar a escuchar 🍞", ["Marta recibió a Jesús en su casa en Betania (Lucas 10:38).", "En Juan 11, Marta habló con Jesús con sinceridad cuando murió su hermano Lázaro y expresó su confianza en él (Juan 11:21-27)."], "#ffc9a8", "#e0704a", "La Servidora", [4, 5, 3, 5], "Servir y confiar", "Juan 11", 1, null],
+        ["tabita", "Tabita", "🧶", "--yellow", "Bondad cada día", "Discípula de Jope conocida por sus buenas obras y su ayuda a los necesitados; hacía ropa para otras personas. Según Hechos, Pedro oró por ella tras su muerte y volvió a la vida. (Hechos 9:36-42)", "Soy Tabita. Mi manera de servir era sencilla: coser y ayudar a quien lo necesitara 🧶", ["Tabita, también llamada Dorcas, era conocida en Jope por sus buenas obras (Hechos 9:36).", "Las viudas mostraron a Pedro las túnicas y la ropa que Tabita había hecho (Hechos 9:39)."], "#ffe0b0", "#e08a5a", "La Bondadosa", [3, 4, 4, 5], "Hacer el bien cada día", "Hechos 9", 1, null],
+        ["caleb", "Caleb", "⛰️", "--blue", "Fidelidad y constancia", "Uno de los doce hombres enviados a explorar la tierra prometida. Confió en que el pueblo podía entrar, aunque otros tuvieron miedo, y años después pidió con ánimo el monte que se le había prometido. (Números 13–14; Josué 14)", "Soy Caleb. Cuando otros dudaron, yo confié, y esperé muchos años con ánimo ⛰️", ["Caleb fue uno de los doce exploradores que Moisés envió a la tierra prometida (Números 13:6).", "A los 85 años, Caleb pidió a Josué la región montañosa que se le había prometido (Josué 14:10-12)."], "#ffd36b", "#a8642a", "El Fiel", [5, 5, 3, 4], "Confiar cuando otros dudan", "Números 13", 2, null],
+        ["nehemias", "Nehemías", "🧱", "--blue", "Oración y acción", "Copero del rey en Persia. Oró por su pueblo, pidió permiso para volver a Jerusalén y lideró la reconstrucción de sus murallas junto a muchas familias. (Nehemías 1–6)", "Soy Nehemías. Primero oré y después me puse a trabajar, junto a todos 🧱", ["Nehemías oró brevemente antes de responder al rey cuando este le preguntó qué quería (Nehemías 2:4).", "Según el libro, la muralla de Jerusalén se terminó en cincuenta y dos días (Nehemías 6:15)."], "#a9c4ff", "#6a5fe0", "El Reconstructor", [4, 5, 4, 4], "Orar y poner manos a la obra", "Nehemías 2", 2, null],
+        ["juan", "Juan el Bautista", "💧", "--blue", "Preparar el camino", "Hijo de Zacarías e Isabel. Vivió en el desierto, llamó a la gente a cambiar de rumbo, bautizó en el río Jordán y anunció la llegada de Jesús. (Mateo 3; Juan 1)", "Soy Juan. No era yo el importante: mi misión era preparar el camino 💧", ["Juan bautizaba en el río Jordán y vestía ropa de pelo de camello (Mateo 3:4-6).", "Juan decía que no era él quien llegaba, sino alguien más grande que vendría después (Juan 1:26-27)."], "#bff0ff", "#2f9fc4", "El Precursor", [5, 5, 4, 3], "Preparar el camino", "Mateo 3", 2, null],
+        ["priscila", "Priscila", "⛺", "--pink", "Enseñar con humildad", "Junto a su esposo Aquila hacía tiendas de campaña, acogió a Pablo y a otros creyentes en su casa y ayudó a Apolos a entender mejor el camino. (Hechos 18; Romanos 16)", "Soy Priscila. Con Aquila trabajamos, enseñamos y abrimos nuestra casa ⛺", ["Priscila y Aquila trabajaban haciendo tiendas, igual que Pablo (Hechos 18:2-3).", "Pablo saludó a Priscila y a Aquila y mencionó a la iglesia que se reunía en su casa (Romanos 16:3-5)."], "#ffd0f0", "#d05fb0", "La Maestra", [4, 5, 5, 4], "Enseñar con humildad", "Hechos 18", 2, null],
+        ["bernabe", "Bernabé", "🤝", "--purple", "Animar a otros", "Su nombre significa «hijo de consolación» o «de ánimo». Compartió sus bienes con la comunidad, presentó a Pablo ante los apóstoles y viajó con él anunciando el mensaje de Jesús. (Hechos 4, 9 y 13)", "Soy Bernabé. Me dicen «el que anima», y me encanta apoyar a los demás 🤝", ["Bernabé vendió un campo y entregó el dinero para ayudar a los necesitados (Hechos 4:36-37).", "Bernabé presentó a Pablo ante los apóstoles cuando muchos aún desconfiaban de él (Hechos 9:26-27)."], "#e5d0ff", "#9a6fe0", "El Animador", [4, 4, 4, 5], "Animar a otros", "Hechos 4", 2, null],
+        ["job", "Job", "🌅", "--yellow", "Esperanza en la dificultad", "Un hombre íntegro que atravesó pérdidas muy duras y se hizo muchas preguntas. El libro cuenta que, al final, Dios le habló y su vida fue restaurada. (Job 1–2 y 38–42)", "Soy Job. Tuve preguntas muy difíciles y aprendí que se puede hablar con Dios con sinceridad 🌅", ["Job vivía en la tierra de Uz y el libro lo describe como un hombre íntegro (Job 1:1).", "Santiago menciona la perseverancia de Job como ejemplo de aguante (Santiago 5:11)."], "#cfd8e8", "#6b7fa8", "El Resistente", [4, 5, 4, 3], "Esperar aun sin entender", "Job 42", 3, ["rt", 6, "Marca 6 días del reto de 7 días"]],
+        ["maria", "María", "🌹", "--purple", "Confianza y humildad", "Joven de Nazaret que recibió la noticia de que sería la madre de Jesús y respondió con confianza. Más tarde cantó un cántico de gratitud y acompañó a Jesús hasta la cruz. (Lucas 1–2; Juan 19)", "Soy María. Dije «sí» sin tenerlo todo claro, confiando en Dios 🌹", ["María recibió la visita del ángel Gabriel en Nazaret (Lucas 1:26-31).", "El cántico de María, llamado Magnificat, expresa gratitud y alegría a Dios (Lucas 1:46-55)."], "#bcd8ff", "#7a9be0", "La Confiada", [4, 5, 4, 5], "Decir sí con confianza", "Lucas 1", 3, ["gr", 10, "Escribe 10 gratitudes nuevas en el frasco"]]
+      ];
+      NEW.forEach(function (n) { CH[n[0]] = { n: n[1], e: n[2], c: n[3], trait: n[4], bio: n[5], intro: n[6], facts: n[7], say: {} }; });
+      /* piel, ropa, pelo y detalles (velo / barba) de cada personaje nuevo */
+      var AVP = {
+        noe: ["#d9a066", "#6e8f4e", "#cfcfcf", { beard: "#cfcfcf" }], jonas: ["#d49a6a", "#2f8f9a", "#2a2220", {}],
+        samuel: ["#e2a574", "#f3ead2", "#4a2c1a", {}], moises: ["#c98b5b", "#c9b27a", "#7a7a7a", { beard: "#9a9a9a" }],
+        debora: ["#dca878", "#d35400", "", { veil: "#5b3a8a" }], josue: ["#c98b5b", "#b03a2e", "#2b1b17", { beard: "#2b1b17" }],
+        ana: ["#efb98f", "#4a90a4", "", { veil: "#3d6b8a" }], elias: ["#c98b5b", "#7a5a3a", "#5a3a1a", { beard: "#5a3a1a" }],
+        pedro: ["#c98b5b", "#3b82c4", "#6b6b6b", { beard: "#8a8a8a" }], pablo: ["#d9a066", "#7e57c2", "#3a2a20", { beard: "#3a2a20" }],
+        gedeon: ["#c98b5b", "#3f6aa0", "#2b1b17", {}], sara: ["#efb98f", "#b5557a", "", { veil: "#8a4fd1" }], lidia: ["#dca878", "#7a3fa0", "", { veil: "#b57ad6" }],
+        abraham: ["#d9a066", "#c9b27a", "#cfcfcf", { beard: "#cfcfcf" }], salomon: ["#d9a066", "#c0392b", "#2b1b17", { beard: "#2b1b17" }],
+        miriam: ["#dca878", "#e08a3c", "", { veil: "#2f8f9a" }], zaqueo: ["#e2a574", "#8a5a2b", "#3a2a20", {}],
+        timoteo: ["#e2a574", "#3f9a6a", "#6b3a1a", {}], marta: ["#dca878", "#c0504d", "", { veil: "#7a5a3a" }],
+        tabita: ["#dca878", "#d9824a", "", { veil: "#b5557a" }], caleb: ["#c98b5b", "#a0522d", "#4a3020", { beard: "#4a3020" }],
+        nehemias: ["#d49a6a", "#4a6fa5", "#2b1b17", { beard: "#2b1b17" }], juan: ["#c98b5b", "#a98a5a", "#5a3a1a", { beard: "#5a3a1a" }],
+        priscila: ["#efb98f", "#c0578f", "", { veil: "#e0a050" }], bernabe: ["#d9a066", "#8a6aa0", "#2b1b17", { beard: "#4a3a30" }],
+        job: ["#c98b5b", "#8a7a5a", "#9a9a9a", { beard: "#9a9a9a" }], maria: ["#efb98f", "#4a7fb5", "", { veil: "#f3ead2" }]
+      };
       function avatar(id) {
         var EYES = '<g class="av-eyes"><circle cx="43.5" cy="42" r="1.9" fill="#2a1f1a"/><circle cx="56.5" cy="42" r="1.9" fill="#2a1f1a"/></g>';
         var CHEEK = '<circle cx="39.5" cy="47" r="3" fill="#ff8c8c" opacity=".28"/><circle cx="60.5" cy="47" r="3" fill="#ff8c8c" opacity=".28"/>';
@@ -6060,10 +6231,35 @@
               '<path d="M40 67 Q50 75 60 67" fill="none" stroke="#fff3d6" stroke-width="2.4" stroke-linecap="round"/>') +
             H(HEAD("#c98b5b") + '<path d="M33 41 C31 26 41 20 50 20 C60 20 69 26 67 41 C63 33 57 30 50 30 C43 30 37 33 33 41 Z" fill="#2b1b17"/>' + CURLS("#2b1b17") + EYES + CHEEK + '<path d="M36 50 C37 58 43 62 50 62 C57 62 63 58 64 50 C60 55 56 55.5 50 55.5 C44 55.5 40 55 36 50 Z" fill="#2b1b17" opacity=".85"/><path class="av-smile" d="M45 49.5 Q50 52.5 55 49.5" fill="none" stroke="#7a3b2a" stroke-width="1.6" stroke-linecap="round"/><ellipse class="av-open" cx="50" cy="50.2" rx="3.1" ry="2.5" fill="#8a3b34"/>')
         };
-        return '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" data-av="' + id + '" role="img" aria-hidden="true" focusable="false">' + (S[id] || "") + "</svg>";
+        Object.keys(AVP).forEach(function (k) {
+          var a = AVP[k], o = a[3], sk = a[0],
+            face = o.veil ? '<path d="M29 46 C27 26 40 17 50 17 C60 17 73 26 71 46 C71 58 67 65 62 69 L38 69 C33 65 29 58 29 46 Z" fill="' + o.veil + '"/><ellipse cx="50" cy="44" rx="14.5" ry="17.5" fill="' + sk + '"/>' : HEAD(sk) + '<path d="M33 41 C31 26 41 20 50 20 C60 20 69 26 67 41 C63 33 57 30 50 30 C43 30 37 33 33 41 Z" fill="' + a[2] + '"/>',
+            mouth = o.beard ? '<path d="M34.5 47 C34 62 42 70 50 70 C58 70 66 62 65.5 47 C62 53 57 54 50 54 C43 54 38 53 34.5 47 Z" fill="' + o.beard + '"/><path class="av-smile" d="M45 49.5 Q50 52.5 55 49.5" fill="none" stroke="#e8c9aa" stroke-width="1.6" stroke-linecap="round"/>' : SMILE;
+          S[k] = B(NECK(sk) + BODY(a[1])) + H(face + EYES + CHEEK + mouth + OPEN) + '<text x="62" y="95" font-size="19" font-family="sans-serif">' + CH[k].e + "</text>";
+        });
+        if (typeof CELSVG !== "undefined" && CELSVG[id]) return CELSVG[id];
+        return '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" data-av="' + id + '" role="img" aria-hidden="true" focusable="false">' + (S[id] || "") + "</svg>";
       }
-      var ORDER = ["david", "ester", "daniel", "rut", "jose"];
+      /* cartas celestiales: se representan con símbolos y solo muestran lo que dice la Biblia (no son compañeros que hablen) */
+      var CEL = [
+        ["padre", "Dios Padre", "☀️", "--yellow", "Creador y Padre que cuida", "Según la Biblia, Dios es el Creador de todo y un Padre que cuida de sus hijos. Jesús enseñó a orarle diciendo «Padre nuestro». (Génesis 1; Mateo 6:9)", "#ffd36b", "#e07a1f", "El Padre", "Su amor no se acaba", "1 Juan 4:8", "Creador de todo y Padre que cuida a sus hijos."],
+        ["jesus", "Jesús", "✝️", "--blue", "Amor que sirve y salva", "Para los cristianos, Jesús es el Hijo de Dios que vivió entre nosotros, enseñó, sanó y dio su vida por amor. Según los Evangelios, resucitó al tercer día. (Mateo; Marcos; Lucas; Juan)", "#d9ecff", "#4f80e8", "El Hijo", "Amor que sirve y salva", "Juan 3:16", "Vino a vivir entre nosotros, a servir y a dar su vida por amor."],
+        ["espiritu", "Espíritu Santo", "🕊️", "--pink", "Guía, consuelo y fortaleza", "Según la Biblia, el Espíritu Santo acompaña y guía a los creyentes. En Pentecostés descendió sobre los discípulos como lenguas de fuego. (Juan 14:26; Hechos 2)", "#ffd2a8", "#e8563a", "El Ayudador", "Guía, consuelo y fortaleza", "Gálatas 5:22-23", "Acompaña, consuela y da fuerzas a quienes creen."]
+      ];
+      var CELSVG = {
+        padre: '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false"><g stroke="#fff6c8" stroke-width="4" stroke-linecap="round"><path d="M50 12V24M50 76V88M12 50H24M76 50H88M23 23L31 31M69 69L77 77M77 23L69 31M31 69L23 77"/></g><circle cx="50" cy="50" r="19" fill="#fff6c8"/><circle cx="50" cy="50" r="12" fill="#ffd54a"/><circle cx="50" cy="50" r="31" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="2 5" opacity=".8"/></svg>',
+        jesus: '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false"><circle cx="50" cy="48" r="30" fill="none" stroke="#fff6c8" stroke-width="3" opacity=".9"/><path d="M50 10V92" stroke="#fff6c8" stroke-width="1.5" opacity=".7"/><rect x="44" y="20" width="12" height="62" rx="2.5" fill="#f5c242" stroke="#7a4b1e" stroke-width="2"/><rect x="26" y="38" width="48" height="12" rx="2.5" fill="#f5c242" stroke="#7a4b1e" stroke-width="2"/></svg>',
+        espiritu: '<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false"><path d="M50 6C56 14 58 20 54 26C52 22 50 20 50 14C48 20 44 24 46 30C41 25 41 14 50 6Z" fill="#ffb02e" stroke="#ff6b3a" stroke-width="1.5"/><path d="M30 22C34 26 35 29 32 33C30 31 29 29 30 22ZM70 22C66 26 65 29 68 33C70 31 71 29 70 22Z" fill="#ffb02e" stroke="#ff6b3a" stroke-width="1.2"/><path d="M20 66C30 60 38 54 44 50C46 42 54 38 60 42C64 36 70 38 70 44L78 48L69 51C68 60 58 72 42 74C34 75 26 72 20 66Z" fill="#fff"/><path d="M44 50C38 38 28 34 18 38C26 44 32 52 40 58Z" fill="#e8f3ff" stroke="#c9dcf2" stroke-width="1.2"/><path d="M20 66L8 76L24 72Z" fill="#e8f3ff"/><circle cx="64" cy="44" r="1.8" fill="#2a1f1a"/><path d="M70 44L78 48L69 50Z" fill="#ff9d3a"/></svg>'
+      };
+      CEL.forEach(function (c) {
+        CH[c[0]] = { n: c[1], e: c[2], c: c[3], trait: c[4], bio: c[5], intro: "", facts: [], say: {} };
+      });
+      var ORDER = ["david", "ester", "daniel", "rut", "jose"].concat(NEW.map(function (n) { return n[0]; }), CEL.map(function (c) { return c[0]; }));
       var grid = $("#cp-grid"), bioEl = $("#cp-bio"), offBtn = $("#cp-off");
+      /* panel menos saturado: filtros + 5 cartas por página */
+      var PAGE = 5, filt = "all", page = 0, nav = null;
+      var NT = { pedro: 1, pablo: 1, lidia: 1, zaqueo: 1, timoteo: 1, marta: 1, tabita: 1, juan: 1, priscila: 1, bernabe: 1, maria: 1 };
+      var FILTERS = [["all", "Todas"], ["mine", "Mías"], ["cel", "Celestiales"], ["at", "Antiguo T."], ["nt", "Nuevo T."]];
       var cur = store.get("fcf_comp", null), cards = {};
       if (!CH[cur]) cur = null;
       var dock, av, bub, txt, tmr = null, lastSay = 0, factIdx = {}, curKey = "";
@@ -6140,6 +6336,7 @@
         var c = CH[id];
         dock.style.setProperty("--cpbg", "var(" + c.c + ")");
         av.style.setProperty("--cpbg", "var(" + c.c + ")");
+        if (typeof META !== "undefined" && META[id]) av.style.background = "linear-gradient(160deg," + META[id].g[0] + "," + META[id].g[1] + ")";
         av.innerHTML = '<span class="cp-face">' + avatar(id) + '</span><span class="cp-wave" aria-hidden="true">👋</span><small>' + c.n + "</small>";
         av.setAttribute("aria-label", "Tu compañero: " + c.n + ". Toca para escuchar un dato.");
         var first = dock.hidden;
@@ -6152,19 +6349,214 @@
         ORDER.forEach(function (id) { cards[id].setAttribute("aria-pressed", id === cur ? "true" : "false"); });
         offBtn.hidden = !cur;
       }
-      if (grid) {
+      /* ---- cartas coleccionables holográficas ---- */
+      var META = {
+        david:  { g: ["#ffe14d", "#ff9f43"], cls: "El Músico",   st: [5, 5, 3, 4], power: "Música que calma el corazón",        ref: "Salmo 23" },
+        ester:  { g: ["#ff7ac6", "#a66bff"], cls: "La Valiente", st: [5, 4, 5, 4], power: "Hablar con valentía a tiempo",       ref: "Ester 4:14" },
+        daniel: { g: ["#5fd8ff", "#4a7dff"], cls: "El Constante", st: [4, 5, 5, 3], power: "Constancia que no se rinde",        ref: "Daniel 6" },
+        rut:    { g: ["#7bf0b0", "#35c28a"], cls: "La Leal",     st: [4, 4, 4, 5], power: "Lealtad que abre caminos",           ref: "Rut 1:16" },
+        jose:   { g: ["#c08bff", "#ff6bd6"], cls: "El Soñador",  st: [4, 5, 5, 5], power: "Perdonar y volver a empezar",        ref: "Génesis 50:20" }
+      };
+      var STATS = ["Valentía", "Fe", "Sabiduría", "Corazón"];
+      CEL.forEach(function (c) { META[c[0]] = { g: [c[6], c[7]], cls: c[8], st: [], power: c[9], ref: c[10], verse: c[11], cel: 1 }; });
+      NEW.forEach(function (n) { META[n[0]] = { g: [n[8], n[9]], cls: n[10], st: n[11], power: n[12], ref: n[13], rar: n[14], un: n[15] }; });
+      var U = store.get("fcf_unl2", {}) || {};
+      var BASE = store.get("fcf_base", null);
+      if (!BASE) { BASE = { xp: raw("xp"), gr: raw("gr"), rt: raw("rt") }; store.set("fcf_base", BASE); }
+      function cnt(t) { var c = raw(t); if (BASE[t] !== undefined) { if (c < BASE[t]) { BASE[t] = c; store.set("fcf_base", BASE); } return c - BASE[t]; } return c; }
+      function raw(t) {
+        if (t === "xp") return +store.get("fcf_xp", 0) || 0;
+        if (t === "gr") return (store.get("fcf_grat", []) || []).length;
+        if (t === "rt") return (store.get("fcf_reto7", []) || []).filter(Boolean).length;
+        return (store.get("fcf_keys", {}) || {}).mood ? 1 : 0;
+      }
+      function unl(id) { return !META[id].un || !!U[id]; }
+      function notify(m) { var t = $(".fx-toast"); if (!t) return; t.textContent = m; t.classList.add("on"); setTimeout(function () { t.classList.remove("on"); }, 3200); }
+      function paintCard(b, id) {
+        var m = META[id], u = unl(id), q = m.un;
+        b.classList.toggle("cp-locked", !u);
+        b.setAttribute("aria-disabled", u ? "false" : "true");
+        $(".cp-name", b).textContent = u ? CH[id].n : "???";
+        $(".cp-tag", b).textContent = m.cel ? "CELESTIAL" : (RAR[m.rar || 0] || "REGALO");
+        $(".cp-power", b).textContent = u ? m.power : q[2] + (q[1] > 1 ? " (" + Math.min(cnt(q[0]), q[1]) + "/" + q[1] + ")" : "");
+        $(".cp-foot", b).textContent = u ? m.ref : "???";
+        if (u) b.removeAttribute("aria-label"); else b.setAttribute("aria-label", "Carta bloqueada. " + q[2]);
+      }
+      function decorate(b, id) {
+        var a = $(".cp-art", b), t = document.createElement("i"), l = document.createElement("i");
+        t.className = "cp-tag"; l.className = "cp-lock"; l.textContent = "🔒";
+        a.appendChild(t); a.appendChild(l); paintCard(b, id);
+      }
+      function refresh() {
+        var n = 0, fresh = false, gifts = ORDER.filter(function (i) { return !META[i].un; }).length;
         ORDER.forEach(function (id) {
-          var c = CH[id], b = document.createElement("button");
+          var m = META[id], b = cards[id];
+          if (m.un && !U[id] && cnt(m.un[0]) >= m.un[1]) {
+            U[id] = 1; store.set("fcf_unl2", U); fresh = true;
+            paintCard(b, id); b.classList.add("cp-new"); if (!b.hidden) burst(b);
+            notify("¡Carta desbloqueada: " + CH[id].n + "!");
+          } else if (!unl(id)) paintCard(b, id);
+          if (unl(id)) n++;
+        });
+        if (fresh && nav) layout(true);
+        var c = $("#cp-count");
+        if (c) c.textContent = "Colección: " + n + "/" + ORDER.length + " · " + gifts + " de regalo y " + (n - gifts) + " desbloqueadas";
+      }
+      function inFilter(id) {
+        if (filt === "mine") return unl(id);
+        if (filt === "cel") return !!META[id].cel;
+        if (filt === "at") return !NT[id] && !META[id].cel;
+        if (filt === "nt") return !!NT[id];
+        return true;
+      }
+      function layout(quiet) {
+        if (!nav) return;
+        var list = ORDER.filter(inFilter), pages = Math.max(1, Math.ceil(list.length / PAGE)), vis = {};
+        if (page > pages - 1) page = pages - 1;
+        if (page < 0) page = 0;
+        list.slice(page * PAGE, page * PAGE + PAGE).forEach(function (id) { vis[id] = 1; });
+        ORDER.forEach(function (id) { cards[id].hidden = !vis[id]; });
+        grid.scrollLeft = 0;
+        nav.chips.forEach(function (c) {
+          var f = c.getAttribute("data-f"), keep = filt; filt = f;
+          var k = ORDER.filter(inFilter).length; filt = keep;
+          c.setAttribute("aria-pressed", f === filt ? "true" : "false");
+          c.textContent = c.getAttribute("data-l") + " · " + k;
+        });
+        nav.dots.innerHTML = "";
+        for (var i = 0; i < pages; i++) {
+          (function (i) {
+            var d = document.createElement("button");
+            d.type = "button"; d.className = "cp-dot";
+            d.setAttribute("aria-label", "Ir a la página " + (i + 1));
+            d.setAttribute("aria-current", i === page ? "true" : "false");
+            d.addEventListener("click", function () { page = i; layout(); });
+            nav.dots.appendChild(d);
+          })(i);
+        }
+        nav.prev.disabled = page === 0;
+        nav.next.disabled = page >= pages - 1;
+        nav.info.textContent = "Página " + (page + 1) + " de " + pages + " · " + list.length + " cartas";
+        nav.pager.hidden = pages < 2;
+        if (!quiet && !reduce) { grid.classList.remove("cp-swap"); void grid.offsetWidth; grid.classList.add("cp-swap"); }
+      }
+      function buildNav() {
+        var stage = grid.parentNode, host = stage.parentNode;
+        var bar = document.createElement("div"); bar.className = "cp-filters"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", "Filtrar cartas");
+        var chips = FILTERS.map(function (f) {
+          var c = document.createElement("button");
+          c.type = "button"; c.className = "cp-chip"; c.setAttribute("data-f", f[0]); c.setAttribute("data-l", f[1]);
+          c.addEventListener("click", function () { filt = f[0]; page = 0; layout(); });
+          bar.appendChild(c); return c;
+        });
+        host.insertBefore(bar, stage);
+        var pager = document.createElement("div"); pager.className = "cp-pager";
+        var prev = document.createElement("button"), next = document.createElement("button"), dots = document.createElement("span"), info = document.createElement("p");
+        prev.type = next.type = "button"; prev.className = next.className = "cp-pbtn";
+        prev.textContent = "‹"; next.textContent = "›";
+        prev.setAttribute("aria-label", "Página anterior"); next.setAttribute("aria-label", "Página siguiente");
+        dots.className = "cp-dots"; info.className = "cp-info"; info.setAttribute("aria-live", "polite");
+        prev.addEventListener("click", function () { page--; layout(); });
+        next.addEventListener("click", function () { page++; layout(); });
+        pager.appendChild(prev); pager.appendChild(dots); pager.appendChild(next); pager.appendChild(info);
+        host.insertBefore(pager, stage.nextSibling);
+        nav = { chips: chips, pager: pager, prev: prev, next: next, dots: dots, info: info };
+        if (cur && ORDER.indexOf(cur) > -1) page = Math.floor(ORDER.indexOf(cur) / PAGE);
+        layout(true);
+      }
+      function burst(el) {
+        if (reduce || !el.animate) return;
+        var r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2, E = ["⭐", "✨", "💫", "🌟"];
+        for (var i = 0; i < 12; i++) {
+          var p = document.createElement("span"), a = Math.random() * 6.283, d = 70 + Math.random() * 100;
+          p.textContent = E[i % 4];
+          p.style.cssText = "position:fixed;left:" + cx + "px;top:" + cy + "px;z-index:91;pointer-events:none;font-size:" + (14 + Math.random() * 14) + "px";
+          document.body.appendChild(p);
+          p.animate([
+            { transform: "translate(-50%,-50%) scale(.3)", opacity: 1 },
+            { transform: "translate(calc(-50% + " + Math.cos(a) * d + "px),calc(-50% + " + Math.sin(a) * d + "px)) scale(1.2) rotate(" + Math.round(Math.random() * 360) + "deg)", opacity: 1, offset: .6 },
+            { transform: "translate(calc(-50% + " + Math.cos(a) * d * 1.2 + "px),calc(-50% + " + (Math.sin(a) * d * 1.2 + 30) + "px)) scale(.6)", opacity: 0 }
+          ], { duration: 900 + Math.random() * 400, easing: "ease-out" });
+          (function (n) { setTimeout(function () { n.remove(); }, 1500); })(p);
+        }
+      }
+      /* la carta "vuela" hasta la esquina para convertirse en tu compañero */
+      function fly(card, id, done) {
+        var art = $(".cp-art", card), tg = av ? av.getBoundingClientRect() : null, finished = false;
+        function fin() { if (finished) return; finished = true; done(); }
+        if (reduce || !document.body.animate || !art || !tg || !tg.width) { fin(); return; }
+        var r = art.getBoundingClientRect(), m = META[id], f = document.createElement("div");
+        f.className = "cp-fly";
+        f.style.cssText = "left:" + r.left + "px;top:" + r.top + "px;width:" + r.width + "px;height:" + r.height + "px;--g1:" + m.g[0] + ";--g2:" + m.g[1];
+        f.innerHTML = avatar(id);
+        document.body.appendChild(f);
+        var dx = tg.left + tg.width / 2 - (r.left + r.width / 2), dy = tg.top + tg.height / 2 - (r.top + r.height / 2), sx = tg.width / r.width, sy = tg.height / r.height;
+        var a = f.animate([
+          { transform: "translate(0,0) scale(1,1) rotate(0deg)", borderRadius: "12px", offset: 0 },
+          { transform: "translate(" + dx * .35 + "px," + (dy * .35 - 90) + "px) scale(" + Math.max(sx, .5) * 2.4 + "," + Math.max(sy, .5) * 2.4 + ") rotate(190deg)", borderRadius: "40%", offset: .5 },
+          { transform: "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ") rotate(360deg)", borderRadius: "50%", offset: 1 }
+        ], { duration: 800, easing: "cubic-bezier(.5,0,.2,1)" });
+        a.onfinish = function () { f.remove(); fin(); };
+        setTimeout(function () { f.remove(); fin(); }, 1100);
+      }
+      function wave() { if (!av) return; av.classList.add("waving"); setTimeout(function () { av.classList.remove("waving"); }, 2800); }
+
+      if (grid) {
+        ORDER.forEach(function (id, idx) {
+          var c = CH[id], m = META[id], b = document.createElement("button"), stats = "";
           b.type = "button"; b.className = "cp-card";
-          b.innerHTML = '<span class="cp-badge" style="--cpbg:var(' + c.c + ')">' + avatar(id) + "</span><strong>" + c.n + '</strong><span class="cp-trait">' + c.trait + "</span>";
-          b.addEventListener("click", function () {
-            store.set("fcf_comp", id);
-            show(id, true); paint();
-            bioEl.textContent = c.n + ": " + c.bio;
+          b.style.setProperty("--g1", m.g[0]); b.style.setProperty("--g2", m.g[1]);
+          b.style.animationDelay = (idx * -0.9) + "s";
+          m.st.forEach(function (v, k) {
+            var segs = ""; for (var q = 0; q < 5; q++) segs += '<s class="' + (q < v ? "on" : "") + '"></s>';
+            stats += '<span class="cp-stat"><u>' + STATS[k] + '</u><span class="cp-bar">' + segs + "</span></span>";
           });
-          grid.appendChild(b); cards[id] = b;
+          if (m.cel) { stats = '<span class="cp-verse">' + m.verse + "</span>"; b.classList.add("cp-cel"); }
+          b.innerHTML =
+            '<span class="cp-fx"></span>' +
+            '<span class="cp-top"><b>Nº ' + ("0" + (idx + 1)).slice(-2) + "/" + ORDER.length + "</b><em>" + m.cls + "</em></span>" +
+            '<span class="cp-art"><i class="cp-rays"></i>' + avatar(id) + "</span>" +
+            '<strong class="cp-name">' + c.n + "</strong>" +
+            '<span class="cp-stats">' + stats + "</span>" +
+            '<span class="cp-power">' + m.power + "</span>" +
+            '<span class="cp-foot">' + m.ref + "</span>";
+          function tilt(e) {
+            if (reduce) return;
+            var r = b.getBoundingClientRect(), x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+            b.style.setProperty("--px", x.toFixed(3)); b.style.setProperty("--py", y.toFixed(3));
+            b.style.setProperty("--rx", ((y - .5) * -20).toFixed(1) + "deg"); b.style.setProperty("--ry", ((x - .5) * 20).toFixed(1) + "deg");
+          }
+          function rest() { ["--rx", "--ry"].forEach(function (p) { b.style.setProperty(p, "0deg"); }); b.style.setProperty("--px", ".5"); b.style.setProperty("--py", ".5"); }
+          b.addEventListener("pointermove", tilt);
+          b.addEventListener("pointerdown", tilt);
+          b.addEventListener("pointerleave", rest);
+          b.addEventListener("pointerup", function (e) { if (e.pointerType !== "mouse") rest(); });
+          b.addEventListener("click", function () {
+            if (m.cel) { bioEl.textContent = c.n + ": " + c.bio; burst(b); return; }
+            if (!unl(id)) { var q = META[id].un; bioEl.textContent = "Carta bloqueada. " + q[2] + (q[1] > 1 ? " (llevas " + Math.min(cnt(q[0]), q[1]) + " de " + q[1] + ")" : "") + "."; notify(q[2]); return; }
+            store.set("fcf_comp", id);
+            bioEl.textContent = c.n + ": " + c.bio;
+            hide();
+            show(id, false); paint();
+            burst(b);
+            if (reduce || !document.body.animate) { say(c.intro); wave(); return; }
+            dock.style.visibility = "hidden";
+            fly(b, id, function () {
+              dock.style.visibility = "";
+              dock.classList.remove("pop"); void dock.offsetWidth; dock.classList.add("pop");
+              say(c.intro); wave();
+            });
+          });
+          grid.appendChild(b); cards[id] = b; decorate(b, id);
         });
         offBtn.addEventListener("click", off);
+        var cs = document.createElement("p"); cs.className = "cp-count"; cs.id = "cp-count"; cs.setAttribute("aria-live", "polite");
+        grid.parentNode.parentNode.insertBefore(cs, grid.parentNode);
+        buildNav();
+        refresh();
+        document.addEventListener("click", function () { setTimeout(refresh, 450); }, true);
+        var sec0 = $("#companero");
+        if (hasIO && sec0) new IntersectionObserver(function (es) { if (es[0].isIntersecting) refresh(); }, { threshold: .2 }).observe(sec0);
         paint();
         if (cur) { bioEl.textContent = CH[cur].n + ": " + CH[cur].bio; show(cur, false); }
       }
@@ -6177,7 +6569,7 @@
             if (!k || k === curKey) return;
             curKey = k;
             if (!cur || !dock || Date.now() - lastSay < 3000) return;
-            var line = CH[cur].say[k];
+            var line = CH[cur].say[k] || (k === "ayuda" ? "No tienes que cargar esto solo/a. Habla con alguien de confianza 💛" : "");
             if (line) say(line);
           });
         }, { threshold: .55 });
