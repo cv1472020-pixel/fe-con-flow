@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -5955,6 +5954,36 @@
       #planes .card .fx-cbtn { grid-column: 1 / -1; width: 100%; margin-top: 10px; }
       #planes .card .fx-reto { grid-column: 1 / -1; }
     }
+    /* ===== v44: celular más limpio (la de PC no cambia) ===== */
+    @media (max-width: 760px) {
+      /* sin decoración extra */
+      main .sticker { display: none; }
+      .hero-strip.s2 { display: none; }
+      .m-bubble { display: none !important; }
+      .m-btn { width: 52px; }
+      .mascot { left: 6px; bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+      .fx-flow, .fx-toast { display: none !important; }
+      .fx-top { width: 38px; height: 38px; box-shadow: none; }
+      /* sombras duras y movimiento continuo fuera */
+      main :is(.card, .pill-button, .fx-chip, .fx-vbtn, .fx-cbtn, .hero-photo, .verse-section, .nw-tile) { box-shadow: none; }
+      .floaty, .hero-photo, .hero .sticker, #companero .nw-head h2, #companero::after, .cp-grid .cp-card, .cp-fx { animation: none !important; }
+      /* el reto de cada tarjeta: botón discreto */
+      #planes .card .fx-cbtn { width: auto; justify-self: start; margin-top: 8px; padding: 6px 12px; background: transparent; font-size: .82rem; }
+      /* panel de cartas: cuadrícula de 2 columnas, solo imagen y nombre */
+      #companero .nw-head p { display: none; }
+      #companero .nw-note { font-size: .7rem; }
+      #companero .cp-count { font-size: .8rem; margin: 2px 0 0; }
+      .cp-filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; margin: 8px 0 0; padding: 2px 2px 6px; }
+      .cp-filters::-webkit-scrollbar { display: none; }
+      .cp-chip { flex: 0 0 auto; min-height: 36px; padding: 6px 12px; font-size: .8rem; }
+      .cp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; overflow: visible; scroll-snap-type: none; padding: 10px 0 12px; }
+      .cp-grid .cp-card { flex: none; width: auto; padding: 6px; }
+      .cp-grid .cp-card .cp-stats, .cp-grid .cp-card .cp-power, .cp-grid .cp-card .cp-top em { display: none; }
+      .cp-grid .cp-card .cp-name { padding: 6px 2px 0; font-size: .95rem; }
+      .cp-grid .cp-card .cp-foot { padding: 2px 2px 4px; }
+      .cp-bio { min-height: 0; font-size: .92rem; }
+      .cp-info { font-size: .75rem; }
+    }
   </style>
   <script>
   (function () {
@@ -6305,7 +6334,7 @@
       var ORDER = ["david", "ester", "daniel", "rut", "jose"].concat(NEW.map(function (n) { return n[0]; }), CEL.map(function (c) { return c[0]; }));
       var grid = $("#cp-grid"), bioEl = $("#cp-bio"), offBtn = $("#cp-off");
       /* panel menos saturado: filtros + 5 cartas por página */
-      var PAGE = 5, filt = "all", page = 0, nav = null;
+      var MQ = window.matchMedia("(max-width: 760px)"), PAGE = MQ.matches ? 6 : 5, filt = "all", page = 0, nav = null;
       var NT = { pedro: 1, pablo: 1, lidia: 1, zaqueo: 1, timoteo: 1, marta: 1, tabita: 1, juan: 1, priscila: 1, bernabe: 1, maria: 1 };
       var FILTERS = [["all", "Todas"], ["mine", "Mías"], ["cel", "Celestiales"], ["at", "Antiguo T."], ["nt", "Nuevo T."]];
       var cur = store.get("fcf_comp", null), cards = {};
@@ -6509,6 +6538,8 @@
         pager.appendChild(prev); pager.appendChild(dots); pager.appendChild(next); pager.appendChild(info);
         host.insertBefore(pager, stage.nextSibling);
         nav = { chips: chips, pager: pager, prev: prev, next: next, dots: dots, info: info };
+        var onMQ = function () { PAGE = MQ.matches ? 6 : 5; page = 0; layout(true); };
+        if (MQ.addEventListener) MQ.addEventListener("change", onMQ); else if (MQ.addListener) MQ.addListener(onMQ);
         if (cur && ORDER.indexOf(cur) > -1) page = Math.floor(ORDER.indexOf(cur) / PAGE);
         layout(true);
       }
@@ -6616,7 +6647,7 @@
             var k = keyOf(e.target);
             if (!k || k === curKey) return;
             curKey = k;
-            if (!cur || !dock || Date.now() - lastSay < 3000) return;
+            if (!cur || !dock || MQ.matches || Date.now() - lastSay < 3000) return;
             var line = CH[cur].say[k] || (k === "ayuda" ? "No tienes que cargar esto solo/a. Habla con alguien de confianza 💛" : "");
             if (line) say(line);
           });
